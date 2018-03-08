@@ -12,7 +12,7 @@
         <!--Table View Controller-->
         <scene sceneID="pna-Vp-UND">
             <objects>
-                <tableViewController storyboardIdentifier="homeTableView" id="od0-LT-Bni" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="homeTableView" id="od0-LT-Bni" customClass="TableViewController" customModule="Meal_Planner" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="YuM-ZT-UlN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -22,7 +22,16 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <items>
                                 <navigationItem title="Meal Planner" id="QZg-sw-TAJ">
-                                    <barButtonItem key="rightBarButtonItem" title="Hit me" id="kZR-Ff-My9"/>
+                                    <barButtonItem key="leftBarButtonItem" systemItem="add" id="uXd-aw-3k4">
+                                        <connections>
+                                            <action selector="addMeal:" destination="od0-LT-Bni" id="fD9-tI-PDo"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem key="rightBarButtonItem" title="Hit me" id="kZR-Ff-My9">
+                                        <connections>
+                                            <action selector="randomizeListButton:" destination="od0-LT-Bni" id="eEz-ia-RmP"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </navigationItem>
                             </items>
                         </navigationBar>
@@ -33,6 +42,20 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ykr-f0-onC" id="R36-Rw-ofh">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1vi-WX-3yF">
+                                            <rect key="frame" x="314" y="6" width="45" height="30"/>
+                                            <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
+                                            <state key="normal" title="Delete"/>
+                                            <connections>
+                                                <action selector="deleteMeal:" destination="od0-LT-Bni" eventType="touchUpInside" id="eXd-yP-TXy"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="1vi-WX-3yF" secondAttribute="trailing" constant="16" id="dBR-ih-Z5g"/>
+                                        <constraint firstItem="1vi-WX-3yF" firstAttribute="centerY" secondItem="R36-Rw-ofh" secondAttribute="centerY" id="oug-he-6ek"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
@@ -44,7 +67,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KqJ-4Y-jIR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="857" y="133"/>
+            <point key="canvasLocation" x="856.79999999999995" y="132.68365817091455"/>
         </scene>
     </scenes>
 </document>
