@@ -24,6 +24,13 @@ class TableViewController: UITableViewController {
         loadMeals()
     }
     
+    func rearrange<T>(array: Array<T>, fromIndex: Int, toIndex: Int) -> Array<T>{
+        var arr = array
+        let element = arr.remove(at: 0)
+        arr.insert(element, at: 0)
+        
+        return arr
+    }
     
     
     //MARK: Tableview datasource methods
@@ -31,15 +38,27 @@ class TableViewController: UITableViewController {
     // Method 1
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "mealCell", for: indexPath)
+        // create random number constant
+        let randomIndex = arc4random_uniform(UInt32(mealArray.count))
+        
+        // 'meal' is now the item in mealArray at indexPath.row
         let meal = mealArray[indexPath.row]
-//        var incrementingListNumber = meal.index
-//        incrementingListNumber += 1
-        cell.textLabel?.text = "\(meal.index): " + meal.mealName!
-//        cell.textLabel?.text = "\(incrementingListNumber): " + meal.mealName!
+        
+        // make the sortedIndex property the random number
+        meal.sortedIndex = Int32(randomIndex)
+        
+        // rearrange the array so that meal indices are the same as the sortedIndex of each meal. Is the index immutable?
+        mealArray = rearrange(array: mealArray, fromIndex: mealArray.index(of: meal)!, toIndex: Int(meal.sortedIndex))
+        
+        // grab the cell known as mealCell for whatever the indexPath is. This is returned.
+        let cell = tableView.dequeueReusableCell(withIdentifier: "mealCell", for: indexPath)
+        
+        // Change the string to the sorted index (random number) + meal name.
+        cell.textLabel?.text = meal.mealName! + (": \(meal.sortedIndex)")
         
         return cell
     }
+
     // Method 2
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if mealArray.count <= 7 {
@@ -60,18 +79,31 @@ class TableViewController: UITableViewController {
     }
 
     
+    // Randomize button pseudocode
+    // 1: Function triggered with button
+    // 2: var randomSortedIndex = arc4random
+    // 3: replace index attribute (not actual index) with randomSortedIndex value on each meal UNLESS locked = true. (How do we make sure we don't have two of the same value?). Don't want to replace actual index of items.
+    // 4: save the new order
+    // 5: load meals based on their sortedIndex (this I haven't figured out)
+    
     //MARK: Button to randomize the list
     @IBAction func randomizeListButton(_ sender: Any) {
-        randomizeList()
 
-        self.saveMeals()
+//        if mealArray == self.mealArray.sorted(by: { $0.sortedIndex < $1.sortedIndex }) {
+//            print("descending")
+//            mealArray = self.mealArray.sorted(by: { $0.sortedIndex > $1.sortedIndex })
+//        } else {
+//            print("ascending")
+//            mealArray = self.mealArray.sorted(by: { $0.sortedIndex < $1.sortedIndex })
+//        }
+        
         self.loadMeals()
+        print("Loaded meals.")
+        self.saveMeals()
+        print("Saved meals.")
+
     }
     
-    //MARK: Function that will randomize the order of all of the meals in itemArray AKA mealListArray
-    func randomizeList() {
-        tableView.reloadData()
-    }
     
     @IBAction func addMeal(_ sender: UIBarButtonItem) {
         print("Adding meal")
@@ -83,6 +115,7 @@ class TableViewController: UITableViewController {
             let newMeal = Meal(context: self.context)
             newMeal.mealName = textField.text!
             newMeal.mealLocked = false
+            newMeal.sortedIndex = Int32(self.mealArray.count) + 1
             self.mealArray.append(newMeal)
             
             print("Assigned index to new meal")
@@ -146,10 +179,11 @@ class TableViewController: UITableViewController {
         } catch {
             print("Error loading meals. \(error)")
         }
-        tableView.reloadData()
+        self.tableView.reloadData()
     }
     
     
-    
 }
+
+
 
