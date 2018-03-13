@@ -47,11 +47,11 @@ class TableViewController: UITableViewController {
         // make the sortedIndex property the random number
         meal.sortedIndex = Int32(randomIndex)
         
-        // rearrange the array so that meal indices are the same as the sortedIndex of each meal. Is the index immutable?
-        mealArray = rearrange(array: mealArray, fromIndex: mealArray.index(of: meal)!, toIndex: Int(meal.sortedIndex))
-        
         // grab the cell known as mealCell for whatever the indexPath is. This is returned.
         let cell = tableView.dequeueReusableCell(withIdentifier: "mealCell", for: indexPath)
+        
+        // rearrange the array so that meal indices are the same as the sortedIndex of each meal.
+        mealArray = rearrange(array: mealArray, fromIndex: mealArray.index(of: meal)!, toIndex: Int(meal.sortedIndex))
         
         // Change the string to the sorted index (random number) + meal name.
         cell.textLabel?.text = meal.mealName! + (": \(meal.sortedIndex)")
