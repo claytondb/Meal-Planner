@@ -39,43 +39,41 @@ class TableViewController: UITableViewController {
     // Method 1
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        let meal = mealArray[indexPath.row]
+        
         var last = mealArray.count - 1
         
-        while(last > 0)
+        while(last > 0) && meal.mealLocked == false
         {
             let rand = Int(arc4random_uniform(UInt32(last)))
             
-            //            print("swap items[\(last)] = \(mealArray[last]) with mealArray[\(rand)] = \(mealArray[rand])")
-            
             mealArray.swapAt(last, rand)
-            //            (mealArray[last], mealArray[rand]) = (mealArray[rand], mealArray[last])
             
             print(mealArray)
             
             last -= 1
         }
-        // create random number constant
-//        let randomIndex = arc4random_uniform(UInt32(mealArray.count))
         
-        // 'meal' is now the item in mealArray at indexPath.row. This is the index of the row element in the indexpath of mealArray.
-        let meal = mealArray[indexPath.row]
+
         
-        // make the sortedIndex property the random number
-//        meal.sortedIndex = Int32(randomIndex)
-        
-        // grab the cell known as mealCell for whatever the indexPath is. This is returned at the end of the function as UITableViewCell.
         let cell = tableView.dequeueReusableCell(withIdentifier: "mealCell", for: indexPath)
         
-        // rearrange the array so that meal indices are the same as the sortedIndex of each meal.
-//        mealArray = rearrange(array: mealArray, fromIndex: mealArray.index(of: meal)!, toIndex: Int(meal.sortedIndex))
         print("Rearrange just happened.")
         
-        // Change the string to the sorted index (random number) + meal name.
         cell.textLabel?.text = meal.mealName!
-//        + (": \(meal.sortedIndex)")
         
         return cell
     }
+    
+//    // Override to support editing the table view.
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete {
+//            // Delete the row from the data source
+//            mealArray.remove(at: indexPath.row)
+//            // Delete the row from the TableView
+//            tableView.deleteRows(at: [indexPath], with: .fade)
+//        }
+//    }
 
     // Method 2
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -96,26 +94,27 @@ class TableViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
+//    //MARK: Edit button to bring up delete toggles.
+//    @IBAction func editButton(_ sender: UIBarButtonItem) {
+//        
+////        tableView.setEditing(!tableView.isEditing, animated: true)
+//        
+//        if(self.tableView.isEditing == true)
+//        {
+//            self.tableView.setEditing(false, animated: true)
+//            self.editButtonItem.title = "Done"
+//        }
+//        else
+//        {
+//            self.tableView.setEditing(true, animated: true)
+//            self.editButtonItem.title = "Edit"
+//        }
+//    }
     
-    // Randomize button pseudocode
-    // 1: Function triggered with button
-    // 2: var randomSortedIndex = arc4random
-    // 3: replace index attribute (not actual index) with randomSortedIndex value on each meal UNLESS locked = true. (How do we make sure we don't have two of the same value?). Don't want to replace actual index of items.
-    // 4: save the new order
-    // 5: load meals based on their sortedIndex (this I haven't figured out)
+
     
     //MARK: Button to randomize the list
     @IBAction func randomizeListButton(_ sender: Any) {
-
-//        if mealArray == self.mealArray.sorted(by: { $0.sortedIndex < $1.sortedIndex }) {
-//            print("descending")
-//            mealArray = self.mealArray.sorted(by: { $0.sortedIndex > $1.sortedIndex })
-//        } else {
-//            print("ascending")
-//            mealArray = self.mealArray.sorted(by: { $0.sortedIndex < $1.sortedIndex })
-//        }
-        
-
         
         self.loadMeals()
         print("Loaded meals.")
