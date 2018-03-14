@@ -24,6 +24,7 @@ class TableViewController: UITableViewController {
         loadMeals()
     }
     
+    
     func rearrange<T>(array: Array<T>, fromIndex: Int, toIndex: Int) -> Array<T>{
         var arr = array
         let element = arr.remove(at: 0)
@@ -41,17 +42,18 @@ class TableViewController: UITableViewController {
         // create random number constant
         let randomIndex = arc4random_uniform(UInt32(mealArray.count))
         
-        // 'meal' is now the item in mealArray at indexPath.row
+        // 'meal' is now the item in mealArray at indexPath.row. This is the index of the row element in the indexpath of mealArray.
         let meal = mealArray[indexPath.row]
         
         // make the sortedIndex property the random number
         meal.sortedIndex = Int32(randomIndex)
         
-        // grab the cell known as mealCell for whatever the indexPath is. This is returned.
+        // grab the cell known as mealCell for whatever the indexPath is. This is returned at the end of the function as UITableViewCell.
         let cell = tableView.dequeueReusableCell(withIdentifier: "mealCell", for: indexPath)
         
         // rearrange the array so that meal indices are the same as the sortedIndex of each meal.
         mealArray = rearrange(array: mealArray, fromIndex: mealArray.index(of: meal)!, toIndex: Int(meal.sortedIndex))
+        print("Rearrange just happened.")
         
         // Change the string to the sorted index (random number) + meal name.
         cell.textLabel?.text = meal.mealName! + (": \(meal.sortedIndex)")
