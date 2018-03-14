@@ -40,28 +40,18 @@ class TableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let meal = mealArray[indexPath.row]
-        
         var last = mealArray.count - 1
-        
         while(last > 0) && meal.mealLocked == false
         {
             let rand = Int(arc4random_uniform(UInt32(last)))
-            
             mealArray.swapAt(last, rand)
-            
             print(mealArray)
-            
             last -= 1
         }
         
-
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "mealCell", for: indexPath)
-        
         print("Rearrange just happened.")
-        
         cell.textLabel?.text = meal.mealName!
-        
         return cell
     }
     
