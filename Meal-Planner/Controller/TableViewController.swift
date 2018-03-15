@@ -43,15 +43,13 @@ class TableViewController: UITableViewController {
         
         let meal = mealArray[indexPath.row]
         
-//        randomize()
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "mealCell", for: indexPath)
         print("Loaded cell")
         cell.textLabel?.text = meal.mealName!
         
         // color cells if locked
         if meal.mealLocked == true {
-            cell.backgroundColor = UIColor.blue
+            cell.backgroundColor = UIColor.lightGray
         } else {
             cell.backgroundColor = UIColor.clear
         }
@@ -60,19 +58,25 @@ class TableViewController: UITableViewController {
     }
     
 
-    func randomize() {
-        
-        // This code works when it's in the Tableview datasource method.
-        var last = mealArray.count - 1
-        while(last > 0)
-        {
-            let rand = Int(arc4random_uniform(UInt32(last)))
-            mealArray.swapAt(last, rand)
-            last -= 1
-            self.tableView.reloadData()
-        }
-        print("Randomize")
-        
+    func randomize(with request: NSFetchRequest<Meal> = Meal.fetchRequest()) {
+            do {
+                mealArray = try context.fetch(request)
+                
+                // This code works!
+                var last = mealArray.count - 1
+                while(last > 0)
+                {
+                    let rand = Int(arc4random_uniform(UInt32(last)))
+                    mealArray.swapAt(last, rand)
+                    last -= 1
+                }
+                print("Randomized!")
+            } catch {
+                print("Error loading meals. \(error)")
+            }
+
+        self.tableView.reloadData()
+//        saveMeals()
     }
     
     
@@ -105,6 +109,7 @@ class TableViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
+    
 //    //MARK: Edit button to bring up delete toggles.
 //    @IBAction func editButton(_ sender: UIBarButtonItem) {
 //        
@@ -129,10 +134,6 @@ class TableViewController: UITableViewController {
         
         randomize()
         
-        self.saveMeals()
-        print("Saved meals.")
-        self.loadMeals()
-        print("Loaded meals.")
     }
     
     
@@ -193,7 +194,7 @@ class TableViewController: UITableViewController {
     }
     
     @IBAction func lockButton(_ sender: UIButton) {
-        print("Locking meal")
+        print("Setting lock state")
         // find parent of button, then cell, then index of row.
         let parentCell = sender.superview?.superview as! UITableViewCell
         print("set parentCell")
@@ -205,15 +206,15 @@ class TableViewController: UITableViewController {
         print("set mealToLock")
         
         
-        // Use index of row to set mealLocked of meal to true
+        // Use index of row to set mealLocked of meal to true/false
         if mealToLock.mealLocked == true {
             mealToLock.mealLocked = false
             print("Meal unlocked")
-            parentCell.backgroundColor = UIColor.white
+            parentCell.backgroundColor = UIColor.clear
         } else {
             mealToLock.mealLocked = true
             print("Meal locked")
-            parentCell.backgroundColor = UIColor.clear
+            parentCell.backgroundColor = UIColor.lightGray
         }
         
         // Save data
