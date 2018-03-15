@@ -52,6 +52,9 @@
                                                 <constraint firstAttribute="height" constant="24" id="p2x-v2-Zh4"/>
                                             </constraints>
                                             <state key="normal" title="Lock" image="ic_lock"/>
+                                            <connections>
+                                                <action selector="lockButton:" destination="od0-LT-Bni" eventType="touchUpInside" id="GSd-cl-Udc"/>
+                                            </connections>
                                         </button>
                                         <button opaque="NO" alpha="0.54000000000000004" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1vi-WX-3yF">
                                             <rect key="frame" x="280" y="9" width="24" height="24"/>

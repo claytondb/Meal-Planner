@@ -25,13 +25,13 @@ class TableViewController: UITableViewController {
     }
     
     
-    func rearrange<T>(array: Array<T>, fromIndex: Int, toIndex: Int) -> Array<T>{
-        var arr = array
-        let element = arr.remove(at: 0)
-        arr.insert(element, at: 0)
-        
-        return arr
-    }
+//    func rearrange<T>(array: Array<T>, fromIndex: Int, toIndex: Int) -> Array<T>{
+//        var arr = array
+//        let element = arr.remove(at: 0)
+//        arr.insert(element, at: 0)
+//
+//        return arr
+//    }
     
     
     //MARK: Tableview datasource methods
@@ -40,20 +40,29 @@ class TableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let meal = mealArray[indexPath.row]
-        var last = mealArray.count - 1
-        while(last > 0) && meal.mealLocked == false
-        {
-            let rand = Int(arc4random_uniform(UInt32(last)))
-            mealArray.swapAt(last, rand)
-            print(mealArray)
-            last -= 1
-        }
+        
+//        randomize()
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "mealCell", for: indexPath)
         print("Rearrange just happened.")
         cell.textLabel?.text = meal.mealName!
+        
         return cell
     }
+    
+    func randomize() {
+        
+        // This code works when it's in the Tableview datasource method.
+        var last = mealArray.count - 1
+        while(last > 0)
+        {
+            let rand = Int(arc4random_uniform(UInt32(last)))
+            mealArray.swapAt(last, rand)
+            last -= 1
+        }
+        
+    }
+    
     
 //    // Override to support editing the table view.
 //    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
@@ -67,13 +76,13 @@ class TableViewController: UITableViewController {
 
     // Method 2
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if mealArray.count <= 7 {
-        return mealArray.count
-        } else {
-            return 7
-        }
-
-
+//        if mealArray.count <= 7 {
+//        return mealArray.count
+//        } else {
+//            return 7
+//        }
+        let count = mealArray.count
+        return count
     }
     
     
@@ -106,11 +115,12 @@ class TableViewController: UITableViewController {
     //MARK: Button to randomize the list
     @IBAction func randomizeListButton(_ sender: Any) {
         
-        self.loadMeals()
-        print("Loaded meals.")
+        randomize()
+        
         self.saveMeals()
         print("Saved meals.")
-
+        self.loadMeals()
+        print("Loaded meals.")
     }
     
     
@@ -170,6 +180,26 @@ class TableViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    @IBAction func lockButton(_ sender: UIButton) {
+        // find parent of button, then cell, then index of row.
+        let parentCell = sender.superview?.superview as! UITableViewCell
+        let parentTable = parentCell.superview as! UITableView
+        let indexPath = parentTable.indexPath(for: parentCell)
+        let mealToLock = self.mealArray[indexPath!.row]
+        
+        // Use index of row to set mealLocked of meal to true
+        if mealToLock.mealLocked == true {
+            mealToLock.mealLocked = false
+            print("Meal unlocked")
+        } else {
+            mealToLock.mealLocked = true
+            print("Meal locked")
+        }
+        
+        // Save data
+        self.saveMeals()
+        self.loadMeals()
+    }
     
     
     //MARK: Model manipulation methods
