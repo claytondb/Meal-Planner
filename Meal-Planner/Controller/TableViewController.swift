@@ -21,6 +21,8 @@ class TableViewController: UITableViewController {
         
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
+        self.tableView.backgroundColor = UIColor.white
+        
         loadMeals()
     }
     
@@ -44,12 +46,20 @@ class TableViewController: UITableViewController {
 //        randomize()
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "mealCell", for: indexPath)
-        print("Rearrange just happened.")
+        print("Loaded cell")
         cell.textLabel?.text = meal.mealName!
+        
+        // color cells if locked
+        if meal.mealLocked == true {
+            cell.backgroundColor = UIColor.blue
+        } else {
+            cell.backgroundColor = UIColor.clear
+        }
         
         return cell
     }
     
+
     func randomize() {
         
         // This code works when it's in the Tableview datasource method.
@@ -59,7 +69,9 @@ class TableViewController: UITableViewController {
             let rand = Int(arc4random_uniform(UInt32(last)))
             mealArray.swapAt(last, rand)
             last -= 1
+            self.tableView.reloadData()
         }
+        print("Randomize")
         
     }
     
@@ -181,19 +193,27 @@ class TableViewController: UITableViewController {
     }
     
     @IBAction func lockButton(_ sender: UIButton) {
+        print("Locking meal")
         // find parent of button, then cell, then index of row.
         let parentCell = sender.superview?.superview as! UITableViewCell
+        print("set parentCell")
         let parentTable = parentCell.superview as! UITableView
+        print("set parentTable")
         let indexPath = parentTable.indexPath(for: parentCell)
+        print("set indexPath")
         let mealToLock = self.mealArray[indexPath!.row]
+        print("set mealToLock")
+        
         
         // Use index of row to set mealLocked of meal to true
         if mealToLock.mealLocked == true {
             mealToLock.mealLocked = false
             print("Meal unlocked")
+            parentCell.backgroundColor = UIColor.white
         } else {
             mealToLock.mealLocked = true
             print("Meal locked")
+            parentCell.backgroundColor = UIColor.clear
         }
         
         // Save data
