@@ -19,6 +19,9 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Fix weird overlapping of status bar with navigation bar
+        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+        
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
         self.tableView.backgroundColor = UIColor.white
@@ -47,7 +50,7 @@ class TableViewController: UITableViewController {
         print("Loaded cell")
         cell.textLabel?.text = meal.mealName!
         
-        // color cells if locked
+        // color cells if lockeds
         if meal.mealLocked == true {
             cell.backgroundColor = UIColor.lightGray
         } else {
@@ -64,19 +67,26 @@ class TableViewController: UITableViewController {
                 
                 // This code works!
                 var last = mealArray.count - 1
+//                let meal = mealArray[indexPath.row]
+                
+                // this throws an error because it doesn't know what "meal" is.
+//                if meal.mealLocked == false {
                 while(last > 0)
                 {
                     let rand = Int(arc4random_uniform(UInt32(last)))
                     mealArray.swapAt(last, rand)
                     last -= 1
                 }
+//                } else if meal.mealLocked == true {
+//                    mealArray.swapAt(last, last)
+                    // do nothing
+//                }
                 print("Randomized!")
             } catch {
                 print("Error loading meals. \(error)")
             }
 
         self.tableView.reloadData()
-//        saveMeals()
     }
     
     
@@ -133,7 +143,7 @@ class TableViewController: UITableViewController {
     @IBAction func randomizeListButton(_ sender: Any) {
         
         randomize()
-        
+        saveMeals()
     }
     
     
@@ -163,7 +173,7 @@ class TableViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    
+    // Both deleteMeal and lockButton cause the app to crash on my phone. What's the issue?
     @IBAction func deleteMeal(_ sender: UIButton) {
         print("Deleting meal")
         let alert = UIAlertController(title:"Delete meal?", message: "This action cannot be undone.", preferredStyle: .alert)
@@ -171,7 +181,7 @@ class TableViewController: UITableViewController {
             
             // Find parent of the button (cell), then parent of cell (table row), then index of that row.
             let parentCell = sender.superview?.superview as! UITableViewCell
-            let parentTable = parentCell.superview as! UITableView
+            let parentTable = parentCell.superview?.superview as! UITableView
             let indexPath = parentTable.indexPath(for: parentCell)
             let mealToDelete = self.mealArray[indexPath!.row]
             
@@ -182,7 +192,7 @@ class TableViewController: UITableViewController {
             
             // Save data and reload
             self.saveMeals()
-            self.loadMeals()
+//            self.loadMeals()
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
             // do nothing
@@ -194,14 +204,20 @@ class TableViewController: UITableViewController {
     }
     
     @IBAction func lockButton(_ sender: UIButton) {
+        
         print("Setting lock state")
+        
         // find parent of button, then cell, then index of row.
         let parentCell = sender.superview?.superview as! UITableViewCell
         print("set parentCell")
-        let parentTable = parentCell.superview as! UITableView
+        
+        // Fixed error - added second superview so it's not just the wrapper of UITableView.
+        let parentTable = parentCell.superview?.superview as! UITableView
         print("set parentTable")
+        
         let indexPath = parentTable.indexPath(for: parentCell)
         print("set indexPath")
+        
         let mealToLock = self.mealArray[indexPath!.row]
         print("set mealToLock")
         
@@ -211,7 +227,7 @@ class TableViewController: UITableViewController {
             mealToLock.mealLocked = false
             print("Meal unlocked")
             parentCell.backgroundColor = UIColor.clear
-        } else {
+        } else if mealToLock.mealLocked == false {
             mealToLock.mealLocked = true
             print("Meal locked")
             parentCell.backgroundColor = UIColor.lightGray
@@ -219,7 +235,7 @@ class TableViewController: UITableViewController {
         
         // Save data
         self.saveMeals()
-        self.loadMeals()
+//        self.loadMeals()
     }
     
     
