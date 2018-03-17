@@ -113,10 +113,36 @@ class TableViewController: UITableViewController {
     
     
     
-    //MARK: Tableview delegate methods
+    //MARK: Tableview delegate methods - select row
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Don't keep the row selected
-        tableView.deselectRow(at: indexPath, animated: true)
+        print("Editing meal")
+        var textField = UITextField()
+        let alert = UIAlertController(title: "Edit meal name", message: "", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Save", style: .default) { (action) in
+            
+            let editingMeal = self.mealArray[indexPath.row]
+            editingMeal.mealName = textField.text
+            
+            print("Changed meal name")
+            self.saveMeals()
+        }
+        
+        alert.addTextField { (alertTextField) in
+            let editingMeal = self.mealArray[indexPath.row]
+            print("let editingMeal = Meal")
+            alertTextField.text = editingMeal.mealName
+            textField = alertTextField
+            textField.autocorrectionType = .yes
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            // do nothing
+            print("Cancelled")
+        }
+        alert.addAction(cancel)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+
     }
 
     
@@ -217,8 +243,12 @@ class TableViewController: UITableViewController {
         let parentCell = sender.superview?.superview as! UITableViewCell
         print("set parentCell")
         
-        // Fixed error - added second superview so it's not just the wrapper of UITableView.
-        let parentTable = parentCell.superview?.superview as! UITableView
+        // Fixed error - added second superview so it's not just UITableViewWrapper being cast as UITableView.
+//        let parentTable = parentCell.superview?.superview as! UITableView
+//        print("set parentTable")
+        
+        // Had to remove second superview because it said could not cast UIWindow as UITableView.
+        let parentTable = parentCell.superview as! UITableView
         print("set parentTable")
         
         let indexPath = parentTable.indexPath(for: parentCell)
