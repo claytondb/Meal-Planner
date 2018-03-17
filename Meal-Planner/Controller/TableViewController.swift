@@ -167,8 +167,14 @@ class TableViewController: UITableViewController {
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Chicken con pollo"
             textField = alertTextField
+            textField.autocorrectionType = .yes
         }
         
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            // do nothing
+            print("Cancelled")
+        }
+        alert.addAction(cancel)
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
