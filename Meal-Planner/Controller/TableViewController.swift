@@ -213,7 +213,8 @@ class TableViewController: UITableViewController {
             
             // Find parent of the button (cell), then parent of cell (table row), then index of that row.
             let parentCell = sender.superview?.superview as! UITableViewCell
-            let parentTable = parentCell.superview?.superview as! UITableView
+//            let parentTable = parentCell.superview?.superview as! UITableView
+            let parentTable = parentCell.superview as! UITableView
             let indexPath = parentTable.indexPath(for: parentCell)
             let mealToDelete = self.mealArray[indexPath!.row]
             
