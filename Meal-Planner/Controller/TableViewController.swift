@@ -67,7 +67,10 @@ class TableViewController: UITableViewController {
                 
                 // This code works!
                 var last = mealArray.count - 1
-//                let meal = mealArray[indexPath.row]
+                
+                // Compiles but doesn't do anything. This sets meal to generic Meal class, which always has locked state of false. Also ends up creating a null meal and crashes later.
+//                let meal = Meal(context: self.context)
+//                let meal = self.meal
                 
                 // this throws an error because it doesn't know what "meal" is.
 //                if meal.mealLocked == false {
