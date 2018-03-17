@@ -216,8 +216,8 @@ class TableViewController: UITableViewController {
             
             // Find parent of the button (cell), then parent of cell (table row), then index of that row.
             let parentCell = sender.superview?.superview as! UITableViewCell
-//            let parentTable = parentCell.superview?.superview as! UITableView
-            let parentTable = parentCell.superview as! UITableView
+            let parentTable = parentCell.superview?.superview as! UITableView
+//            let parentTable = parentCell.superview as! UITableView
             let indexPath = parentTable.indexPath(for: parentCell)
             let mealToDelete = self.mealArray[indexPath!.row]
             
@@ -248,12 +248,12 @@ class TableViewController: UITableViewController {
         print("set parentCell")
         
         // Fixed error - added second superview so it's not just UITableViewWrapper being cast as UITableView.
-//        let parentTable = parentCell.superview?.superview as! UITableView
-//        print("set parentTable")
+        let parentTable = parentCell.superview?.superview as! UITableView
+        print("set parentTable")
         
         // Had to remove second superview because it said could not cast UIWindow as UITableView.
-        let parentTable = parentCell.superview as! UITableView
-        print("set parentTable")
+//        let parentTable = parentCell.superview as! UITableView
+//        print("set parentTable")
         
         let indexPath = parentTable.indexPath(for: parentCell)
         print("set indexPath")
