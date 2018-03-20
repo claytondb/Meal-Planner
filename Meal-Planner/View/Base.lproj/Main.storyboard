@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -37,50 +36,12 @@
                             </items>
                         </navigationBar>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="mealCell" id="Ykr-f0-onC">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="customMealCell" id="45a-Hp-Zfe" customClass="CustomMealCell" customModule="Meal_Planner" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="72" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ykr-f0-onC" id="R36-Rw-ofh">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="45a-Hp-Zfe" id="G9t-D2-dk0">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <button opaque="NO" alpha="0.54000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rlr-mU-9ib">
-                                            <rect key="frame" x="232" y="9" width="24" height="24"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="rlr-mU-9ib" secondAttribute="height" multiplier="1:1" id="M19-lO-vxb"/>
-                                                <constraint firstAttribute="width" constant="24" id="e3P-RL-M33"/>
-                                                <constraint firstAttribute="height" constant="24" id="p2x-v2-Zh4"/>
-                                            </constraints>
-                                            <state key="normal" title="Lock" image="ic_lock"/>
-                                            <connections>
-                                                <action selector="lockButton:" destination="od0-LT-Bni" eventType="touchUpInside" id="GSd-cl-Udc"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" alpha="0.54000000000000004" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1vi-WX-3yF">
-                                            <rect key="frame" x="280" y="9" width="24" height="24"/>
-                                            <accessibility key="accessibilityConfiguration">
-                                                <accessibilityTraits key="traits" button="YES" image="YES"/>
-                                            </accessibility>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="1vi-WX-3yF" secondAttribute="height" multiplier="1:1" id="QGg-mH-HBV"/>
-                                                <constraint firstAttribute="width" constant="24" id="kwB-l2-pGd"/>
-                                                <constraint firstAttribute="height" constant="24" id="n5n-zU-I5d"/>
-                                            </constraints>
-                                            <state key="normal" title="Delete" image="ic_delete"/>
-                                            <connections>
-                                                <action selector="deleteMeal:" destination="od0-LT-Bni" eventType="touchUpInside" id="eXd-yP-TXy"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="1vi-WX-3yF" firstAttribute="leading" secondItem="rlr-mU-9ib" secondAttribute="trailing" constant="24" id="3R0-Yk-KY1"/>
-                                        <constraint firstItem="1vi-WX-3yF" firstAttribute="top" secondItem="R36-Rw-ofh" secondAttribute="top" constant="9" id="9i0-MY-P5t"/>
-                                        <constraint firstAttribute="trailing" secondItem="1vi-WX-3yF" secondAttribute="trailing" constant="16" id="Ghy-HZ-bn6"/>
-                                        <constraint firstAttribute="bottom" secondItem="rlr-mU-9ib" secondAttribute="bottom" constant="10.5" id="Qna-aj-ynW"/>
-                                        <constraint firstAttribute="bottom" secondItem="1vi-WX-3yF" secondAttribute="bottom" constant="10.5" id="Rw6-rk-gpD"/>
-                                        <constraint firstItem="1vi-WX-3yF" firstAttribute="leading" secondItem="rlr-mU-9ib" secondAttribute="trailing" constant="24" id="uho-8z-dWy"/>
-                                        <constraint firstItem="rlr-mU-9ib" firstAttribute="top" secondItem="R36-Rw-ofh" secondAttribute="top" constant="9" id="zNf-ec-NCU"/>
-                                    </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
@@ -96,8 +57,4 @@
             <point key="canvasLocation" x="855" y="132.04225352112675"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="ic_delete" width="24" height="24"/>
-        <image name="ic_lock" width="24" height="24"/>
-    </resources>
 </document>

@@ -13,7 +13,10 @@ import CoreData
 class TableViewController: UITableViewController {
     
     var mealArray = [Meal]()
+    
     let meal = Meal()
+//    let meal = Meal.init(entity: (NSEntityDescription.entity(forEntityName: "Meal", in: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext))!, insertInto: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
+    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
@@ -26,8 +29,12 @@ class TableViewController: UITableViewController {
         
         self.tableView.backgroundColor = UIColor.white
         
+        //TODO: Register your mealXib.xib file here:
+        tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
+        
         loadMeals()
     }
+    
     
     
 //    func rearrange<T>(array: Array<T>, fromIndex: Int, toIndex: Int) -> Array<T>{
@@ -46,9 +53,17 @@ class TableViewController: UITableViewController {
         
         let meal = mealArray[indexPath.row]
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "mealCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
+        
         print("Loaded cell")
-        cell.textLabel?.text = meal.mealName!
+//        cell.textLabel?.text = meal.mealName!
+        cell.mealLabel?.text = meal.mealName!
+        print("Got meal name")
+//        cell.mealImage.image = UIImage(named: "mealPlaceholder")
+//        print("Got meal placeholder image")
+        
+//        self.tableView.rowHeight = UITableViewAutomaticDimension;
+//        self.tableView.estimatedRowHeight = 64.0;
         
         // color cells if lockeds
         if meal.mealLocked == true {

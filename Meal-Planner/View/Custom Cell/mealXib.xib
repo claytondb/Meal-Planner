@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="customMealCell" id="ziL-ua-O8o" userLabel="customMealCell" customClass="CustomMealCell" customModule="Meal_Planner" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ziL-ua-O8o" id="OZu-le-KtI">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="63.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mealPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="LRg-yJ-XR4" userLabel="Meal Image">
+                        <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="64" id="QsS-rc-zXB"/>
+                            <constraint firstAttribute="width" constant="64" id="km7-fe-DUD"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Test meal label here is what you would see" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jev-c1-RPD">
+                        <rect key="frame" x="88" y="0.0" width="271" height="64"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="64" id="7KO-sS-Foz"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="LRg-yJ-XR4" firstAttribute="leading" secondItem="OZu-le-KtI" secondAttribute="leading" id="46z-Qv-POC"/>
+                    <constraint firstItem="Jev-c1-RPD" firstAttribute="leading" secondItem="LRg-yJ-XR4" secondAttribute="trailing" constant="24" id="DjQ-cF-2Wa"/>
+                    <constraint firstAttribute="trailing" secondItem="Jev-c1-RPD" secondAttribute="trailing" constant="16" id="Z8t-2K-XJ4"/>
+                    <constraint firstAttribute="bottom" secondItem="LRg-yJ-XR4" secondAttribute="bottom" id="aHf-Oq-Yzh"/>
+                    <constraint firstAttribute="bottom" secondItem="Jev-c1-RPD" secondAttribute="bottom" id="dk7-75-uB4"/>
+                    <constraint firstItem="LRg-yJ-XR4" firstAttribute="top" secondItem="OZu-le-KtI" secondAttribute="top" id="nDF-Oy-rud"/>
+                    <constraint firstItem="Jev-c1-RPD" firstAttribute="top" secondItem="OZu-le-KtI" secondAttribute="top" id="uIs-vc-zVb"/>
+                </constraints>
+            </tableViewCellContentView>
+        </tableViewCell>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+    </objects>
+    <resources>
+        <image name="mealPlaceholder" width="64" height="64"/>
+    </resources>
+</document>
