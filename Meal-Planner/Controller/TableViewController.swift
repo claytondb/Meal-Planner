@@ -64,6 +64,25 @@ class TableViewController: UITableViewController {
         cell.mealImage.image = UIImage(named: "mealPlaceholder")
         print("Got meal placeholder image")
         
+        // Set mealDay to day of the week depending on what row of the table it's in
+        if indexPath.row == 0 {
+            cell.mealDay?.text = "Sunday" }
+        else if indexPath.row == 1 {
+            cell.mealDay?.text = "Monday"
+        } else if indexPath.row == 2 {
+            cell.mealDay?.text = "Tuesday"
+        } else if indexPath.row == 3 {
+            cell.mealDay?.text = "Wednesday"
+        } else if indexPath.row == 4 {
+            cell.mealDay?.text = "Thursday"
+        } else if indexPath.row == 5 {
+            cell.mealDay?.text = "Friday"
+        } else if indexPath.row == 6 {
+            cell.mealDay?.text = "Saturday"
+        }
+
+        
+        
 //        self.tableView.rowHeight = UITableViewAutomaticDimension;
 //        self.tableView.estimatedRowHeight = 64.0;
         
@@ -122,13 +141,13 @@ class TableViewController: UITableViewController {
 
     // Method 2
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        if mealArray.count <= 7 {
-//        return mealArray.count
-//        } else {
-//            return 7
-//        }
-        let count = mealArray.count
-        return count
+        if mealArray.count <= 7 {
+        return mealArray.count
+        } else {
+            return 7
+        }
+//        let count = mealArray.count
+//        return count
     }
     
     

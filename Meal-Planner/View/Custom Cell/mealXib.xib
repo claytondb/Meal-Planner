@@ -6,48 +6,62 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="customMealCell" id="ziL-ua-O8o" userLabel="customMealCell" customClass="CustomMealCell" customModule="Meal_Planner" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
-            <autoresizingMask key="autoresizingMask"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="9" reuseIdentifier="customMealCell" id="ziL-ua-O8o" userLabel="customMealCell" customClass="CustomMealCell" customModule="Meal_Planner" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="72"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ziL-ua-O8o" id="OZu-le-KtI">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="63.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="71.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mealPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="LRg-yJ-XR4" userLabel="Meal Image">
-                        <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="64" id="QsS-rc-zXB"/>
-                            <constraint firstAttribute="width" constant="64" id="km7-fe-DUD"/>
-                        </constraints>
-                    </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Test meal label here is what you would see" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jev-c1-RPD">
-                        <rect key="frame" x="88" y="0.0" width="271" height="64"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="64" id="7KO-sS-Foz"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="r2l-h2-5UI">
+                        <rect key="frame" x="0.0" y="-0.5" width="375" height="72"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mealPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="LRg-yJ-XR4" userLabel="Meal Image">
+                                <rect key="frame" x="0.0" y="0.0" width="64" height="72"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="Xh5-St-s51"/>
+                                    <constraint firstAttribute="width" constant="64" id="zAM-Cf-IAa"/>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="3bd-hA-PJt">
+                                <rect key="frame" x="72" y="0.0" width="303" height="72"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sunday" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4of-OB-ZbL">
+                                        <rect key="frame" x="0.0" y="0.0" width="42" height="14.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Test meal label here is what you would see if you had a really long meal but that's weird." lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jev-c1-RPD">
+                                        <rect key="frame" x="0.0" y="14.5" width="303" height="57.5"/>
+                                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="16"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                    </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="LRg-yJ-XR4" firstAttribute="leading" secondItem="OZu-le-KtI" secondAttribute="leading" id="46z-Qv-POC"/>
-                    <constraint firstItem="Jev-c1-RPD" firstAttribute="leading" secondItem="LRg-yJ-XR4" secondAttribute="trailing" constant="24" id="DjQ-cF-2Wa"/>
-                    <constraint firstAttribute="trailing" secondItem="Jev-c1-RPD" secondAttribute="trailing" constant="16" id="Z8t-2K-XJ4"/>
-                    <constraint firstAttribute="bottom" secondItem="LRg-yJ-XR4" secondAttribute="bottom" id="aHf-Oq-Yzh"/>
-                    <constraint firstAttribute="bottom" secondItem="Jev-c1-RPD" secondAttribute="bottom" id="dk7-75-uB4"/>
-                    <constraint firstItem="LRg-yJ-XR4" firstAttribute="top" secondItem="OZu-le-KtI" secondAttribute="top" id="nDF-Oy-rud"/>
-                    <constraint firstItem="Jev-c1-RPD" firstAttribute="top" secondItem="OZu-le-KtI" secondAttribute="top" id="uIs-vc-zVb"/>
+                    <constraint firstItem="r2l-h2-5UI" firstAttribute="leading" secondItem="OZu-le-KtI" secondAttribute="leading" id="R2y-pX-kQW"/>
+                    <constraint firstAttribute="bottom" secondItem="r2l-h2-5UI" secondAttribute="bottom" id="Ziy-EP-nPW"/>
+                    <constraint firstAttribute="trailing" secondItem="r2l-h2-5UI" secondAttribute="trailing" id="f5h-uk-rc2"/>
+                    <constraint firstItem="r2l-h2-5UI" firstAttribute="top" secondItem="OZu-le-KtI" secondAttribute="top" id="nDf-X2-Qqk"/>
                 </constraints>
             </tableViewCellContentView>
+            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
+                <outlet property="mealDay" destination="4of-OB-ZbL" id="jys-X1-byn"/>
                 <outlet property="mealImage" destination="LRg-yJ-XR4" id="kay-bj-g2H"/>
                 <outlet property="mealLabel" destination="Jev-c1-RPD" id="NPX-zz-Pnb"/>
             </connections>
+            <point key="canvasLocation" x="33.5" y="54"/>
         </tableViewCell>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
     </objects>
