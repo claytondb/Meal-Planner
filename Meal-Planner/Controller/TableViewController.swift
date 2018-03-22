@@ -56,11 +56,13 @@ class TableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
         
         print("Loaded cell")
-//        cell.textLabel?.text = meal.mealName!
+        if meal.mealName == nil {
+            meal.mealName = "Meal name"
+        }
         cell.mealLabel?.text = meal.mealName!
         print("Got meal name")
-//        cell.mealImage.image = UIImage(named: "mealPlaceholder")
-//        print("Got meal placeholder image")
+        cell.mealImage.image = UIImage(named: "mealPlaceholder")
+        print("Got meal placeholder image")
         
 //        self.tableView.rowHeight = UITableViewAutomaticDimension;
 //        self.tableView.estimatedRowHeight = 64.0;

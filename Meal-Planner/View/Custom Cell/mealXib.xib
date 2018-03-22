@@ -44,6 +44,10 @@
                     <constraint firstItem="Jev-c1-RPD" firstAttribute="top" secondItem="OZu-le-KtI" secondAttribute="top" id="uIs-vc-zVb"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="mealImage" destination="LRg-yJ-XR4" id="kay-bj-g2H"/>
+                <outlet property="mealLabel" destination="Jev-c1-RPD" id="NPX-zz-Pnb"/>
+            </connections>
         </tableViewCell>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
     </objects>
