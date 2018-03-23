@@ -165,7 +165,7 @@ class TableViewController: UITableViewController {
         }
     
     
-    //MARK: Edit meal function
+    //MARK: Edit meal name function
     func editMealName() {
         print("Editing meal")
         
@@ -199,33 +199,35 @@ class TableViewController: UITableViewController {
     }
     
     
+    
+    //MARK: Lock meal function
+    func lockMeal(mealToCheck : Meal, cellToColor : UITableViewCell) {
+        if mealToCheck.mealLocked == true {
+            mealToCheck.mealLocked = false
+            print("\(mealToCheck.mealName!) unlocked")
+            cellToColor.backgroundColor = UIColor.clear
+        } else if mealToCheck.mealLocked == false {
+            mealToCheck.mealLocked = true
+            print("\(mealToCheck.mealName!) locked")
+            cellToColor.backgroundColor = UIColor.lightGray
+        }
+        tableView.reloadData()
+    }
+    
+    
     //MARK: Tableview delegate methods - select row
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // When row is selected, you edit the meal name in an alert.
-        editMealName()
-
+//        editMealName()
+        
+        // When row is selected, lock/unlock it.
+        let meal : Meal = mealArray[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
+        lockMeal(mealToCheck: meal, cellToColor: cell)
+        
     }
-
     
-//    //MARK: Edit button to bring up delete toggles.
-//    @IBAction func editButton(_ sender: UIBarButtonItem) {
-//        
-////        tableView.setEditing(!tableView.isEditing, animated: true)
-//        
-//        if(self.tableView.isEditing == true)
-//        {
-//            self.tableView.setEditing(false, animated: true)
-//            self.editButtonItem.title = "Done"
-//        }
-//        else
-//        {
-//            self.tableView.setEditing(true, animated: true)
-//            self.editButtonItem.title = "Edit"
-//        }
-//    }
-    
-
     
     //MARK: Button to randomize the list
     @IBAction func randomizeListButton(_ sender: Any) {
@@ -296,19 +298,6 @@ class TableViewController: UITableViewController {
         alert.addAction(delete)
         alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
-    }
-    
-    
-    func lockMeal(mealToCheck : Meal, cellToColor : UITableViewCell) {
-        if mealToCheck.mealLocked == true {
-            mealToCheck.mealLocked = false
-            print("Meal unlocked")
-            cellToColor.backgroundColor = UIColor.clear
-        } else if mealToCheck.mealLocked == false {
-            mealToCheck.mealLocked = true
-            print("Meal locked")
-            cellToColor.backgroundColor = UIColor.lightGray
-        }
     }
     
     
