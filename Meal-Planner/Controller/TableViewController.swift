@@ -298,6 +298,20 @@ class TableViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    
+    func lockMeal(mealToCheck : Meal, cellToColor : UITableViewCell) {
+        if mealToCheck.mealLocked == true {
+            mealToCheck.mealLocked = false
+            print("Meal unlocked")
+            cellToColor.backgroundColor = UIColor.clear
+        } else if mealToCheck.mealLocked == false {
+            mealToCheck.mealLocked = true
+            print("Meal locked")
+            cellToColor.backgroundColor = UIColor.lightGray
+        }
+    }
+    
+    
     @IBAction func lockButton(_ sender: UIButton) {
         
         print("Setting lock state")
@@ -322,15 +336,8 @@ class TableViewController: UITableViewController {
         
         
         // Use index of row to set mealLocked of meal to true/false
-        if mealToLock.mealLocked == true {
-            mealToLock.mealLocked = false
-            print("Meal unlocked")
-            parentCell.backgroundColor = UIColor.clear
-        } else if mealToLock.mealLocked == false {
-            mealToLock.mealLocked = true
-            print("Meal locked")
-            parentCell.backgroundColor = UIColor.lightGray
-        }
+        lockMeal(mealToCheck: mealToLock, cellToColor: parentCell)
+
         
         // Save data
         self.saveMeals()
