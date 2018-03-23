@@ -54,13 +54,18 @@ class TableViewController: UITableViewController {
         let meal = mealArray[indexPath.row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
-        
         print("Loaded cell")
+        
+        // Set meal name
         if meal.mealName == nil {
             meal.mealName = "Meal name"
+            print("Default meal name used")
+        } else {
+            cell.mealLabel?.text = meal.mealName!
+            print("Got meal name")
         }
-        cell.mealLabel?.text = meal.mealName!
-        print("Got meal name")
+        
+        // Set meal image
         cell.mealImage.image = UIImage(named: "mealPlaceholder")
         print("Got meal placeholder image")
         
@@ -81,12 +86,10 @@ class TableViewController: UITableViewController {
             cell.mealDay?.text = "Saturday"
         }
 
-        
-        
 //        self.tableView.rowHeight = UITableViewAutomaticDimension;
 //        self.tableView.estimatedRowHeight = 64.0;
         
-        // color cells if lockeds
+        // color cells if locked
         if meal.mealLocked == true {
             cell.backgroundColor = UIColor.lightGray
         } else {
@@ -102,24 +105,25 @@ class TableViewController: UITableViewController {
                 mealArray = try context.fetch(request)
                 
                 // This code works!
-                var last = mealArray.count - 1
+                var lastMeal : Int = mealArray.count - 1
+                let mealToCheck : Meal = mealArray[lastMeal]
                 
-                // Compiles but doesn't do anything. This sets meal to generic Meal class, which always has locked state of false. Also ends up creating a null meal and crashes later.
-//                let meal = Meal(context: self.context)
-//                let meal = self.meal
-                
-                // this throws an error because it doesn't know what "meal" is.
-//                if meal.mealLocked == false {
-                while(last > 0)
+                // Checking locks doesn't work yet.
+                while(lastMeal > -1)
                 {
-                    let rand = Int(arc4random_uniform(UInt32(last)))
-                    mealArray.swapAt(last, rand)
-                    last -= 1
+                    let randomNumber = Int(arc4random_uniform(UInt32(lastMeal)))
+                    if mealToCheck.mealLocked == false {
+                        mealArray.swapAt(lastMeal, randomNumber)
+                        lastMeal -= 1
+                        print("Meal wasn't locked")
+                    }
+                    else if mealToCheck.mealLocked == true {
+                        mealArray.swapAt(lastMeal, randomNumber)
+                        lastMeal -= 1
+                        print("Meal WAS locked")
+                    }
                 }
-//                } else if meal.mealLocked == true {
-//                    mealArray.swapAt(last, last)
-                    // do nothing
-//                }
+
                 print("Randomized!")
             } catch {
                 print("Error loading meals. \(error)")
@@ -221,7 +225,7 @@ class TableViewController: UITableViewController {
             // stuff that happens when user taps add
             let newMeal = Meal(context: self.context)
             newMeal.mealName = textField.text!
-            newMeal.mealLocked = false
+            newMeal.mealLocked = true
             newMeal.sortedIndex = Int32(self.mealArray.count) + 1
             self.mealArray.append(newMeal)
             
