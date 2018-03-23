@@ -131,17 +131,6 @@ class TableViewController: UITableViewController {
 
         self.tableView.reloadData()
     }
-    
-    
-//    // Override to support editing the table view.
-//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-//        if editingStyle == .delete {
-//            // Delete the row from the data source
-//            mealArray.remove(at: indexPath.row)
-//            // Delete the row from the TableView
-//            tableView.deleteRows(at: [indexPath], with: .fade)
-//        }
-//    }
 
     // Method 2
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -149,10 +138,31 @@ class TableViewController: UITableViewController {
         return mealArray.count
         } else {
             return 7
-        }
+            
 //        let count = mealArray.count
 //        return count
     }
+    }
+        
+        
+        // Override to support editing the table view. Deleting doesn't work quiet yet. Swipe to delete.
+        override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+            
+            if editingStyle == .delete {
+                
+                let mealToDelete = self.mealArray[indexPath.row]
+                
+                // Use index of row to delete it from table and CoreData
+                self.context.delete(mealToDelete)
+                self.mealArray.remove(at: indexPath.row)
+                print("Successfully deleted meal.")
+                
+                // Save data and reload
+                self.saveMeals()
+                
+            }
+            
+        }
     
     
     
