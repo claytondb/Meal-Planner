@@ -54,7 +54,7 @@ class TableViewController: UITableViewController {
         let meal = mealArray[indexPath.row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
-        print("Loaded cell")
+//        print("Loaded cell")
         
         // Set meal name
         if meal.mealName == nil {
@@ -62,12 +62,12 @@ class TableViewController: UITableViewController {
             print("Default meal name used")
         } else {
             cell.mealLabel?.text = meal.mealName!
-            print("Got meal name")
+            print("\(meal.mealName!)")
         }
         
         // Set meal image
         cell.mealImage.image = UIImage(named: "mealPlaceholder")
-        print("Got meal placeholder image")
+//        print("Got meal placeholder image")
         
         // Set mealDay to day of the week depending on what row of the table it's in
         if indexPath.row == 0 {
@@ -106,14 +106,14 @@ class TableViewController: UITableViewController {
                 
                 // This code works!
                 var lastMeal : Int = mealArray.count - 1
-                let mealToCheck : Meal = mealArray[lastMeal]
                 
                 // Checking locks doesn't work yet.
                 while(lastMeal > -1)
                 {
                     let randomNumber = Int(arc4random_uniform(UInt32(lastMeal)))
+                    let mealToCheck : Meal = mealArray[lastMeal]
                     if mealToCheck.mealLocked == false {
-                        mealArray.swapAt(lastMeal, randomNumber)
+//                        mealArray.swapAt(lastMeal, randomNumber)
                         lastMeal -= 1
                         print("Meal wasn't locked")
                     }
