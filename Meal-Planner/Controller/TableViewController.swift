@@ -145,7 +145,7 @@ class TableViewController: UITableViewController {
     }
         
         
-        // Override to support editing the table view. Deleting doesn't work quiet yet. Swipe to delete.
+        // Override to support editing the table view. Swipe to delete.
         override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
             
             if editingStyle == .delete {
@@ -165,10 +165,11 @@ class TableViewController: UITableViewController {
         }
     
     
-    
-    //MARK: Tableview delegate methods - select row
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    //MARK: Edit meal function
+    func editMealName() {
         print("Editing meal")
+        
+        let indexPath : IndexPath = tableView.indexPathForSelectedRow!
         var textField = UITextField()
         let alert = UIAlertController(title: "Edit meal name", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Save", style: .default) { (action) in
@@ -195,6 +196,14 @@ class TableViewController: UITableViewController {
         alert.addAction(cancel)
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
+    }
+    
+    
+    //MARK: Tableview delegate methods - select row
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        // When row is selected, you edit the meal name in an alert.
+        editMealName()
 
     }
 
