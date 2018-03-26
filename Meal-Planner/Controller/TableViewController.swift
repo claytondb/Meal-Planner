@@ -40,6 +40,7 @@ class TableViewController: UITableViewController {
     // Method 1
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        // indexPath.row has to do with the table. It takes that number and gets the meal from mealArray at that number. For example, it looks at indexPath.row of the table and if it's 3, it gets the meal at 3 in the array.
         let meal = mealArray[indexPath.row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
@@ -124,7 +125,6 @@ class TableViewController: UITableViewController {
             }
         
         saveMeals()
-        print("Meals saved and table data reloaded")
 
     }
 
@@ -208,7 +208,6 @@ class TableViewController: UITableViewController {
             cellToColor.backgroundColor = UIColor.lightGray
         }
         saveMeals()
-        print("Saved and reloaded data")
     }
     
     
@@ -286,7 +285,7 @@ class TableViewController: UITableViewController {
             
             // Save data and reload
             self.saveMeals()
-//            self.loadMeals()
+
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
             // do nothing
@@ -326,8 +325,8 @@ class TableViewController: UITableViewController {
 
         
         // Save data
-        self.saveMeals()
-//        self.loadMeals()
+        saveMeals()
+
     }
     
     
@@ -339,6 +338,7 @@ class TableViewController: UITableViewController {
             print("Error saving meals. \(error)")
         }
         self.tableView.reloadData()
+        print("Meals saved and data reloaded")
     }
     
     func loadMeals(with request: NSFetchRequest<Meal> = Meal.fetchRequest()) {
@@ -348,6 +348,7 @@ class TableViewController: UITableViewController {
             print("Error loading meals. \(error)")
         }
         self.tableView.reloadData()
+        print("Meals loaded")
     }
     
     
