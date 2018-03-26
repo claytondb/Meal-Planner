@@ -15,7 +15,6 @@ class TableViewController: UITableViewController {
     var mealArray = [Meal]()
     
     let meal = Meal()
-//    let meal = Meal.init(entity: (NSEntityDescription.entity(forEntityName: "Meal", in: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext))!, insertInto: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -36,16 +35,6 @@ class TableViewController: UITableViewController {
     }
     
     
-    
-//    func rearrange<T>(array: Array<T>, fromIndex: Int, toIndex: Int) -> Array<T>{
-//        var arr = array
-//        let element = arr.remove(at: 0)
-//        arr.insert(element, at: 0)
-//
-//        return arr
-//    }
-    
-    
     //MARK: Tableview datasource methods
     // Create the two datasource methods that specify 1. what the cells should display, and 2. how many rows we want in the tableview.
     // Method 1
@@ -59,10 +48,10 @@ class TableViewController: UITableViewController {
         // Set meal name
         if meal.mealName == nil {
             meal.mealName = "Meal name"
-            print("Default meal name used")
+//            print("Default meal name used")
         } else {
             cell.mealLabel?.text = meal.mealName!
-            print("\(meal.mealName!)")
+//            print("\(meal.mealName!)")
         }
         
         // Set meal image
@@ -101,35 +90,42 @@ class TableViewController: UITableViewController {
     
 
     func randomize(with request: NSFetchRequest<Meal> = Meal.fetchRequest()) {
-            do {
+        
+        do {
                 mealArray = try context.fetch(request)
                 
                 // This code works!
-                var lastMeal : Int = mealArray.count - 1
+                var lastMealInt : Int = mealArray.count - 1
                 
                 // Checking locks doesn't work yet.
-                while(lastMeal > -1)
+                while(lastMealInt > -1)
                 {
-                    let randomNumber = Int(arc4random_uniform(UInt32(lastMeal)))
-                    let mealToCheck : Meal = mealArray[lastMeal]
-                    if mealToCheck.mealLocked == false {
-//                        mealArray.swapAt(lastMeal, randomNumber)
-                        lastMeal -= 1
-                        print("Meal wasn't locked")
+                    let randomNumber = Int(arc4random_uniform(UInt32(lastMealInt)))
+                    let mealAtRandom : Meal = mealArray[randomNumber]
+                    let mealToCheck : Meal = mealArray[lastMealInt]
+                    if mealToCheck.mealLocked == false && mealAtRandom.mealLocked == false {
+                        mealArray.swapAt(lastMealInt, randomNumber)
+//                        print("\(mealToCheck.mealName!) is not locked")
+                    }
+                    else if mealToCheck.mealLocked == false && mealAtRandom.mealLocked == true {
+                        // do nothing
+//                        print("Random meal is locked")
                     }
                     else if mealToCheck.mealLocked == true {
-                        mealArray.swapAt(lastMeal, randomNumber)
-                        lastMeal -= 1
-                        print("Meal WAS locked")
+                        // do nothing
+//                        print("\(mealToCheck.mealName!) is locked")
                     }
+                    lastMealInt -= 1
                 }
 
                 print("Randomized!")
             } catch {
                 print("Error loading meals. \(error)")
             }
+        
+        saveMeals()
+        print("Meals saved and table data reloaded")
 
-        self.tableView.reloadData()
     }
 
     // Method 2
@@ -211,7 +207,8 @@ class TableViewController: UITableViewController {
             print("\(mealToCheck.mealName!) locked")
             cellToColor.backgroundColor = UIColor.lightGray
         }
-        tableView.reloadData()
+        saveMeals()
+        print("Saved and reloaded data")
     }
     
     
@@ -233,7 +230,7 @@ class TableViewController: UITableViewController {
     @IBAction func randomizeListButton(_ sender: Any) {
         
         randomize()
-        saveMeals()
+
     }
     
     
