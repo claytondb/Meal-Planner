@@ -11,12 +11,19 @@ import UIKit
 class CustomMealCell: UITableViewCell {
     
     @IBOutlet weak var mealImage: UIImageView!
-    
     @IBOutlet weak var mealLabel: UILabel!
     @IBOutlet weak var mealDay: UILabel!
+    
+    var onLockTapped : (() -> Void)? = nil
 
+
+    @IBAction func mealLockTapped(_ sender: UIButton) {
+        if let onLockTapped = self.onLockTapped {
+            onLockTapped()
+        }
+    }
     //this has to be an outlet to access it in TableViewController
-    @IBOutlet weak var lockButtonOutlet: UIButton!
+//    @IBOutlet weak var lockButtonOutlet: UIButton!
     
     
     override func awakeFromNib() {

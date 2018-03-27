@@ -81,6 +81,9 @@ class TableViewController: UITableViewController {
         
         // Accessing the lock button inside CustomMealCell. Need to fix this.
 //        cell.lockButtonOutlet.addTarget(self, action: lockMeal(mealToCheck: meal, cellToColor: cell), for: .touchUpInside)
+        cell.onLockTapped = {
+            self.lockMeal(mealToCheck: meal, cellToColor: cell)
+        }
         
         return cell
     }

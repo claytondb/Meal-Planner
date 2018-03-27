@@ -48,6 +48,9 @@
                             <button opaque="NO" contentMode="center" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tbt-mk-CT7">
                                 <rect key="frame" x="312" y="0.0" width="63" height="72"/>
                                 <state key="normal" title="Lock" image="ic_lock"/>
+                                <connections>
+                                    <action selector="mealLockTapped:" destination="ziL-ua-O8o" eventType="touchUpInside" id="NSN-WS-eeI"/>
+                                </connections>
                             </button>
                         </subviews>
                     </stackView>
@@ -61,7 +64,6 @@
             </tableViewCellContentView>
             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
-                <outlet property="lockButtonOutlet" destination="tbt-mk-CT7" id="9RT-1C-7My"/>
                 <outlet property="mealDay" destination="4of-OB-ZbL" id="jys-X1-byn"/>
                 <outlet property="mealImage" destination="LRg-yJ-XR4" id="kay-bj-g2H"/>
                 <outlet property="mealLabel" destination="Jev-c1-RPD" id="NPX-zz-Pnb"/>
