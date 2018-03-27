@@ -168,10 +168,10 @@ class TableViewController: UITableViewController {
     //MARK: Randomize meals function
     func randomize(with request: NSFetchRequest<Meal> = Meal.fetchRequest()) {
     
+        // Do-catch statement so that we can catch errors
         do {
             mealArray = try context.fetch(request)
             var lastMealInt : Int = mealArray.count - 1
-            tableView.reloadData()
 
             while(lastMealInt > -1)
             {
@@ -197,9 +197,13 @@ class TableViewController: UITableViewController {
                 lastMealInt -= 1
             }
             print("Randomized!")
-        } catch {
+        }
+        
+        // Second part of Do-Catch
+        catch {
             print("Error loading meals. \(error)")
         }
+        
         saveMeals()
     }
     
