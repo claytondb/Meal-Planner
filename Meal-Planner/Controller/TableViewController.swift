@@ -44,22 +44,18 @@ class TableViewController: UITableViewController {
         let meal = mealArray[indexPath.row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
-//        print("Loaded cell")
-        
+
         // Set meal name
         if meal.mealName == nil {
             meal.mealName = "Meal name"
-//            print("Default meal name used")
         } else {
             cell.mealLabel?.text = meal.mealName!
-//            print("\(meal.mealName!)")
         }
         
         // Set meal image
         cell.mealImage.image = UIImage(named: "mealPlaceholder")
-//        print("Got meal placeholder image")
         
-        // Set mealDay to day of the week depending on what row of the table it's in
+        // Set mealDay label to day of the week depending on what row of the table it's in.
         if indexPath.row == 0 {
             cell.mealDay?.text = "Sunday" }
         else if indexPath.row == 1 {
@@ -75,11 +71,8 @@ class TableViewController: UITableViewController {
         } else if indexPath.row == 6 {
             cell.mealDay?.text = "Saturday"
         }
-
-//        self.tableView.rowHeight = UITableViewAutomaticDimension;
-//        self.tableView.estimatedRowHeight = 64.0;
         
-        // color cells if locked
+        // Color cell if it's locked.
         if meal.mealLocked == true {
             cell.backgroundColor = UIColor.lightGray
         } else {
@@ -89,44 +82,6 @@ class TableViewController: UITableViewController {
         return cell
     }
     
-
-    func randomize(with request: NSFetchRequest<Meal> = Meal.fetchRequest()) {
-        
-        do {
-                mealArray = try context.fetch(request)
-                
-                // This code works!
-                var lastMealInt : Int = mealArray.count - 1
-                
-                // Checking locks doesn't work yet.
-                while(lastMealInt > -1)
-                {
-                    let randomNumber = Int(arc4random_uniform(UInt32(lastMealInt)))
-                    let mealAtRandom : Meal = mealArray[randomNumber]
-                    let mealToCheck : Meal = mealArray[lastMealInt]
-                    if mealToCheck.mealLocked == false && mealAtRandom.mealLocked == false {
-                        mealArray.swapAt(lastMealInt, randomNumber)
-//                        print("\(mealToCheck.mealName!) is not locked")
-                    }
-                    else if mealToCheck.mealLocked == false && mealAtRandom.mealLocked == true {
-                        // do nothing
-//                        print("Random meal is locked")
-                    }
-                    else if mealToCheck.mealLocked == true {
-                        // do nothing
-//                        print("\(mealToCheck.mealName!) is locked")
-                    }
-                    lastMealInt -= 1
-                }
-
-                print("Randomized!")
-            } catch {
-                print("Error loading meals. \(error)")
-            }
-        
-        saveMeals()
-
-    }
 
     // Method 2
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -210,6 +165,44 @@ class TableViewController: UITableViewController {
         saveMeals()
     }
     
+    //MARK: Randomize meals function
+    func randomize(with request: NSFetchRequest<Meal> = Meal.fetchRequest()) {
+    
+        do {
+            mealArray = try context.fetch(request)
+            var lastMealInt : Int = mealArray.count - 1
+            tableView.reloadData()
+
+            while(lastMealInt > -1)
+            {
+                let randomNumber = Int(arc4random_uniform(UInt32(lastMealInt)))
+                let mealAtRandom : Meal = mealArray[randomNumber]
+                let mealToCheck : Meal = mealArray[lastMealInt]
+                if mealToCheck.mealLocked == false && mealAtRandom.mealLocked == false {
+                    mealArray.swapAt(lastMealInt, randomNumber)
+                    print("Swapped \(mealToCheck.mealName!) with \(mealAtRandom.mealName!)")
+                }
+                else if mealToCheck.mealLocked == false && mealAtRandom.mealLocked == true {
+                    // do nothing
+                }
+                else if mealToCheck.mealLocked == true && mealAtRandom.mealLocked == false {
+                    // do nothing
+                }
+                else if mealToCheck.mealLocked == true && mealAtRandom.mealLocked == true {
+                    // do nothing
+                }
+                else {
+                    // do nothing
+                }
+                lastMealInt -= 1
+            }
+            print("Randomized!")
+        } catch {
+            print("Error loading meals. \(error)")
+        }
+        saveMeals()
+    }
+    
     
     //MARK: Tableview delegate methods - select row
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -217,7 +210,7 @@ class TableViewController: UITableViewController {
         // When row is selected, you edit the meal name in an alert.
 //        editMealName()
         
-        // When row is selected, lock/unlock it.
+        // When row is selected, lock/unlock it. Then save it.
         let meal : Meal = mealArray[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
         lockMeal(mealToCheck: meal, cellToColor: cell)
