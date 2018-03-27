@@ -28,8 +28,8 @@
                                     <constraint firstAttribute="width" constant="64" id="zAM-Cf-IAa"/>
                                 </constraints>
                             </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="3bd-hA-PJt">
-                                <rect key="frame" x="72" y="0.0" width="303" height="72"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="3bd-hA-PJt" userLabel="Meal text">
+                                <rect key="frame" x="72" y="0.0" width="232" height="72"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sunday" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4of-OB-ZbL">
                                         <rect key="frame" x="0.0" y="0.0" width="42" height="14.5"/>
@@ -38,13 +38,17 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Test meal label here is what you would see if you had a really long meal but that's weird." lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jev-c1-RPD">
-                                        <rect key="frame" x="0.0" y="14.5" width="303" height="57.5"/>
+                                        <rect key="frame" x="0.0" y="14.5" width="232" height="57.5"/>
                                         <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="16"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                             </stackView>
+                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tbt-mk-CT7">
+                                <rect key="frame" x="312" y="0.0" width="63" height="72"/>
+                                <state key="normal" title="Lock" image="ic_lock"/>
+                            </button>
                         </subviews>
                     </stackView>
                 </subviews>
@@ -57,6 +61,7 @@
             </tableViewCellContentView>
             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
+                <outlet property="lockButtonOutlet" destination="tbt-mk-CT7" id="9RT-1C-7My"/>
                 <outlet property="mealDay" destination="4of-OB-ZbL" id="jys-X1-byn"/>
                 <outlet property="mealImage" destination="LRg-yJ-XR4" id="kay-bj-g2H"/>
                 <outlet property="mealLabel" destination="Jev-c1-RPD" id="NPX-zz-Pnb"/>
@@ -66,6 +71,7 @@
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
     </objects>
     <resources>
+        <image name="ic_lock" width="24" height="24"/>
         <image name="mealPlaceholder" width="64" height="64"/>
     </resources>
 </document>

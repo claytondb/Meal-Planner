@@ -79,6 +79,9 @@ class TableViewController: UITableViewController {
             cell.backgroundColor = UIColor.clear
         }
         
+        // Accessing the lock button inside CustomMealCell. Need to fix this.
+//        cell.lockButtonOutlet.addTarget(self, action: lockMeal(mealToCheck: meal, cellToColor: cell), for: .touchUpInside)
+        
         return cell
     }
     
@@ -219,6 +222,7 @@ class TableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
         lockMeal(mealToCheck: meal, cellToColor: cell)
         
+        
     }
     
     
@@ -293,38 +297,40 @@ class TableViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
+
     
-//    @IBAction func lockButton(_ sender: UIButton) {
-//
-//        print("Setting lock state")
-//
-//        // find parent of button, then cell, then index of row.
-//        let parentCell = sender.superview?.superview as! UITableViewCell
-//        print("set parentCell")
-//
-//        // Fixed error - added second superview so it's not just UITableViewWrapper being cast as UITableView.
-//        let parentTable = parentCell.superview?.superview as! UITableView
+    
+    @IBAction func lockButton(_ sender: CustomMealCell) {
+
+        print("Setting lock state")
+
+        // find parent of button, then cell, then index of row.
+        let parentCell = sender.superview?.superview as! UITableViewCell
+        print("set parentCell")
+
+        // Fixed error - added second superview so it's not just UITableViewWrapper being cast as UITableView.
+        let parentTable = parentCell.superview?.superview as! UITableView
+        print("set parentTable")
+
+        // Had to remove second superview because it said could not cast UIWindow as UITableView.
+//        let parentTable = parentCell.superview as! UITableView
 //        print("set parentTable")
-//
-//        // Had to remove second superview because it said could not cast UIWindow as UITableView.
-////        let parentTable = parentCell.superview as! UITableView
-////        print("set parentTable")
-//
-//        let indexPath = parentTable.indexPath(for: parentCell)
-//        print("set indexPath")
-//
-//        let mealToLock = self.mealArray[indexPath!.row]
-//        print("set mealToLock")
-//
-//
-//        // Use index of row to set mealLocked of meal to true/false
-//        lockMeal(mealToCheck: mealToLock, cellToColor: parentCell)
-//
-//
-//        // Save data
-//        saveMeals()
-//
-//    }
+
+        let indexPath = parentTable.indexPath(for: parentCell)
+        print("set indexPath")
+
+        let mealToLock = self.mealArray[indexPath!.row]
+        print("set mealToLock")
+
+
+        // Use index of row to set mealLocked of meal to true/false
+        lockMeal(mealToCheck: mealToLock, cellToColor: parentCell)
+
+
+        // Save data
+        saveMeals()
+
+    }
     
     
     //MARK: Model manipulation methods

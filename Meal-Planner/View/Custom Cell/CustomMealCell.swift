@@ -14,6 +14,10 @@ class CustomMealCell: UITableViewCell {
     
     @IBOutlet weak var mealLabel: UILabel!
     @IBOutlet weak var mealDay: UILabel!
+
+    //this has to be an outlet to access it in TableViewController
+    @IBOutlet weak var lockButtonOutlet: UIButton!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

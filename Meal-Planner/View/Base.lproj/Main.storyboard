@@ -67,7 +67,7 @@
                             <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <items>
                                 <navigationItem title="All Meals" id="ana-EK-hvU">
-                                    <barButtonItem key="rightBarButtonItem" title="Add" image="ic_add" style="plain" id="gdX-pM-G3R">
+                                    <barButtonItem key="rightBarButtonItem" image="ic_add" id="gdX-pM-G3R">
                                         <connections>
                                             <action selector="addMeal:" destination="jxk-P9-Fvy" id="tWl-6S-F04"/>
                                         </connections>
@@ -170,7 +170,7 @@
                             </items>
                         </navigationBar>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="CWe-We-BDH">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="mealDetailCell" id="CWe-We-BDH">
                                 <rect key="frame" x="0.0" y="72" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CWe-We-BDH" id="8FC-If-VY7">
