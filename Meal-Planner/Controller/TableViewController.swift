@@ -79,8 +79,7 @@ class TableViewController: UITableViewController {
             cell.backgroundColor = UIColor.clear
         }
         
-        // Accessing the lock button inside CustomMealCell. Need to fix this.
-//        cell.lockButtonOutlet.addTarget(self, action: lockMeal(mealToCheck: meal, cellToColor: cell), for: .touchUpInside)
+        // Accessing the lock button inside CustomMealCell
         cell.onLockTapped = {
             self.lockMeal(mealToCheck: meal, cellToColor: cell)
         }
@@ -221,9 +220,9 @@ class TableViewController: UITableViewController {
 //        editMealName()
         
         // When row is selected, lock/unlock it. Then save it.
-        let meal : Meal = mealArray[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
-        lockMeal(mealToCheck: meal, cellToColor: cell)
+//        let meal : Meal = mealArray[indexPath.row]
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
+//        lockMeal(mealToCheck: meal, cellToColor: cell)
         
         
     }
