@@ -230,37 +230,37 @@ class TableViewController: UITableViewController {
     }
     
     
-    @IBAction func addMeal(_ sender: UIBarButtonItem) {
-        print("Adding meal")
-        var textField = UITextField()
-        let alert = UIAlertController(title: "Add meal", message: "", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Add", style: .default) { (action) in
-            
-            // stuff that happens when user taps add
-            let newMeal = Meal(context: self.context)
-            newMeal.mealName = textField.text!
-            newMeal.mealLocked = true
-            newMeal.sortedIndex = Int32(self.mealArray.count) + 1
-            self.mealArray.append(newMeal)
-            
-            print("Assigned index to new meal")
-            self.saveMeals()
-        }
-        
-        alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Chicken con pollo"
-            textField = alertTextField
-            textField.autocorrectionType = .yes
-        }
-        
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-            // do nothing
-            print("Cancelled")
-        }
-        alert.addAction(cancel)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
-    }
+//    @IBAction func addMeal(_ sender: UIBarButtonItem) {
+//        print("Adding meal")
+//        var textField = UITextField()
+//        let alert = UIAlertController(title: "Add meal", message: "", preferredStyle: .alert)
+//        let action = UIAlertAction(title: "Add", style: .default) { (action) in
+//
+//            // stuff that happens when user taps add
+//            let newMeal = Meal(context: self.context)
+//            newMeal.mealName = textField.text!
+//            newMeal.mealLocked = true
+//            newMeal.sortedIndex = Int32(self.mealArray.count) + 1
+//            self.mealArray.append(newMeal)
+//
+//            print("Assigned index to new meal")
+//            self.saveMeals()
+//        }
+//
+//        alert.addTextField { (alertTextField) in
+//            alertTextField.placeholder = "Chicken con pollo"
+//            textField = alertTextField
+//            textField.autocorrectionType = .yes
+//        }
+//
+//        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+//            // do nothing
+//            print("Cancelled")
+//        }
+//        alert.addAction(cancel)
+//        alert.addAction(action)
+//        present(alert, animated: true, completion: nil)
+//    }
     
     // Both deleteMeal and lockButton cause the app to crash on my phone. What's the issue?
     @IBAction func deleteMeal(_ sender: UIButton) {
@@ -294,37 +294,37 @@ class TableViewController: UITableViewController {
     }
     
     
-    @IBAction func lockButton(_ sender: UIButton) {
-        
-        print("Setting lock state")
-        
-        // find parent of button, then cell, then index of row.
-        let parentCell = sender.superview?.superview as! UITableViewCell
-        print("set parentCell")
-        
-        // Fixed error - added second superview so it's not just UITableViewWrapper being cast as UITableView.
-        let parentTable = parentCell.superview?.superview as! UITableView
-        print("set parentTable")
-        
-        // Had to remove second superview because it said could not cast UIWindow as UITableView.
-//        let parentTable = parentCell.superview as! UITableView
+//    @IBAction func lockButton(_ sender: UIButton) {
+//
+//        print("Setting lock state")
+//
+//        // find parent of button, then cell, then index of row.
+//        let parentCell = sender.superview?.superview as! UITableViewCell
+//        print("set parentCell")
+//
+//        // Fixed error - added second superview so it's not just UITableViewWrapper being cast as UITableView.
+//        let parentTable = parentCell.superview?.superview as! UITableView
 //        print("set parentTable")
-        
-        let indexPath = parentTable.indexPath(for: parentCell)
-        print("set indexPath")
-        
-        let mealToLock = self.mealArray[indexPath!.row]
-        print("set mealToLock")
-        
-        
-        // Use index of row to set mealLocked of meal to true/false
-        lockMeal(mealToCheck: mealToLock, cellToColor: parentCell)
-
-        
-        // Save data
-        saveMeals()
-
-    }
+//
+//        // Had to remove second superview because it said could not cast UIWindow as UITableView.
+////        let parentTable = parentCell.superview as! UITableView
+////        print("set parentTable")
+//
+//        let indexPath = parentTable.indexPath(for: parentCell)
+//        print("set indexPath")
+//
+//        let mealToLock = self.mealArray[indexPath!.row]
+//        print("set mealToLock")
+//
+//
+//        // Use index of row to set mealLocked of meal to true/false
+//        lockMeal(mealToCheck: mealToLock, cellToColor: parentCell)
+//
+//
+//        // Save data
+//        saveMeals()
+//
+//    }
     
     
     //MARK: Model manipulation methods

@@ -22,11 +22,6 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <items>
                                 <navigationItem title="Week" id="QZg-sw-TAJ">
-                                    <barButtonItem key="leftBarButtonItem" systemItem="add" id="uXd-aw-3k4">
-                                        <connections>
-                                            <action selector="addMeal:" destination="od0-LT-Bni" id="fD9-tI-PDo"/>
-                                        </connections>
-                                    </barButtonItem>
                                     <barButtonItem key="rightBarButtonItem" title="Hit me" id="kZR-Ff-My9">
                                         <connections>
                                             <action selector="randomizeListButton:" destination="od0-LT-Bni" id="eEz-ia-RmP"/>
@@ -51,7 +46,7 @@
                         </connections>
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <tabBarItem key="tabBarItem" title="Week" id="CvR-XA-YBn"/>
+                    <tabBarItem key="tabBarItem" title="Week" image="ic_restaurant" id="CvR-XA-YBn"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KqJ-4Y-jIR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -61,7 +56,7 @@
         <!--All-->
         <scene sceneID="CdP-x9-SZr">
             <objects>
-                <tableViewController id="jxk-P9-Fvy" sceneMemberID="viewController">
+                <tableViewController id="jxk-P9-Fvy" customClass="AllMealsViewController" customModule="Meal_Planner" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="dij-Se-Sf0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -69,8 +64,15 @@
                         <navigationBar key="tableHeaderView" contentMode="scaleToFill" id="T54-jm-Ce8">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <items>
-                                <navigationItem title="All Meals" id="ana-EK-hvU"/>
+                                <navigationItem title="All Meals" id="ana-EK-hvU">
+                                    <barButtonItem key="rightBarButtonItem" title="Add" image="ic_add" style="plain" id="gdX-pM-G3R">
+                                        <connections>
+                                            <action selector="addMeal:" destination="jxk-P9-Fvy" id="tWl-6S-F04"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </navigationItem>
                             </items>
                         </navigationBar>
                         <prototypes>
@@ -89,7 +91,7 @@
                         </connections>
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <tabBarItem key="tabBarItem" title="All" id="a3N-ua-RZ1"/>
+                    <tabBarItem key="tabBarItem" title="All" image="ic_list" id="a3N-ua-RZ1"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ycb-yX-5wH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -125,7 +127,7 @@
                             <outlet property="delegate" destination="nHO-cL-CUj" id="IRR-ss-EBW"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Settings" id="9Wl-uY-U2A"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="ic_settings" id="9Wl-uY-U2A"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wOH-9P-YLF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -189,4 +191,10 @@
             <point key="canvasLocation" x="1284" y="-589"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="ic_add" width="36" height="36"/>
+        <image name="ic_list" width="36" height="36"/>
+        <image name="ic_restaurant" width="36" height="36"/>
+        <image name="ic_settings" width="36" height="36"/>
+    </resources>
 </document>
