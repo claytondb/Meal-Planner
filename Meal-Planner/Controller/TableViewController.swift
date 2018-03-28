@@ -224,6 +224,17 @@ class TableViewController: UITableViewController {
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
 //        lockMeal(mealToCheck: meal, cellToColor: cell)
         
+        let meal : Meal = mealArray[indexPath.row]
+        
+        func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            if segue.identifier == "segueToMealDetail" {
+                if let vc = segue.destination as? MealDetailViewController {
+                    print(meal.mealName!)
+                    vc.meal.mealName = self.meal.mealName
+                }
+            }
+        }
+        performSegue(withIdentifier: "segueToMealDetail", sender: self)
         
     }
     

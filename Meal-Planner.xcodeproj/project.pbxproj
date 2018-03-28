@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		82059D8120609CEB0082288D /* CustomMealCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82059D8020609CEB0082288D /* CustomMealCell.swift */; };
 		82059D8320609DE60082288D /* mealXib.xib in Resources */ = {isa = PBXBuildFile; fileRef = 82059D8220609DE60082288D /* mealXib.xib */; };
+		82205517206C120900BE3A87 /* MealDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82205516206C120900BE3A87 /* MealDetailViewController.swift */; };
 		82521B7E2069EF7000B2E36B /* AllMealsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82521B7D2069EF7000B2E36B /* AllMealsViewController.swift */; };
 		82883CBA20412B3300F37F04 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82883CB920412B3300F37F04 /* AppDelegate.swift */; };
 		82883CBC20412B3300F37F04 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82883CBB20412B3300F37F04 /* TableViewController.swift */; };
@@ -22,6 +23,7 @@
 /* Begin PBXFileReference section */
 		82059D8020609CEB0082288D /* CustomMealCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMealCell.swift; sourceTree = "<group>"; };
 		82059D8220609DE60082288D /* mealXib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = mealXib.xib; sourceTree = "<group>"; };
+		82205516206C120900BE3A87 /* MealDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealDetailViewController.swift; sourceTree = "<group>"; };
 		82521B7D2069EF7000B2E36B /* AllMealsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllMealsViewController.swift; sourceTree = "<group>"; };
 		82883CB620412B3300F37F04 /* Meal Planner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Meal Planner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		82883CB920412B3300F37F04 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 			children = (
 				82883CBB20412B3300F37F04 /* TableViewController.swift */,
 				82521B7D2069EF7000B2E36B /* AllMealsViewController.swift */,
+				82205516206C120900BE3A87 /* MealDetailViewController.swift */,
 				82883CB920412B3300F37F04 /* AppDelegate.swift */,
 			);
 			path = Controller;
@@ -196,6 +199,7 @@
 			files = (
 				82926AFC204F8EC300CB52AE /* DataModel.xcdatamodeld in Sources */,
 				82883CBC20412B3300F37F04 /* TableViewController.swift in Sources */,
+				82205517206C120900BE3A87 /* MealDetailViewController.swift in Sources */,
 				82059D8120609CEB0082288D /* CustomMealCell.swift in Sources */,
 				82883CBA20412B3300F37F04 /* AppDelegate.swift in Sources */,
 				82521B7E2069EF7000B2E36B /* AllMealsViewController.swift in Sources */,
