@@ -212,9 +212,26 @@ class TableViewController: UITableViewController {
         saveMeals()
     }
     
+    //MARK: Pass in data on segue
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueToMealDetail" {
+            if let destinationVC = segue.destination as? MealDetailViewController {
+                print("Prepared for segue")
+                destinationVC.mealPassedIn = mealArray[0]
+                print("Passed in meal, but name doesn't work")
+
+            }
+        }
+    }
     
-    //MARK: Tableview delegate methods - select row
+    //MARK: Tableview delegate methods - select row, segue to meal detail
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+//        print("meal = meal at indexpath in the table")
+//        let selectedMeal : Meal = mealArray[indexPath.row]
+    
+        performSegue(withIdentifier: "segueToMealDetail", sender: self)
+        print("Performed segue to meal detail")
         
         // When row is selected, you edit the meal name in an alert.
 //        editMealName()
@@ -223,21 +240,6 @@ class TableViewController: UITableViewController {
 //        let meal : Meal = mealArray[indexPath.row]
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
 //        lockMeal(mealToCheck: meal, cellToColor: cell)
-        
-        
-        print("Set meal")
-        func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            if segue.identifier == "segueToMealDetail" {
-                if let destinationVC = segue.destination as? MealDetailViewController {
-                    let meal : Meal = mealArray[indexPath.row]
-                    print(meal.mealName!)
-                    destinationVC.mealPassedIn = meal
-                    print("Set destinationVC.mealPassedIn")
-                }
-            }
-        }
-        performSegue(withIdentifier: "segueToMealDetail", sender: self)
-        print("Performed segue to meal detail")
         
     }
     

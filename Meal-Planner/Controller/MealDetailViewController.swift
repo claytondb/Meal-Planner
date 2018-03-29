@@ -22,10 +22,11 @@ class MealDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
         loadMeals()
-        mealNameLabel.text = mealPassedIn.mealName!
+        
+        print("meal name is \(mealPassedIn.mealName!)")
+        mealNameLabel.text = mealPassedIn.mealName
     }
     
     @IBAction func saveButton(_ sender: UIBarButtonItem) {

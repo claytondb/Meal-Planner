@@ -39,6 +39,9 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="qhB-Wg-zV1" kind="show" identifier="segueToMealDetail" id="9gB-AA-kie"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -49,9 +52,6 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <tabBarItem key="tabBarItem" title="Week" image="ic_restaurant" id="CvR-XA-YBn"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <segue destination="qhB-Wg-zV1" kind="show" identifier="segueToMealDetail" id="XU7-dt-Fnt"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KqJ-4Y-jIR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
