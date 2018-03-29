@@ -217,7 +217,8 @@ class TableViewController: UITableViewController {
         if segue.identifier == "segueToMealDetail" {
             if let destinationVC = segue.destination as? MealDetailViewController {
                 print("Prepared for segue")
-                destinationVC.mealPassedIn = mealArray[0]
+                let indexPath = tableView.indexPathForSelectedRow
+                destinationVC.mealPassedIn = mealArray[(indexPath?.row)!]
                 print("Passed in meal, but name doesn't work")
 
             }
