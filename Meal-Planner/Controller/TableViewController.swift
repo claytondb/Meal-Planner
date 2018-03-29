@@ -14,7 +14,7 @@ class TableViewController: UITableViewController {
     
     var mealArray = [Meal]()
     
-    let meal = Meal()
+    var meal = Meal()
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -224,17 +224,20 @@ class TableViewController: UITableViewController {
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
 //        lockMeal(mealToCheck: meal, cellToColor: cell)
         
-        let meal : Meal = mealArray[indexPath.row]
         
+        print("Set meal")
         func prepare(for segue: UIStoryboardSegue, sender: Any?) {
             if segue.identifier == "segueToMealDetail" {
-                if let vc = segue.destination as? MealDetailViewController {
+                if let destinationVC = segue.destination as? MealDetailViewController {
+                    let meal : Meal = mealArray[indexPath.row]
                     print(meal.mealName!)
-                    vc.meal.mealName = self.meal.mealName
+                    destinationVC.mealPassedIn = meal
+                    print("Set destinationVC.mealPassedIn")
                 }
             }
         }
         performSegue(withIdentifier: "segueToMealDetail", sender: self)
+        print("Performed segue to meal detail")
         
     }
     

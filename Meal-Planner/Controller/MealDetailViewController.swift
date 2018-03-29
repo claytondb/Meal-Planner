@@ -10,106 +10,49 @@ import UIKit
 import Foundation
 import CoreData
 
-class MealDetailViewController: UITableViewController {
+class MealDetailViewController: UIViewController {
     
     var mealArray = [Meal]()
     
-    let meal = Meal()
+    var mealPassedIn = Meal()
+    
+    @IBOutlet weak var mealNameLabel: UILabel!
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //Fix weird overlapping of status bar with navigation bar
-        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
-        
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-        
-        self.tableView.backgroundColor = UIColor.white
-        
-        //TODO: Register your mealXib.xib file here:
-        tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
+    print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
         loadMeals()
+        mealNameLabel.text = mealPassedIn.mealName!
     }
     
     @IBAction func saveButton(_ sender: UIBarButtonItem) {
-        performSegue(withIdentifier: "segueToWeek", sender: self)
+        performSegue(withIdentifier: "segueDismissMealDetail", sender: self)
     }
     
-    //MARK: Tableview datasource methods
-    // Create the two datasource methods that specify 1. what the cells should display, and 2. how many rows we want in the tableview.
-    // Method 1
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        // indexPath.row has to do with the table. It takes that number and gets the meal from mealArray at that number. For example, it looks at indexPath.row of the table and if it's 3, it gets the meal at 3 in the array.
-        let meal = mealArray[indexPath.row]
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
-        
-        // Set meal name
-        if meal.mealName == nil {
-            meal.mealName = "Meal name"
-        } else {
-            cell.mealLabel?.text = meal.mealName!
-        }
-        
-        // Set meal image
-        cell.mealImage.image = UIImage(named: "mealPlaceholder")
-        
-        return cell
-    }
-    
-    
-    // Method 2
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        let count = mealArray.count
-        return count
-    }
-    
-    
-    // Override to support editing the table view. Swipe to delete.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        
-        if editingStyle == .delete {
-            
-            let mealToDelete = self.mealArray[indexPath.row]
-            
-            // Use index of row to delete it from table and CoreData
-            self.context.delete(mealToDelete)
-            self.mealArray.remove(at: indexPath.row)
-            print("Successfully deleted meal.")
-            
-            // Save data and reload
-            self.saveMeals()
-            
-        }
-        
-    }
     
     
     //MARK: Edit meal name function
     func editMealName() {
         print("Editing meal")
         
-        let indexPath : IndexPath = tableView.indexPathForSelectedRow!
         var textField = UITextField()
         let alert = UIAlertController(title: "Edit meal name", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Save", style: .default) { (action) in
             
-            let editingMeal = self.mealArray[indexPath.row]
-            editingMeal.mealName = textField.text
+//            let editingMeal = self.mealArray[indexPath.row]
+//            editingMeal.mealName = textField.text
             
             print("Changed meal name")
             self.saveMeals()
         }
         
         alert.addTextField { (alertTextField) in
-            let editingMeal = self.mealArray[indexPath.row]
+//            let editingMeal = self.mealArray[indexPath.row]
             print("let editingMeal = Meal")
-            alertTextField.text = editingMeal.mealName
+//            alertTextField.text = editingMeal.mealName
             textField = alertTextField
             textField.autocorrectionType = .yes
         }
@@ -124,93 +67,68 @@ class MealDetailViewController: UITableViewController {
     }
     
     
-    
-    //MARK: Lock meal function
-    func lockMeal(mealToCheck : Meal, cellToColor : UITableViewCell) {
-        if mealToCheck.mealLocked == true {
-            mealToCheck.mealLocked = false
-            print("\(mealToCheck.mealName!) unlocked")
-            cellToColor.backgroundColor = UIColor.clear
-        } else if mealToCheck.mealLocked == false {
-            mealToCheck.mealLocked = true
-            print("\(mealToCheck.mealName!) locked")
-            cellToColor.backgroundColor = UIColor.lightGray
-        }
-        saveMeals()
-    }
-    
-    
-    //MARK: Tableview delegate methods - select row
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        // When row is selected, you edit the meal name in an alert.
-        editMealName()
-        
-    }
-    
-    
-    @IBAction func addMeal(_ sender: UIBarButtonItem) {
-        print("Adding meal")
-        var textField = UITextField()
-        let alert = UIAlertController(title: "Add meal", message: "", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Add", style: .default) { (action) in
-            
-            // stuff that happens when user taps add
-            let newMeal = Meal(context: self.context)
-            newMeal.mealName = textField.text!
-            newMeal.mealLocked = true
-            newMeal.sortedIndex = Int32(self.mealArray.count) + 1
-            self.mealArray.append(newMeal)
-            
-            print("Assigned index to new meal")
-            self.saveMeals()
-        }
-        
-        alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Chicken con pollo"
-            textField = alertTextField
-            textField.autocorrectionType = .yes
-        }
-        
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-            // do nothing
-            print("Cancelled")
-        }
-        alert.addAction(cancel)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
-    }
+//    @IBAction func addMeal(_ sender: UIBarButtonItem) {
+//        print("Adding meal")
+//        var textField = UITextField()
+//        let alert = UIAlertController(title: "Add meal", message: "", preferredStyle: .alert)
+//        let action = UIAlertAction(title: "Add", style: .default) { (action) in
+//            
+//            // stuff that happens when user taps add
+//            let newMeal = Meal(context: self.context)
+//            newMeal.mealName = textField.text!
+//            newMeal.mealLocked = true
+//            newMeal.sortedIndex = Int32(self.mealArrayPassedIn.count) + 1
+//            self.mealArrayPassedIn.append(newMeal)
+//            
+//            print("Assigned index to new meal")
+//            self.saveMeals()
+//        }
+//
+//        alert.addTextField { (alertTextField) in
+//            alertTextField.placeholder = "Chicken con pollo"
+//            textField = alertTextField
+//            textField.autocorrectionType = .yes
+//        }
+//
+//        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+//            // do nothing
+//            print("Cancelled")
+//        }
+//        alert.addAction(cancel)
+//        alert.addAction(action)
+//        present(alert, animated: true, completion: nil)
+//    }
     
     // Both deleteMeal and lockButton cause the app to crash on my phone. What's the issue?
-    @IBAction func deleteMeal(_ sender: UIButton) {
-        print("Deleting meal")
-        let alert = UIAlertController(title:"Delete meal?", message: "This action cannot be undone.", preferredStyle: .alert)
-        let delete = UIAlertAction(title:"Delete", style: .destructive) { (action) in
-            
-            // Find parent of the button (cell), then parent of cell (table row), then index of that row.
-            let parentCell = sender.superview?.superview as! UITableViewCell
-            let parentTable = parentCell.superview?.superview as! UITableView
-            //            let parentTable = parentCell.superview as! UITableView
-            let indexPath = parentTable.indexPath(for: parentCell)
-            let mealToDelete = self.mealArray[indexPath!.row]
-            
-            // Use index of row to delete it from table and CoreData
-            self.context.delete(mealToDelete)
-            self.mealArray.remove(at: indexPath!.row)
-            print("Successfully deleted meal.")
-            
-            // Save data and reload
-            self.saveMeals()
-            
-        }
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-            // do nothing
-            print("Cancelled")
-        }
-        alert.addAction(delete)
-        alert.addAction(cancel)
-        present(alert, animated: true, completion: nil)
-    }
+//    @IBAction func deleteMeal(_ sender: UIButton) {
+//        print("Deleting meal")
+//        let alert = UIAlertController(title:"Delete meal?", message: "This action cannot be undone.", preferredStyle: .alert)
+//        let delete = UIAlertAction(title:"Delete", style: .destructive) { (action) in
+//
+//            // Find parent of the button (cell), then parent of cell (table row), then index of that row.
+//            let parentCell = sender.superview?.superview as! UITableViewCell
+//            let parentTable = parentCell.superview?.superview as! UITableView
+//            //            let parentTable = parentCell.superview as! UITableView
+//            let indexPath = parentTable.indexPath(for: parentCell)
+//            let mealToDelete = self.mealArrayPassedIn[indexPath!.row]
+//
+//            // Use index of row to delete it from table and CoreData
+//            self.context.delete(mealToDelete)
+//            self.mealArrayPassedIn.remove(at: indexPath!.row)
+//            print("Successfully deleted meal.")
+//
+//            // Save data and reload
+//            self.saveMeals()
+//
+//        }
+//        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+//            // do nothing
+//            print("Cancelled")
+//        }
+//        alert.addAction(delete)
+//        alert.addAction(cancel)
+//        present(alert, animated: true, completion: nil)
+//    }
     
     
     //MARK: Model manipulation methods
@@ -220,7 +138,7 @@ class MealDetailViewController: UITableViewController {
         } catch {
             print("Error saving meals. \(error)")
         }
-        self.tableView.reloadData()
+//        self.tableView.reloadData()
         print("Meals saved and data reloaded")
     }
     
@@ -230,10 +148,10 @@ class MealDetailViewController: UITableViewController {
         } catch {
             print("Error loading meals. \(error)")
         }
-        self.tableView.reloadData()
+//        self.tableView.reloadData()
         print("Meals loaded")
     }
-    
+
     
 }
 
