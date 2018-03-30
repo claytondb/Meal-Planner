@@ -34,7 +34,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         print("meal name is \(mealPassedIn.mealName!)")
         mealNameLabel.text = mealPassedIn.mealName
         
-        //MARK: Make imageView a button
+        //MARK: Make imageView a button - not working yet
         let button = UIButton(type: .custom)
 //        button.frame = CGRect(x: 160, y: 100, width: 50, height: 50)
 //        button.layer.cornerRadius = 0.5 * button.bounds.size.width
@@ -42,6 +42,9 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         button.setImage(UIImage(named:"\(mealImageView.image!)"), for: .normal)
         button.addTarget(self, action: #selector(chooseImage), for: .touchUpInside)
         view.addSubview(button)
+        
+        
+        mealImageView.image = loadImageFromPath(path: fileInDocumentsDirectory(filename: "tempImage"))
         
     }
     
@@ -51,6 +54,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     
     @IBAction func importImageButton(_ sender: UIButton) {
         chooseImage()
+        mealImageView.image = loadImageFromPath(path: fileInDocumentsDirectory(filename: "tempImage"))
     }
     
     @objc func chooseImage() {
@@ -60,16 +64,59 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     }
     
     // MARK: - UIImagePickerControllerDelegate Methods
-    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             mealImageView.contentMode = .scaleAspectFill
             mealImageView.image = pickedImage
+            print(pickedImage)
+            
+//            let tempImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+            saveImage(image: pickedImage, path: fileInDocumentsDirectory(filename: "tempImage"))
+            
         }
         dismiss(animated: true, completion: nil)
     }
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK: Save image function - saves to app root directory I think
+    func saveImage (image: UIImage, path: String ) -> Bool {
+        
+        let pngImageData = UIImagePNGRepresentation(image)
+        //let jpgImageData = UIImageJPEGRepresentation(image, 1.0)   // if you want to save as JPEG
+//        let result = pngImageData.writeToFile(path, atomically: true)
+        let newURL : URL = URL(fileURLWithPath: path)
+        
+        let result = try! pngImageData?.write(to: newURL, options: .atomic)
+    
+        return (result != nil)
+    }
+    
+    //MARK: Get the documents Directory for saving the image
+    func documentsDirectory() -> String {
+        let documentsFolderPath = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0]
+        return documentsFolderPath
+    }
+    //MARK: Get path for a file in the directory - for saved images
+    func fileInDocumentsDirectory(filename: String) -> String {
+//        return documentsDirectory().stringByAppendingPathComponent(filename)
+        let newPath : String = documentsDirectory() + "/\(filename)"
+        return newPath
+    }
+    
+    //MARK: Load image from path function
+    func loadImageFromPath(path: String) -> UIImage? {
+        
+        let image = UIImage(contentsOfFile: path)
+        
+        if image == nil {
+            
+            print("missing image at: (path)")
+        }
+        print("\(path)") // this is just for you to see the path in case you want to go to the directory, using Finder.
+        return image
+        
     }
 
     
