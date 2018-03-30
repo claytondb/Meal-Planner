@@ -10,28 +10,68 @@ import UIKit
 import Foundation
 import CoreData
 
-class MealDetailViewController: UIViewController {
+class MealDetailViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var mealArray = [Meal]()
     
     var mealPassedIn = Meal()
     
+    @IBOutlet weak var mealImageView: UIImageView!
+    
     @IBOutlet weak var mealNameLabel: UILabel!
+    
+    let imagePicker = UIImagePickerController()
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        imagePicker.delegate = self
+        
         loadMeals()
         
         print("meal name is \(mealPassedIn.mealName!)")
         mealNameLabel.text = mealPassedIn.mealName
+        
+        //MARK: Make imageView a button
+        let button = UIButton(type: .custom)
+//        button.frame = CGRect(x: 160, y: 100, width: 50, height: 50)
+//        button.layer.cornerRadius = 0.5 * button.bounds.size.width
+        button.clipsToBounds = true
+        button.setImage(UIImage(named:"\(mealImageView.image!)"), for: .normal)
+        button.addTarget(self, action: #selector(chooseImage), for: .touchUpInside)
+        view.addSubview(button)
+        
     }
     
     @IBAction func saveButton(_ sender: UIBarButtonItem) {
         performSegue(withIdentifier: "segueDismissMealDetail", sender: self)
     }
+    
+    @IBAction func importImageButton(_ sender: UIButton) {
+        chooseImage()
+    }
+    
+    @objc func chooseImage() {
+        imagePicker.allowsEditing = false
+        imagePicker.sourceType = .photoLibrary
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    // MARK: - UIImagePickerControllerDelegate Methods
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            mealImageView.contentMode = .scaleAspectFill
+            mealImageView.image = pickedImage
+        }
+        dismiss(animated: true, completion: nil)
+    }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+
     
     
     
