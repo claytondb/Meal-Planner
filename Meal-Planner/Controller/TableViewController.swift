@@ -219,7 +219,7 @@ class TableViewController: UITableViewController {
                 print("Prepared for segue")
                 let indexPath = tableView.indexPathForSelectedRow
                 destinationVC.mealPassedIn = mealArray[(indexPath?.row)!]
-                print("Passed in meal, but name doesn't work")
+                print("Passed in meal")
 
             }
         }
