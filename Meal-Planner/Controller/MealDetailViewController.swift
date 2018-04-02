@@ -44,11 +44,20 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         
         // Retrieve stored image for this meal. Works but URL is formatted weird and has other information that isn't the image filename.
         if mealPassedIn.mealImagePath != nil {
-            let decodedString = mealPassedIn.mealImagePath
-            let unwrappedDecodedString = decodedString!.removingPercentEncoding
-            mealImageView.image = UIImage(contentsOfFile: unwrappedDecodedString!)
-            print("Got stored image via URL")
-            print("Decoded image path is \(unwrappedDecodedString!)")
+
+//            let mealImageURL = URL(string: mealPassedIn.mealImagePath!)
+            let mealImageURL = URL(string: (mealPassedIn.mealImagePath?.encodeUrl())!)
+            
+            print("Meal image path is \(mealPassedIn.mealImagePath!)")
+            
+            mealPassedIn.mealImagePath = mealPassedIn.mealImagePath?.replacingOccurrences(of: "<UIImageAsset: ", with: "")
+            mealPassedIn.mealImagePath = mealPassedIn.mealImagePath?.replacingOccurrences(of: ">", with: "")
+            print("Formatted path is \(mealPassedIn.mealImagePath!)")
+            
+            storedMealImage = UIImage(contentsOfFile: (mealPassedIn.mealImagePath?.encodeUrl())!)
+            
+            mealImageView.image = storedMealImage
+
         } else {
             mealImageView.image = UIImage(named: "mealPlaceholder")
             print("Used placeholder image")
@@ -76,28 +85,30 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             mealImageView.contentMode = .scaleAspectFill
             mealImageView.image = pickedImage
+            storedMealImage = pickedImage
+            
 //            let pickedImagePath = Bundle.main.path(forResource: "\(pickedImage)", ofType: "png")
 //            print("This is the pickedImagePath: \(pickedImagePath)") // Returns nil
             
             // get stored image and path
-            let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
-            let nsUserDomainMask = FileManager.SearchPathDomainMask.userDomainMask
-            let paths = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
-            if let dirPath = paths.first
-            {
-                let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent("\(pickedImage)")
-                //TODO: Make pickedImage the filename instead of the more detailed asset information.
+            let fileManager = FileManager.default
+            do {
+                let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
+                let fileURL = documentDirectory.appendingPathComponent("\(pickedImage.imageAsset!)")
                 
-                // set global var storedImageURL to this image's url.
-                storedImageURL = imageURL
-                print("Stored image URL is \(storedImageURL!)")
-                
-                // Set mealImagePath to the string version of imageURL
-                mealPassedIn.mealImagePath = storedImageURL!.absoluteString
-                print("Set mealImagePath to the storedImageURL")
-                
-//                storedMealImage = UIImage(contentsOfFile: imageURL.path)
+                let image = pickedImage
+                if let imageData = UIImageJPEGRepresentation(image, 1.0) {
+                    try imageData.write(to: fileURL)
+                    storedImageURL = fileURL
+                    mealPassedIn.mealImagePath = fileURL.absoluteString
+                    mealPassedIn.mealImagePath = mealPassedIn.mealImagePath?.decodeUrl()
+                    print("This is the new file URL: \(fileURL)")
+//                    return true
+                }
+            } catch {
+                print(error)
             }
+//            return false
             
         }
         dismiss(animated: true, completion: nil)
@@ -156,6 +167,19 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         print("Meals loaded")
     }
 
+    
+}
+
+extension String
+{
+    func encodeUrl() -> String
+    {
+        return self.addingPercentEncoding( withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!
+    }
+    func decodeUrl() -> String
+    {
+        return self.removingPercentEncoding!
+    }
     
 }
 
