@@ -45,10 +45,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         // Retrieve stored image for this meal. Works but URL is formatted weird and has other information that isn't the image filename.
         if mealPassedIn.mealImagePath != nil {
 
-//            let mealImageURL = URL(string: mealPassedIn.mealImagePath!)
-//            let mealImageURL = URL(string: (mealPassedIn.mealImagePath?.encodeUrl())!)
-            
-//            print("Meal image path is \(mealImageURL!)")
+
             
             // I was removing the beginning and end of the file name but it turns out that it's actually named that. It's raw data, no file type, and it's in the Documents folder. How do I recall it?
 //            mealPassedIn.mealImagePath = mealPassedIn.mealImagePath?.replacingOccurrences(of: "<UIImageAsset: ", with: "")
@@ -56,13 +53,30 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
 //            print("Formatted path is \(mealPassedIn.mealImagePath!)")
             
             print("Meal image path is \(mealPassedIn.mealImagePath!)")
-            mealImageView.image = UIImage(named: mealPassedIn.mealImagePath!)
+//            mealImageView.image = UIImage(named: mealPassedIn.mealImagePath!)
+            
+            readImageData()
+
 
         } else {
             mealImageView.image = UIImage(named: "mealPlaceholder")
             print("Used placeholder image")
         }
     
+    }
+    
+    //MARK: Function to read back image data
+    func readImageData() {
+        
+        let mealImageURL = URL(string: (mealPassedIn.mealImagePath?.encodeUrl())!)
+        print("Meal image URL is \(mealImageURL!)")
+        
+        // This crashes, says there is no such file at this URL. But I know there is.
+        if let imageData = try? Data(contentsOf: mealImageURL!) {
+        mealImageView.image = UIImage(data: imageData)
+        } else {
+            // do nothing
+        }
     }
     
     @IBAction func saveButton(_ sender: UIBarButtonItem) {
