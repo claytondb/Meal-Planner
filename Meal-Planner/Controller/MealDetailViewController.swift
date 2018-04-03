@@ -46,17 +46,17 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         if mealPassedIn.mealImagePath != nil {
 
 //            let mealImageURL = URL(string: mealPassedIn.mealImagePath!)
-            let mealImageURL = URL(string: (mealPassedIn.mealImagePath?.encodeUrl())!)
+//            let mealImageURL = URL(string: (mealPassedIn.mealImagePath?.encodeUrl())!)
+            
+//            print("Meal image path is \(mealImageURL!)")
+            
+            // I was removing the beginning and end of the file name but it turns out that it's actually named that. It's raw data, no file type, and it's in the Documents folder. How do I recall it?
+//            mealPassedIn.mealImagePath = mealPassedIn.mealImagePath?.replacingOccurrences(of: "<UIImageAsset: ", with: "")
+//            mealPassedIn.mealImagePath = mealPassedIn.mealImagePath?.replacingOccurrences(of: ">", with: "")
+//            print("Formatted path is \(mealPassedIn.mealImagePath!)")
             
             print("Meal image path is \(mealPassedIn.mealImagePath!)")
-            
-            mealPassedIn.mealImagePath = mealPassedIn.mealImagePath?.replacingOccurrences(of: "<UIImageAsset: ", with: "")
-            mealPassedIn.mealImagePath = mealPassedIn.mealImagePath?.replacingOccurrences(of: ">", with: "")
-            print("Formatted path is \(mealPassedIn.mealImagePath!)")
-            
-            storedMealImage = UIImage(contentsOfFile: (mealPassedIn.mealImagePath?.encodeUrl())!)
-            
-            mealImageView.image = storedMealImage
+            mealImageView.image = UIImage(named: mealPassedIn.mealImagePath!)
 
         } else {
             mealImageView.image = UIImage(named: "mealPlaceholder")
@@ -100,9 +100,9 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
                 if let imageData = UIImageJPEGRepresentation(image, 1.0) {
                     try imageData.write(to: fileURL)
                     storedImageURL = fileURL
-                    mealPassedIn.mealImagePath = fileURL.absoluteString
+                    mealPassedIn.mealImagePath = storedImageURL!.absoluteString
                     mealPassedIn.mealImagePath = mealPassedIn.mealImagePath?.decodeUrl()
-                    print("This is the new file URL: \(fileURL)")
+                    print("This is the new image path: \(mealPassedIn.mealImagePath!)")
 //                    return true
                 }
             } catch {
