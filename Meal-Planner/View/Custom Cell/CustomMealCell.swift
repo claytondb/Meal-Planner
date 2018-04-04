@@ -13,6 +13,7 @@ class CustomMealCell: UITableViewCell {
     @IBOutlet weak var mealImage: UIImageView!
     @IBOutlet weak var mealLabel: UILabel!
     @IBOutlet weak var mealDay: UILabel!
+    @IBOutlet weak var mealLockIconBtn: UIButton!
     
     var onLockTapped : (() -> Void)? = nil
 

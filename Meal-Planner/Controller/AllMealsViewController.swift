@@ -53,7 +53,21 @@ class AllMealsViewController: UITableViewController {
         }
         
         // Set meal image
-        cell.mealImage.image = UIImage(named: "mealPlaceholder")
+        if meal.mealImagePath != nil {
+            let mealImageURL = URL(string: (meal.mealImagePath?.encodeUrl())!)
+            if let imageData = try? Data(contentsOf: mealImageURL!) {
+                cell.mealImage.image = UIImage(data: imageData)
+            } else {
+                cell.mealImage.image = UIImage(named: "mealPlaceholder")
+            }
+        } else {
+            cell.mealImage.image = UIImage(named: "mealPlaceholder")
+        }
+        
+        cell.mealDay.text = ""
+        if cell.mealLockIconBtn != nil {
+        cell.mealLockIconBtn.removeFromSuperview()
+        }
         
         return cell
     }

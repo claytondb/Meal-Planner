@@ -24,7 +24,7 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <items>
                                 <navigationItem title="Week" id="QZg-sw-TAJ">
-                                    <barButtonItem key="rightBarButtonItem" title="Hit me" id="kZR-Ff-My9">
+                                    <barButtonItem key="rightBarButtonItem" title="Shuffle" id="kZR-Ff-My9">
                                         <connections>
                                             <action selector="randomizeListButton:" destination="od0-LT-Bni" id="eEz-ia-RmP"/>
                                         </connections>
@@ -110,7 +110,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <navigationBar key="tableHeaderView" contentMode="scaleToFill" id="9Vo-fD-bwO">
+                        <navigationBar key="tableHeaderView" contentMode="scaleToFill" translucent="NO" id="9Vo-fD-bwO">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <items>
@@ -191,20 +191,47 @@
                                             <constraint firstAttribute="width" constant="320" id="d0X-Bn-fuq"/>
                                         </constraints>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="So4-zx-i0m">
-                                        <rect key="frame" x="0.0" y="382.5" width="320" height="30"/>
-                                        <state key="normal" title="Import image"/>
-                                        <connections>
-                                            <action selector="importImageButton:" destination="qhB-Wg-zV1" eventType="touchUpInside" id="6g4-uz-gv7"/>
-                                        </connections>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meal Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c91-P0-9cC">
-                                        <rect key="frame" x="0.0" y="475" width="320" height="29"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SzY-Ow-zhw">
+                                        <rect key="frame" x="0.0" y="344" width="320" height="50"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="So4-zx-i0m">
+                                                <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                                                <state key="normal" title="Import image"/>
+                                                <connections>
+                                                    <action selector="importImageButton:" destination="qhB-Wg-zV1" eventType="touchUpInside" id="6g4-uz-gv7"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="So4-zx-i0m" firstAttribute="leading" secondItem="SzY-Ow-zhw" secondAttribute="leading" id="Bii-nh-Gl4"/>
+                                            <constraint firstAttribute="trailing" secondItem="So4-zx-i0m" secondAttribute="trailing" id="uz0-y5-1hL"/>
+                                            <constraint firstAttribute="bottom" secondItem="So4-zx-i0m" secondAttribute="bottom" id="w8z-wa-kG2"/>
+                                            <constraint firstItem="So4-zx-i0m" firstAttribute="top" secondItem="SzY-Ow-zhw" secondAttribute="top" id="wFz-TA-Gkq"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kzO-9T-8Al">
+                                        <rect key="frame" x="0.0" y="418" width="320" height="86"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meal Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c91-P0-9cC">
+                                                <rect key="frame" x="0.0" y="0.0" width="320" height="86"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="c91-P0-9cC" secondAttribute="bottom" id="K6b-AB-Szh"/>
+                                            <constraint firstItem="c91-P0-9cC" firstAttribute="leading" secondItem="kzO-9T-8Al" secondAttribute="leading" id="bnB-4P-qHW"/>
+                                            <constraint firstItem="c91-P0-9cC" firstAttribute="top" secondItem="kzO-9T-8Al" secondAttribute="top" id="ped-cb-3iy"/>
+                                            <constraint firstAttribute="trailing" secondItem="c91-P0-9cC" secondAttribute="trailing" id="rKH-uz-Jhg"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="SzY-Ow-zhw" firstAttribute="top" secondItem="aeA-ER-aeA" secondAttribute="bottom" constant="24" id="7ye-vF-vEl"/>
+                                </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -227,7 +254,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v7L-Gy-1Vs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1256" y="-589"/>
+            <point key="canvasLocation" x="1254.375" y="-589.43661971830988"/>
         </scene>
     </scenes>
     <resources>

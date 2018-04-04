@@ -9,6 +9,7 @@
 import UIKit
 import Foundation
 import CoreData
+import GameplayKit
 
 class TableViewController: UITableViewController {
     
@@ -55,9 +56,13 @@ class TableViewController: UITableViewController {
         }
         
         // Set meal image
-        let mealImageURL = URL(string: (meal.mealImagePath?.encodeUrl())!)
-        if let imageData = try? Data(contentsOf: mealImageURL!) {
-            cell.mealImage.image = UIImage(data: imageData)
+        if meal.mealImagePath != nil {
+            let mealImageURL = URL(string: (meal.mealImagePath?.encodeUrl())!)
+            if let imageData = try? Data(contentsOf: mealImageURL!) {
+                cell.mealImage.image = UIImage(data: imageData)
+            } else {
+                cell.mealImage.image = UIImage(named: "mealPlaceholder")
+            }
         } else {
             cell.mealImage.image = UIImage(named: "mealPlaceholder")
         }
@@ -178,7 +183,7 @@ class TableViewController: UITableViewController {
     
     //MARK: Randomize meals function
     func randomize(with request: NSFetchRequest<Meal> = Meal.fetchRequest()) {
-    
+
         // Do-catch statement so that we can catch errors
         do {
             mealArray = try context.fetch(request)
@@ -209,7 +214,7 @@ class TableViewController: UITableViewController {
             }
             print("Randomized!")
         }
-        
+
         // Second part of Do-Catch
         catch {
             print("Error loading meals. \(error)")
@@ -254,6 +259,10 @@ class TableViewController: UITableViewController {
     @IBAction func randomizeListButton(_ sender: Any) {
         
         randomize()
+        
+//        let shuffledMealArray = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: mealArray)
+//        mealArray = shuffledMealArray as! [Meal]
+//        saveMeals()
 
     }
     

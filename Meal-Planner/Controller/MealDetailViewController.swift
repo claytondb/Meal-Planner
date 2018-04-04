@@ -63,6 +63,10 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         performSegue(withIdentifier: "segueDismissMealDetail", sender: self)
     }
     
+    @IBAction func cancelButton(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "segueDismissMealDetail", sender: self)
+    }
+    
     @IBAction func importImageButton(_ sender: UIButton) {
         chooseImage()
     }
