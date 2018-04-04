@@ -88,6 +88,9 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="qhB-Wg-zV1" kind="show" identifier="segueFromAllMealsToDetail" id="AmH-Fy-kCY"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -264,4 +267,7 @@
         <image name="ic_settings" width="36" height="36"/>
         <image name="mealPlaceholder" width="64" height="64"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="AmH-Fy-kCY"/>
+    </inferredMetricsTieBreakers>
 </document>

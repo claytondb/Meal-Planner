@@ -151,11 +151,11 @@ class AllMealsViewController: UITableViewController {
     }
     
     
-    //MARK: Tableview delegate methods - select row
+    //MARK: Tableview delegate methods - select row, segue to meal detail
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        // When row is selected, you edit the meal name in an alert.
-                editMealName()
+        performSegue(withIdentifier: "segueFromAllMealsToDetail", sender: self)
+        print("Performed segue to meal detail")
         
     }
     
@@ -221,6 +221,19 @@ class AllMealsViewController: UITableViewController {
         alert.addAction(delete)
         alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
+    }
+    
+    //MARK: Pass in data on segue
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueFromAllMealsToDetail" {
+            if let destinationVC = segue.destination as? MealDetailViewController {
+                print("Prepared for segue")
+                let indexPath = tableView.indexPathForSelectedRow
+                destinationVC.mealPassedIn = mealArray[(indexPath?.row)!]
+                print("Passed in meal")
+                
+            }
+        }
     }
     
     
