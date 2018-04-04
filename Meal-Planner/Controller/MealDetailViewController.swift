@@ -10,12 +10,6 @@ import UIKit
 import Foundation
 import CoreData
 
-// 1. Get UIImage from image picker. (This works)
-// 2. Save the image data (in Documents folder) (This works)
-// 3. Get string value for the file path to Documents folder and image there (This works)
-// 4. Save this string in Core Data in Meal entity as mealImagePath (This works)
-// Do steps 2-4 in reverse elsewhere in the app to use the stored image for that meal. -- doesn't work yet
-
 class MealDetailViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var mealArray = [Meal]()
@@ -42,25 +36,11 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         // Change label to name of meal
         mealNameLabel.text = mealPassedIn.mealName
         
-        // Retrieve stored image for this meal. Works but URL is formatted weird and has other information that isn't the image filename.
+        // Set meal image
         if mealPassedIn.mealImagePath != nil {
-
-
-            
-            // I was removing the beginning and end of the file name but it turns out that it's actually named that. It's raw data, no file type, and it's in the Documents folder. How do I recall it?
-//            mealPassedIn.mealImagePath = mealPassedIn.mealImagePath?.replacingOccurrences(of: "<UIImageAsset: ", with: "")
-//            mealPassedIn.mealImagePath = mealPassedIn.mealImagePath?.replacingOccurrences(of: ">", with: "")
-//            print("Formatted path is \(mealPassedIn.mealImagePath!)")
-            
-            print("Meal image path is \(mealPassedIn.mealImagePath!)")
-//            mealImageView.image = UIImage(named: mealPassedIn.mealImagePath!)
-            
             readImageData()
-
-
         } else {
             mealImageView.image = UIImage(named: "mealPlaceholder")
-            print("Used placeholder image")
         }
     
     }
@@ -71,7 +51,6 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         let mealImageURL = URL(string: (mealPassedIn.mealImagePath?.encodeUrl())!)
         print("Meal image URL is \(mealImageURL!)")
         
-        // This crashes, says there is no such file at this URL. But I know there is.
         if let imageData = try? Data(contentsOf: mealImageURL!) {
         mealImageView.image = UIImage(data: imageData)
         } else {
@@ -101,9 +80,6 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
             mealImageView.image = pickedImage
             storedMealImage = pickedImage
             
-//            let pickedImagePath = Bundle.main.path(forResource: "\(pickedImage)", ofType: "png")
-//            print("This is the pickedImagePath: \(pickedImagePath)") // Returns nil
-            
             // get stored image and path
             let fileManager = FileManager.default
             do {
@@ -116,17 +92,14 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
                     storedImageURL = fileURL
                     mealPassedIn.mealImagePath = storedImageURL!.absoluteString
                     mealPassedIn.mealImagePath = mealPassedIn.mealImagePath?.decodeUrl()
-                    print("This is the new image path: \(mealPassedIn.mealImagePath!)")
-//                    return true
                 }
             } catch {
                 print(error)
             }
-//            return false
-            
         }
         dismiss(animated: true, completion: nil)
     }
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }

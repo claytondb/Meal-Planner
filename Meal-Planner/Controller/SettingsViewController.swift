@@ -156,7 +156,7 @@ class SettingsViewController: UITableViewController {
             let newMeal = Meal(context: self.context)
             newMeal.mealName = textField.text!
             newMeal.mealLocked = true
-            newMeal.sortedIndex = Int32(self.mealArray.count) + 1
+//            newMeal.sortedIndex = Int32(self.mealArray.count) + 1
             self.mealArray.append(newMeal)
             
             print("Assigned index to new meal")

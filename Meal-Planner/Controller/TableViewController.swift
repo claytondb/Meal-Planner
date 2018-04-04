@@ -32,6 +32,8 @@ class TableViewController: UITableViewController {
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         
         loadMeals()
+        
+        
     }
     
     
@@ -53,7 +55,12 @@ class TableViewController: UITableViewController {
         }
         
         // Set meal image
-        cell.mealImage.image = UIImage(named: "mealPlaceholder")
+        let mealImageURL = URL(string: (meal.mealImagePath?.encodeUrl())!)
+        if let imageData = try? Data(contentsOf: mealImageURL!) {
+            cell.mealImage.image = UIImage(data: imageData)
+        } else {
+            cell.mealImage.image = UIImage(named: "mealPlaceholder")
+        }
         
         // Set mealDay label to day of the week depending on what row of the table it's in.
         if indexPath.row == 0 {
@@ -94,9 +101,6 @@ class TableViewController: UITableViewController {
         return mealArray.count
         } else {
             return 7
-            
-//        let count = mealArray.count
-//        return count
     }
     }
         
@@ -119,6 +123,8 @@ class TableViewController: UITableViewController {
             }
             
         }
+    
+
     
     
     //MARK: Edit meal name function
@@ -208,7 +214,6 @@ class TableViewController: UITableViewController {
         catch {
             print("Error loading meals. \(error)")
         }
-        
         saveMeals()
     }
     
