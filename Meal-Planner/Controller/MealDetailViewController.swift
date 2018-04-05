@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 import CoreData
 
-class MealDetailViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class MealDetailViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     var mealArray = [Meal]()
     var mealPassedIn = Meal()
@@ -20,8 +20,10 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var mealImageView: UIImageView!
-    @IBOutlet weak var mealNameLabel: UILabel!
+    @IBOutlet weak var mealNameField: UITextField!
+    
     
     // Start the view controller
     override func viewDidLoad() {
@@ -29,12 +31,16 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         
         imagePicker.delegate = self
         
+        mealNameField.delegate = self
+        
+        self.mealNameField.keyboardType = UIKeyboardType.default
+        
         loadMeals()
         
         print("\(mealPassedIn.mealName!) detail view")
         
         // Change label to name of meal
-        mealNameLabel.text = mealPassedIn.mealName
+        mealNameField.text = mealPassedIn.mealName
         
         // Set meal image
         if mealPassedIn.mealImagePath != nil {
@@ -42,7 +48,43 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         } else {
             mealImageView.image = UIImage(named: "mealPlaceholder")
         }
+    }
     
+    //Mark: Make page scroll up when keyboard appears.
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        registerKeyboardNotifications()
+    }
+    func registerKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow(notification:)),
+                                               name: NSNotification.Name.UIKeyboardWillShow,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide(notification:)),
+                                               name: NSNotification.Name.UIKeyboardWillHide,
+                                               object: nil)
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    @objc func keyboardWillShow(notification: NSNotification) {
+        let userInfo: NSDictionary = notification.userInfo! as NSDictionary
+        let keyboardInfo = userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue
+        let keyboardSize = keyboardInfo.cgRectValue.size
+        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height + 24, right: 0)
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        scrollView.contentInset = .zero
+        scrollView.scrollIndicatorInsets = .zero
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool // called when 'return' key pressed. return NO to ignore.
+    {
+        mealNameField.resignFirstResponder()
+        return true
     }
     
     //MARK: Function to read back image data
@@ -59,6 +101,8 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     }
     
     @IBAction func saveButton(_ sender: UIBarButtonItem) {
+        // Change meal name to what's in the text field
+        mealPassedIn.mealName = mealNameField.text
         saveMealDetail()
         performSegue(withIdentifier: "segueDismissMealDetail", sender: self)
     }

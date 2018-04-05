@@ -174,7 +174,11 @@
                                 <items>
                                     <navigationItem title="Meal Detail" id="7RJ-nt-1zI">
                                         <barButtonItem key="backBarButtonItem" title="Back" id="9yO-7h-rxy"/>
-                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="eEl-he-Iw4"/>
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="eEl-he-Iw4">
+                                            <connections>
+                                                <action selector="cancelButton:" destination="qhB-Wg-zV1" id="otf-J6-3fw"/>
+                                            </connections>
+                                        </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="yih-8P-bCi">
                                             <connections>
                                                 <action selector="saveButton:" destination="qhB-Wg-zV1" id="4a7-35-FtK"/>
@@ -183,75 +187,90 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="RqM-xN-hb7">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="xtI-So-Q8Y">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mealPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="aeA-ER-aeA">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="aeA-ER-aeA" secondAttribute="height" multiplier="1:1" id="3gv-rQ-FdE"/>
-                                            <constraint firstAttribute="height" constant="320" id="Ec3-ya-oxN"/>
-                                            <constraint firstAttribute="width" constant="320" id="d0X-Bn-fuq"/>
-                                        </constraints>
-                                    </imageView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SzY-Ow-zhw">
-                                        <rect key="frame" x="0.0" y="344" width="320" height="50"/>
+                                    <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="RqM-xN-hb7">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="So4-zx-i0m">
-                                                <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
-                                                <state key="normal" title="Import image"/>
-                                                <connections>
-                                                    <action selector="importImageButton:" destination="qhB-Wg-zV1" eventType="touchUpInside" id="6g4-uz-gv7"/>
-                                                </connections>
-                                            </button>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mealPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="aeA-ER-aeA">
+                                                <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="aeA-ER-aeA" secondAttribute="height" multiplier="1:1" id="3gv-rQ-FdE"/>
+                                                    <constraint firstAttribute="height" constant="320" id="Ec3-ya-oxN"/>
+                                                    <constraint firstAttribute="width" constant="320" id="d0X-Bn-fuq"/>
+                                                </constraints>
+                                            </imageView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SzY-Ow-zhw">
+                                                <rect key="frame" x="0.0" y="344" width="320" height="50"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="So4-zx-i0m">
+                                                        <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                                                        <state key="normal" title="Import image"/>
+                                                        <connections>
+                                                            <action selector="importImageButton:" destination="qhB-Wg-zV1" eventType="touchUpInside" id="6g4-uz-gv7"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstItem="So4-zx-i0m" firstAttribute="leading" secondItem="SzY-Ow-zhw" secondAttribute="leading" id="Bii-nh-Gl4"/>
+                                                    <constraint firstAttribute="trailing" secondItem="So4-zx-i0m" secondAttribute="trailing" id="uz0-y5-1hL"/>
+                                                    <constraint firstAttribute="bottom" secondItem="So4-zx-i0m" secondAttribute="bottom" id="w8z-wa-kG2"/>
+                                                    <constraint firstItem="So4-zx-i0m" firstAttribute="top" secondItem="SzY-Ow-zhw" secondAttribute="top" id="wFz-TA-Gkq"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" restorationIdentifier="mealNameViewArea" translatesAutoresizingMaskIntoConstraints="NO" id="kzO-9T-8Al" userLabel="Meal name view area">
+                                                <rect key="frame" x="0.0" y="418" width="320" height="86"/>
+                                                <subviews>
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Chicken con pollo" textAlignment="center" minimumFontSize="12" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="uLi-ev-xd2" userLabel="Meal name text field">
+                                                        <rect key="frame" x="24" y="25" width="272" height="36"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="36" id="VzJ-Pt-C5S"/>
+                                                        </constraints>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                        <textInputTraits key="textInputTraits" keyboardAppearance="alert" returnKeyType="done" enablesReturnKeyAutomatically="YES" textContentType="name"/>
+                                                    </textField>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstItem="uLi-ev-xd2" firstAttribute="centerY" secondItem="kzO-9T-8Al" secondAttribute="centerY" id="5uy-uR-fZQ"/>
+                                                    <constraint firstAttribute="trailing" secondItem="uLi-ev-xd2" secondAttribute="trailing" constant="24" id="miI-JV-Ddh"/>
+                                                    <constraint firstItem="uLi-ev-xd2" firstAttribute="leading" secondItem="kzO-9T-8Al" secondAttribute="leading" constant="24" id="siG-rz-Jwt"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstItem="So4-zx-i0m" firstAttribute="leading" secondItem="SzY-Ow-zhw" secondAttribute="leading" id="Bii-nh-Gl4"/>
-                                            <constraint firstAttribute="trailing" secondItem="So4-zx-i0m" secondAttribute="trailing" id="uz0-y5-1hL"/>
-                                            <constraint firstAttribute="bottom" secondItem="So4-zx-i0m" secondAttribute="bottom" id="w8z-wa-kG2"/>
-                                            <constraint firstItem="So4-zx-i0m" firstAttribute="top" secondItem="SzY-Ow-zhw" secondAttribute="top" id="wFz-TA-Gkq"/>
+                                            <constraint firstItem="SzY-Ow-zhw" firstAttribute="top" secondItem="aeA-ER-aeA" secondAttribute="bottom" constant="24" id="7ye-vF-vEl"/>
                                         </constraints>
-                                    </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kzO-9T-8Al">
-                                        <rect key="frame" x="0.0" y="418" width="320" height="86"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meal Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c91-P0-9cC">
-                                                <rect key="frame" x="0.0" y="0.0" width="320" height="86"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="c91-P0-9cC" secondAttribute="bottom" id="K6b-AB-Szh"/>
-                                            <constraint firstItem="c91-P0-9cC" firstAttribute="leading" secondItem="kzO-9T-8Al" secondAttribute="leading" id="bnB-4P-qHW"/>
-                                            <constraint firstItem="c91-P0-9cC" firstAttribute="top" secondItem="kzO-9T-8Al" secondAttribute="top" id="ped-cb-3iy"/>
-                                            <constraint firstAttribute="trailing" secondItem="c91-P0-9cC" secondAttribute="trailing" id="rKH-uz-Jhg"/>
-                                        </constraints>
-                                    </view>
+                                    </stackView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="SzY-Ow-zhw" firstAttribute="top" secondItem="aeA-ER-aeA" secondAttribute="bottom" constant="24" id="7ye-vF-vEl"/>
+                                    <constraint firstAttribute="trailing" secondItem="RqM-xN-hb7" secondAttribute="trailing" id="2Le-YA-guf"/>
+                                    <constraint firstAttribute="bottom" secondItem="RqM-xN-hb7" secondAttribute="bottom" id="S3S-lK-yhn"/>
+                                    <constraint firstItem="RqM-xN-hb7" firstAttribute="centerY" secondItem="xtI-So-Q8Y" secondAttribute="centerY" id="Tpr-Fh-P1S"/>
+                                    <constraint firstItem="RqM-xN-hb7" firstAttribute="top" secondItem="xtI-So-Q8Y" secondAttribute="top" id="jec-YE-cDE"/>
+                                    <constraint firstItem="RqM-xN-hb7" firstAttribute="leading" secondItem="xtI-So-Q8Y" secondAttribute="leading" id="ljW-9g-k5o"/>
                                 </constraints>
-                            </stackView>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Qop-lq-xWH" firstAttribute="bottom" secondItem="RqM-xN-hb7" secondAttribute="bottom" id="78I-Xe-e6J"/>
-                            <constraint firstItem="RqM-xN-hb7" firstAttribute="leading" secondItem="Qop-lq-xWH" secondAttribute="leading" id="JYt-m0-HCU"/>
+                            <constraint firstItem="xtI-So-Q8Y" firstAttribute="bottom" secondItem="Qop-lq-xWH" secondAttribute="bottom" id="1fV-nk-6er"/>
+                            <constraint firstItem="xtI-So-Q8Y" firstAttribute="leading" secondItem="JQt-IW-51D" secondAttribute="leading" id="2lZ-BI-PjB"/>
+                            <constraint firstItem="xtI-So-Q8Y" firstAttribute="top" secondItem="JQt-IW-51D" secondAttribute="bottom" id="UU8-3k-uLF"/>
                             <constraint firstAttribute="trailing" secondItem="JQt-IW-51D" secondAttribute="trailing" id="WMu-Go-OVD"/>
-                            <constraint firstItem="Qop-lq-xWH" firstAttribute="trailing" secondItem="RqM-xN-hb7" secondAttribute="trailing" id="aHT-aB-nMW"/>
                             <constraint firstItem="JQt-IW-51D" firstAttribute="leading" secondItem="SWJ-Yx-9v3" secondAttribute="leading" id="jYU-bM-yJx"/>
+                            <constraint firstItem="xtI-So-Q8Y" firstAttribute="trailing" secondItem="JQt-IW-51D" secondAttribute="trailing" id="ohl-BX-w1p"/>
                             <constraint firstItem="JQt-IW-51D" firstAttribute="top" secondItem="SWJ-Yx-9v3" secondAttribute="top" constant="20" id="qnx-uQ-Ch3"/>
-                            <constraint firstItem="RqM-xN-hb7" firstAttribute="top" secondItem="JQt-IW-51D" secondAttribute="bottom" id="wjh-da-w7Z"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Qop-lq-xWH"/>
                     </view>
                     <connections>
                         <outlet property="mealImageView" destination="aeA-ER-aeA" id="2fP-Hl-6oT"/>
-                        <outlet property="mealNameLabel" destination="c91-P0-9cC" id="FrW-yz-ngO"/>
+                        <outlet property="mealNameField" destination="uLi-ev-xd2" id="nEB-g5-FFI"/>
+                        <outlet property="scrollView" destination="xtI-So-Q8Y" id="d0l-3l-xzL"/>
                         <segue destination="emp-Xl-kwo" kind="show" identifier="segueDismissMealDetail" id="oHm-tp-4ax"/>
                     </connections>
                 </viewController>
