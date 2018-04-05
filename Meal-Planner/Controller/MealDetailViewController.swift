@@ -14,7 +14,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     
     var mealArray = [Meal]()
     var mealPassedIn = Meal()
-    let imagePicker = UIImagePickerController()
+    var imagePicker = UIImagePickerController()
     var storedImageURL : URL?
     var storedMealImage : UIImage?
     
@@ -152,35 +152,38 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         dismiss(animated: true, completion: nil)
     }
     
-
-    //MARK: Edit meal name function
-    func editMealName() {
-        print("Editing meal")
-        
-        var textField = UITextField()
-        let alert = UIAlertController(title: "Edit meal name", message: "", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Save", style: .default) { (action) in
-            
-            print("Changed meal name")
-            self.saveMealDetail()
-        }
-        
-        alert.addTextField { (alertTextField) in
-//            let editingMeal = self.mealArray[indexPath.row]
-            print("let editingMeal = Meal")
-//            alertTextField.text = editingMeal.mealName
-            textField = alertTextField
-            textField.autocorrectionType = .yes
-        }
-        
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-            // do nothing
-            print("Cancelled")
-        }
-        alert.addAction(cancel)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
+    //MARK: - Take image
+    @IBAction func takePhoto(_ sender: UIButton) {
+        imagePicker =  UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .camera
+        present(imagePicker, animated: true, completion: nil)
     }
+    
+//    //MARK: - Saving Image here
+//    @IBAction func save(_ sender: AnyObject) {
+//        UIImageWriteToSavedPhotosAlbum(mealImageView.image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+//    }
+    
+    //MARK: - Add image to Library
+    @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            // we got back an error!
+            let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        } else {
+            let ac = UIAlertController(title: "Saved!", message: "Your altered image has been saved to your photos.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        }
+    }
+    
+//    //MARK: - Done image capture here
+//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+//        imagePicker.dismiss(animated: true, completion: nil)
+//        imageTake.image = info[UIImagePickerControllerOriginalImage] as? UIImage
+//    }
     
     
     //MARK: Model manipulation methods

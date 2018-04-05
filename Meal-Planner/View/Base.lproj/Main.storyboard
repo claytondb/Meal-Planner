@@ -204,20 +204,32 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SzY-Ow-zhw">
                                                 <rect key="frame" x="0.0" y="344" width="320" height="50"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="So4-zx-i0m">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="SWG-Vn-X3P">
                                                         <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
-                                                        <state key="normal" title="Import image"/>
-                                                        <connections>
-                                                            <action selector="importImageButton:" destination="qhB-Wg-zV1" eventType="touchUpInside" id="6g4-uz-gv7"/>
-                                                        </connections>
-                                                    </button>
+                                                        <subviews>
+                                                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="So4-zx-i0m">
+                                                                <rect key="frame" x="0.0" y="10" width="160" height="30"/>
+                                                                <state key="normal" title="Import image"/>
+                                                                <connections>
+                                                                    <action selector="importImageButton:" destination="qhB-Wg-zV1" eventType="touchUpInside" id="6g4-uz-gv7"/>
+                                                                </connections>
+                                                            </button>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z08-Hc-Xkz">
+                                                                <rect key="frame" x="160" y="10" width="160" height="30"/>
+                                                                <state key="normal" title="Take photo"/>
+                                                                <connections>
+                                                                    <action selector="takePhoto:" destination="qhB-Wg-zV1" eventType="touchUpInside" id="mUc-Ij-Xqi"/>
+                                                                </connections>
+                                                            </button>
+                                                        </subviews>
+                                                    </stackView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstItem="So4-zx-i0m" firstAttribute="leading" secondItem="SzY-Ow-zhw" secondAttribute="leading" id="Bii-nh-Gl4"/>
-                                                    <constraint firstAttribute="trailing" secondItem="So4-zx-i0m" secondAttribute="trailing" id="uz0-y5-1hL"/>
-                                                    <constraint firstAttribute="bottom" secondItem="So4-zx-i0m" secondAttribute="bottom" id="w8z-wa-kG2"/>
-                                                    <constraint firstItem="So4-zx-i0m" firstAttribute="top" secondItem="SzY-Ow-zhw" secondAttribute="top" id="wFz-TA-Gkq"/>
+                                                    <constraint firstItem="SWG-Vn-X3P" firstAttribute="top" secondItem="SzY-Ow-zhw" secondAttribute="top" id="1JJ-T6-sfM"/>
+                                                    <constraint firstAttribute="trailing" secondItem="SWG-Vn-X3P" secondAttribute="trailing" id="G06-KT-JTA"/>
+                                                    <constraint firstItem="SWG-Vn-X3P" firstAttribute="leading" secondItem="SzY-Ow-zhw" secondAttribute="leading" id="IOB-dh-l3u"/>
+                                                    <constraint firstAttribute="bottom" secondItem="SWG-Vn-X3P" secondAttribute="bottom" id="Z1y-PW-Wun"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" restorationIdentifier="mealNameViewArea" translatesAutoresizingMaskIntoConstraints="NO" id="kzO-9T-8Al" userLabel="Meal name view area">

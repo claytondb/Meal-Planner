@@ -2,8 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Photos taken are saved to your photo library.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Photos taken are only used for meal images within the app.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Image access is only used for meal images within the app.</string>
+	<string>Images are only used for meal images within the app.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
