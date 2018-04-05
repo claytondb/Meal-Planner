@@ -23,6 +23,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var mealImageView: UIImageView!
     @IBOutlet weak var mealNameField: UITextField!
+    @IBOutlet weak var mealLinkField: UITextField!
     
     
     // Start the view controller
@@ -32,6 +33,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         imagePicker.delegate = self
         
         mealNameField.delegate = self
+        mealLinkField.delegate = self
         
         self.mealNameField.keyboardType = UIKeyboardType.default
         
@@ -41,6 +43,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         
         // Change label to name of meal
         mealNameField.text = mealPassedIn.mealName
+        mealLinkField.text = mealPassedIn.mealRecipeLink
         
         // Set meal image
         if mealPassedIn.mealImagePath != nil {
@@ -84,6 +87,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     func textFieldShouldReturn(_ textField: UITextField) -> Bool // called when 'return' key pressed. return NO to ignore.
     {
         mealNameField.resignFirstResponder()
+        mealLinkField.resignFirstResponder()
         return true
     }
     
@@ -103,16 +107,40 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     @IBAction func saveButton(_ sender: UIBarButtonItem) {
         // Change meal name to what's in the text field
         mealPassedIn.mealName = mealNameField.text
+        saveToAlbum(self)
         saveMealDetail()
         performSegue(withIdentifier: "segueDismissMealDetail", sender: self)
+    }
+    func saveToAlbum(_ sender: AnyObject) {
+        UIImageWriteToSavedPhotosAlbum(mealImageView.image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
     }
     
     @IBAction func cancelButton(_ sender: UIBarButtonItem) {
         performSegue(withIdentifier: "segueDismissMealDetail", sender: self)
     }
     
+    //MARK: Action sheet for photo actions (import, take photo, delete)
+    func photoActionSheet() {
+        let photoActions = UIAlertController(title: "Photo actions", message: "Message", preferredStyle: UIAlertControllerStyle.actionSheet)
+    
+        self.present(photoActions, animated: true, completion: nil)
+        
+        photoActions.addAction(UIAlertAction(title: "Take photo", style: UIAlertActionStyle.default, handler: { action in
+            self.takePhoto()
+        }))
+    
+        photoActions.addAction(UIAlertAction(title: "Import photo", style: .default, handler: { action in
+            self.chooseImage()
+        }))
+        
+        photoActions.addAction(UIAlertAction(title: "Delete photo", style: .destructive, handler: nil))
+        
+        photoActions.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    }
+    
     @IBAction func importImageButton(_ sender: UIButton) {
-        chooseImage()
+        photoActionSheet()
+//        chooseImage()
     }
     
     func chooseImage() {
@@ -153,15 +181,15 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     }
     
     //MARK: - Take image
-    @IBAction func takePhoto(_ sender: UIButton) {
+    func takePhoto() {
         imagePicker =  UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .camera
         present(imagePicker, animated: true, completion: nil)
     }
     
-//    //MARK: - Saving Image here
-//    @IBAction func save(_ sender: AnyObject) {
+    //MARK: - Saving Image here - not working yet. It saves but to documents? Not photo library. What do I connect this to?
+//    @IBAction func saveToAlbum(_ sender: AnyObject) {
 //        UIImageWriteToSavedPhotosAlbum(mealImageView.image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
 //    }
     
