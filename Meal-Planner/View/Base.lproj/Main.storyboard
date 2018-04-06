@@ -166,14 +166,13 @@
                 <viewController title="Meal Detail" id="qhB-Wg-zV1" customClass="MealDetailViewController" customModule="Meal_Planner" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SWJ-Yx-9v3">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JQt-IW-51D">
                                 <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <items>
                                     <navigationItem title="Meal Detail" id="7RJ-nt-1zI">
-                                        <barButtonItem key="backBarButtonItem" title="Back" id="9yO-7h-rxy"/>
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="eEl-he-Iw4">
                                             <connections>
                                                 <action selector="cancelButton:" destination="qhB-Wg-zV1" id="otf-J6-3fw"/>
@@ -187,63 +186,69 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="xtI-So-Q8Y">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xtI-So-Q8Y">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="RqM-xN-hb7">
-                                        <rect key="frame" x="0.0" y="0.0" width="176" height="412"/>
-                                        <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mealPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="aeA-ER-aeA">
-                                                <rect key="frame" x="0.0" y="0.0" width="176" height="176"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" secondItem="aeA-ER-aeA" secondAttribute="height" multiplier="1:1" id="1md-5i-fYd"/>
-                                                </constraints>
-                                            </imageView>
-                                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="So4-zx-i0m">
-                                                <rect key="frame" x="38.5" y="176" width="99" height="30"/>
-                                                <state key="normal" title="Change image"/>
-                                                <connections>
-                                                    <action selector="importImageButton:" destination="qhB-Wg-zV1" eventType="touchUpInside" id="6g4-uz-gv7"/>
-                                                </connections>
-                                            </button>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Chicken con pollo" textAlignment="center" minimumFontSize="12" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="uLi-ev-xd2" userLabel="Meal name text field">
-                                                <rect key="frame" x="0.0" y="279" width="176" height="30"/>
-                                                <nil key="textColor"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                <textInputTraits key="textInputTraits" keyboardAppearance="alert" returnKeyType="done" enablesReturnKeyAutomatically="YES" textContentType="name"/>
-                                            </textField>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="http://yourrecipehere.com" textAlignment="center" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="T0o-zt-hvV">
-                                                <rect key="frame" x="3.5" y="382" width="169" height="30"/>
-                                                <nil key="textColor"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                <textInputTraits key="textInputTraits" keyboardType="URL" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
-                                            </textField>
-                                        </subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mealPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="aeA-ER-aeA">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                                         <constraints>
-                                            <constraint firstItem="aeA-ER-aeA" firstAttribute="leading" secondItem="RqM-xN-hb7" secondAttribute="leading" id="5Bs-ue-t8F"/>
-                                            <constraint firstItem="So4-zx-i0m" firstAttribute="top" secondItem="aeA-ER-aeA" secondAttribute="bottom" id="Qci-r0-vWQ"/>
-                                            <constraint firstItem="aeA-ER-aeA" firstAttribute="top" secondItem="RqM-xN-hb7" secondAttribute="top" id="Qgq-3Z-FHm"/>
-                                            <constraint firstAttribute="trailing" secondItem="aeA-ER-aeA" secondAttribute="trailing" id="e6x-8M-u78"/>
+                                            <constraint firstAttribute="width" secondItem="aeA-ER-aeA" secondAttribute="height" multiplier="1:1" id="Ska-nV-rLf"/>
                                         </constraints>
-                                    </stackView>
+                                    </imageView>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Chicken con pollo" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="12" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="uLi-ev-xd2" userLabel="Meal name text field">
+                                        <rect key="frame" x="24" y="398" width="272" height="36"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="36" id="zWq-RN-BMt"/>
+                                        </constraints>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <textInputTraits key="textInputTraits" keyboardAppearance="alert" returnKeyType="done" enablesReturnKeyAutomatically="YES" textContentType="name"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="So4-zx-i0m">
+                                        <rect key="frame" x="110" y="344" width="99" height="30"/>
+                                        <state key="normal" title="Change image"/>
+                                        <connections>
+                                            <action selector="importImageButton:" destination="qhB-Wg-zV1" eventType="touchUpInside" id="6g4-uz-gv7"/>
+                                        </connections>
+                                    </button>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="http://yourrecipehere.com" textAlignment="center" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="T0o-zt-hvV">
+                                        <rect key="frame" x="24" y="458" width="272" height="36"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="36" id="5MC-Ai-4Yl"/>
+                                        </constraints>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="URL" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                    </textField>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="RqM-xN-hb7" firstAttribute="leading" secondItem="xtI-So-Q8Y" secondAttribute="leading" id="aOb-fm-b06"/>
-                                    <constraint firstAttribute="trailing" secondItem="RqM-xN-hb7" secondAttribute="trailing" id="eM8-jJ-ysA"/>
-                                    <constraint firstItem="RqM-xN-hb7" firstAttribute="top" secondItem="xtI-So-Q8Y" secondAttribute="top" id="mbQ-Wg-yeq"/>
-                                    <constraint firstAttribute="bottom" secondItem="RqM-xN-hb7" secondAttribute="bottom" id="qiM-uG-fBM"/>
+                                    <constraint firstAttribute="trailing" secondItem="T0o-zt-hvV" secondAttribute="trailing" constant="24" id="4WF-6t-R8h"/>
+                                    <constraint firstItem="uLi-ev-xd2" firstAttribute="leading" secondItem="xtI-So-Q8Y" secondAttribute="leading" constant="24" id="5Cj-7a-ebE"/>
+                                    <constraint firstItem="uLi-ev-xd2" firstAttribute="top" secondItem="So4-zx-i0m" secondAttribute="bottom" constant="24" id="CSK-i0-tLH"/>
+                                    <constraint firstAttribute="bottom" secondItem="T0o-zt-hvV" secondAttribute="bottom" constant="60" id="ClS-lm-VsF"/>
+                                    <constraint firstItem="uLi-ev-xd2" firstAttribute="centerX" secondItem="xtI-So-Q8Y" secondAttribute="centerX" id="IOM-wg-AKn"/>
+                                    <constraint firstItem="So4-zx-i0m" firstAttribute="centerX" secondItem="xtI-So-Q8Y" secondAttribute="centerX" id="ZDz-ML-Tvv"/>
+                                    <constraint firstItem="aeA-ER-aeA" firstAttribute="leading" secondItem="xtI-So-Q8Y" secondAttribute="leading" id="b7i-xr-6GA"/>
+                                    <constraint firstItem="T0o-zt-hvV" firstAttribute="top" secondItem="uLi-ev-xd2" secondAttribute="bottom" constant="24" id="eGJ-rM-Y9r"/>
+                                    <constraint firstItem="T0o-zt-hvV" firstAttribute="centerX" secondItem="xtI-So-Q8Y" secondAttribute="centerX" id="gPH-Rx-yrI"/>
+                                    <constraint firstAttribute="trailing" secondItem="uLi-ev-xd2" secondAttribute="trailing" constant="24" id="gx8-1D-KN4"/>
+                                    <constraint firstItem="T0o-zt-hvV" firstAttribute="leading" secondItem="xtI-So-Q8Y" secondAttribute="leading" constant="24" id="h0F-4z-Rfe"/>
+                                    <constraint firstAttribute="trailing" secondItem="aeA-ER-aeA" secondAttribute="trailing" id="iH3-xq-cxG"/>
+                                    <constraint firstItem="aeA-ER-aeA" firstAttribute="top" secondItem="xtI-So-Q8Y" secondAttribute="top" id="jwr-hD-Oem"/>
+                                    <constraint firstItem="So4-zx-i0m" firstAttribute="top" secondItem="aeA-ER-aeA" secondAttribute="bottom" constant="24" id="zoe-UU-mEr"/>
                                 </constraints>
+                                <edgeInsets key="layoutMargins" top="24" left="24" bottom="24" right="24"/>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="xtI-So-Q8Y" firstAttribute="leading" secondItem="JQt-IW-51D" secondAttribute="leading" id="5ic-th-pO8"/>
-                            <constraint firstItem="xtI-So-Q8Y" firstAttribute="trailing" secondItem="JQt-IW-51D" secondAttribute="trailing" id="JOM-fi-o4m"/>
-                            <constraint firstItem="xtI-So-Q8Y" firstAttribute="bottom" secondItem="Qop-lq-xWH" secondAttribute="bottom" id="TeF-Lu-DFc"/>
-                            <constraint firstAttribute="trailing" secondItem="JQt-IW-51D" secondAttribute="trailing" id="WMu-Go-OVD"/>
-                            <constraint firstItem="xtI-So-Q8Y" firstAttribute="top" secondItem="JQt-IW-51D" secondAttribute="bottom" id="edN-fa-DkP"/>
-                            <constraint firstItem="JQt-IW-51D" firstAttribute="leading" secondItem="SWJ-Yx-9v3" secondAttribute="leading" id="jYU-bM-yJx"/>
-                            <constraint firstItem="JQt-IW-51D" firstAttribute="top" secondItem="SWJ-Yx-9v3" secondAttribute="top" constant="20" id="qnx-uQ-Ch3"/>
+                            <constraint firstItem="xtI-So-Q8Y" firstAttribute="leading" secondItem="JQt-IW-51D" secondAttribute="leading" id="1k8-El-vwO"/>
+                            <constraint firstAttribute="trailing" secondItem="xtI-So-Q8Y" secondAttribute="trailing" id="5Y3-h1-nYy"/>
+                            <constraint firstItem="xtI-So-Q8Y" firstAttribute="bottom" secondItem="Qop-lq-xWH" secondAttribute="bottom" id="CG2-4A-T7e"/>
+                            <constraint firstItem="xtI-So-Q8Y" firstAttribute="leading" secondItem="SWJ-Yx-9v3" secondAttribute="leading" id="ev9-ki-tCY"/>
+                            <constraint firstItem="xtI-So-Q8Y" firstAttribute="trailing" secondItem="JQt-IW-51D" secondAttribute="trailing" id="lTY-5Y-aLF"/>
+                            <constraint firstItem="xtI-So-Q8Y" firstAttribute="top" secondItem="SWJ-Yx-9v3" secondAttribute="top" constant="64" id="s9O-de-U1Y"/>
+                            <constraint firstItem="xtI-So-Q8Y" firstAttribute="top" secondItem="JQt-IW-51D" secondAttribute="bottom" id="yYH-Zy-DtK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Qop-lq-xWH"/>
                     </view>
