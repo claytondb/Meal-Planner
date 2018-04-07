@@ -56,7 +56,7 @@ class TableViewController: UITableViewController {
         }
         
         // Set meal image
-        if meal.mealImagePath != nil {
+        if meal.mealImagePath != nil && meal.mealImagePath != ""{
             let mealImageURL = URL(string: (meal.mealImagePath?.encodeUrl())!)
             if let imageData = try? Data(contentsOf: mealImageURL!) {
                 cell.mealImage.image = UIImage(data: imageData)

@@ -47,7 +47,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         mealLinkField.text = mealPassedIn.mealRecipeLink
         
         // Set meal image
-        if mealPassedIn.mealImagePath != nil {
+        if mealPassedIn.mealImagePath != nil && mealPassedIn.mealImagePath != "" {
             readImageData()
         } else {
             mealImageView.image = UIImage(named: "mealPlaceholder")
@@ -130,7 +130,9 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
             self.chooseImage()
         }))
         
-        photoActions.addAction(UIAlertAction(title: "Delete photo", style: .destructive, handler: nil))
+        photoActions.addAction(UIAlertAction(title: "Delete photo", style: .destructive, handler: { action in
+            self.deleteImage()
+        }))
         
         photoActions.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
     }
@@ -212,6 +214,22 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage{
             UIImageWriteToSavedPhotosAlbum(pickedImage, self, #selector(imageSaveToLibrary(_:didFinishSavingWithError:contextInfo:)), nil)
             dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    //MARK: Delete image function
+    func deleteImage() {
+        let mealImageURL = URL(string: (mealPassedIn.mealImagePath?.encodeUrl())!)
+        print("Meal image to be deleted: \(mealImageURL!)")
+        
+        let fileManager = FileManager.default
+        do {
+            try fileManager.removeItem(at: (mealImageURL)!)
+            mealPassedIn.mealImagePath = nil
+            mealImageView.image = UIImage(named: "mealPlaceholder")
+            print("Meal image deleted.")
+        } catch let err {
+            print(err)
         }
     }
     

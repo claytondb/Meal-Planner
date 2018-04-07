@@ -195,7 +195,7 @@
                                             <constraint firstAttribute="width" secondItem="aeA-ER-aeA" secondAttribute="height" multiplier="1:1" id="Ska-nV-rLf"/>
                                         </constraints>
                                     </imageView>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Chicken con pollo" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="12" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="uLi-ev-xd2" userLabel="Meal name text field">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Chicken con pollo" textAlignment="center" minimumFontSize="12" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="uLi-ev-xd2" userLabel="Meal name text field">
                                         <rect key="frame" x="24" y="398" width="272" height="36"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="36" id="zWq-RN-BMt"/>
