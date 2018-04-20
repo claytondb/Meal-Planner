@@ -17,6 +17,8 @@ class TableViewController: UITableViewController {
     
     var meal = Meal()
     
+    var mealsToShuffleArray = [Meal]()
+    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
@@ -182,43 +184,80 @@ class TableViewController: UITableViewController {
     }
     
     //MARK: Randomize meals function
+    // New way I'm going to do this:
+    // 1. Go through each item in the list, and if it's unlocked put it into mealsToShuffleArray
+    // 2. If it's locked, skip to the next meal in the list.
+    // 3. When I reach the end/top, shuffle the meals in mealsToShuffle using shuffle function from GameplayKit.
+    // 4. Go back through each item in the list, and if it's unlocked, swap in the first item from mealsToShuffleArray.
+    // 5. If it's locked, skip to the next meal in the list.
+    // 6. Do this swapping until eaching the end/top of the list.
     func randomize(with request: NSFetchRequest<Meal> = Meal.fetchRequest()) {
 
+        // This works right now, but it's only creating a new array with the visible meals (not whole meal list), and then shuffling those. How do I make it go through the entire array, not just the visible meals in the table?
         // Do-catch statement so that we can catch errors
         do {
             mealArray = try context.fetch(request)
             var lastMealInt : Int = mealArray.count - 1
 
+            // step 1
             while(lastMealInt > -1)
             {
-                let randomNumber = Int(arc4random_uniform(UInt32(lastMealInt)))
-                let mealAtRandom : Meal = mealArray[randomNumber]
                 let mealToCheck : Meal = mealArray[lastMealInt]
-                if mealToCheck.mealLocked == false && mealAtRandom.mealLocked == false {
-                    mealArray.swapAt(lastMealInt, randomNumber)
-                    print("Swapped \(mealToCheck.mealName!) with \(mealAtRandom.mealName!)")
+                if mealToCheck.mealLocked == false {
+                    mealsToShuffleArray.append(mealToCheck)
+                    print("Put \(mealToCheck.mealName!) into mealsToShuffleArray.")
                 }
-                else if mealToCheck.mealLocked == false && mealAtRandom.mealLocked == true {
-                    // do nothing
-                }
-                else if mealToCheck.mealLocked == true && mealAtRandom.mealLocked == false {
-                    // do nothing
-                }
-                else if mealToCheck.mealLocked == true && mealAtRandom.mealLocked == true {
-                    // do nothing
-                }
-                else {
+                // step 2
+                else if mealToCheck.mealLocked == true {
                     // do nothing
                 }
                 lastMealInt -= 1
             }
-            print("Randomized!")
+            print("Moved all unlocked meals to mealsToShuffle array, which now contains...")
+            print(mealsToShuffleArray)
+            
+            // step 3
+            mealsToShuffleArray = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: mealsToShuffleArray) as! [Meal]
+            print("Shuffled array is...")
+            print(mealsToShuffleArray)
         }
-
         // Second part of Do-Catch
         catch {
             print("Error loading meals. \(error)")
         }
+        
+        
+        do {
+            mealArray = try context.fetch(request)
+            var lastMealInt : Int = mealArray.count - 1
+            var lastShuffledMealInt : Int = mealsToShuffleArray.count - 1
+        // step 4 - never gets to this for some reason?
+        while(lastMealInt > -1)
+        {
+            let mealToCheck : Meal = mealArray[lastMealInt]
+            let mealToSwapIn : Meal = mealsToShuffleArray[lastShuffledMealInt]
+            if mealToCheck.mealLocked == false {
+                mealArray.insert(mealToSwapIn, at: lastMealInt)
+                mealArray.remove(at: lastMealInt)
+            }
+                // step 5
+            else if mealToCheck.mealLocked == true {
+                // do nothing
+            }
+            lastMealInt -= 1
+            if lastShuffledMealInt > -1 {
+                lastShuffledMealInt -= 1
+            } else {
+                // do nothing
+            }
+        }
+        print("Replaced entire list with shuffled one")
+        }
+        // Second part of Do-Catch
+        catch {
+                print("Error loading meals. \(error)")
+        }
+        
         saveMeals()
     }
     
