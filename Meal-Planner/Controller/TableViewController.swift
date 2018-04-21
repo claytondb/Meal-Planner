@@ -172,6 +172,7 @@ class TableViewController: UITableViewController {
     
     //MARK: Lock meal function
     func lockMeal(mealToCheck : Meal, cellToColor : UITableViewCell) {
+        loadMeals()
         if mealToCheck.mealLocked == true {
             mealToCheck.mealLocked = false
             print("\(mealToCheck.mealName!) unlocked")
@@ -194,6 +195,7 @@ class TableViewController: UITableViewController {
     // 6. Do this swapping until eaching the end/top of the list.
     func randomize(with request: NSFetchRequest<Meal> = Meal.fetchRequest()) {
 
+        // There's a weird bug right now. When you lock an item after shuffling, it shuffles everything including the locked item. But after you do that once it stays in place and it's fine. I need to check where it's loading/saving/reloading table data, where it's randomizing, and make sure they're happening in the right order.
         do {
             mealArray = try context.fetch(request)
             var lastMealInt : Int = mealArray.count - 1
@@ -265,67 +267,16 @@ class TableViewController: UITableViewController {
     
     //MARK: Tableview delegate methods - select row, segue to meal detail
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-//        print("meal = meal at indexpath in the table")
-//        let selectedMeal : Meal = mealArray[indexPath.row]
-    
         performSegue(withIdentifier: "segueToMealDetail", sender: self)
         print("Performed segue to meal detail")
-        
-        // When row is selected, you edit the meal name in an alert.
-//        editMealName()
-        
-        // When row is selected, lock/unlock it. Then save it.
-//        let meal : Meal = mealArray[indexPath.row]
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
-//        lockMeal(mealToCheck: meal, cellToColor: cell)
-        
     }
     
     
     //MARK: Button to randomize the list
     @IBAction func randomizeListButton(_ sender: Any) {
-        
         randomize()
-        
-//        let shuffledMealArray = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: mealArray)
-//        mealArray = shuffledMealArray as! [Meal]
-//        saveMeals()
-
     }
     
-    
-//    @IBAction func addMeal(_ sender: UIBarButtonItem) {
-//        print("Adding meal")
-//        var textField = UITextField()
-//        let alert = UIAlertController(title: "Add meal", message: "", preferredStyle: .alert)
-//        let action = UIAlertAction(title: "Add", style: .default) { (action) in
-//
-//            // stuff that happens when user taps add
-//            let newMeal = Meal(context: self.context)
-//            newMeal.mealName = textField.text!
-//            newMeal.mealLocked = true
-//            newMeal.sortedIndex = Int32(self.mealArray.count) + 1
-//            self.mealArray.append(newMeal)
-//
-//            print("Assigned index to new meal")
-//            self.saveMeals()
-//        }
-//
-//        alert.addTextField { (alertTextField) in
-//            alertTextField.placeholder = "Chicken con pollo"
-//            textField = alertTextField
-//            textField.autocorrectionType = .yes
-//        }
-//
-//        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-//            // do nothing
-//            print("Cancelled")
-//        }
-//        alert.addAction(cancel)
-//        alert.addAction(action)
-//        present(alert, animated: true, completion: nil)
-//    }
     
     // Both deleteMeal and lockButton cause the app to crash on my phone. What's the issue?
     @IBAction func deleteMeal(_ sender: UIButton) {
@@ -373,24 +324,17 @@ class TableViewController: UITableViewController {
         let parentTable = parentCell.superview?.superview as! UITableView
         print("set parentTable")
 
-        // Had to remove second superview because it said could not cast UIWindow as UITableView.
-//        let parentTable = parentCell.superview as! UITableView
-//        print("set parentTable")
-
         let indexPath = parentTable.indexPath(for: parentCell)
         print("set indexPath")
 
         let mealToLock = self.mealArray[indexPath!.row]
         print("set mealToLock")
 
-
         // Use index of row to set mealLocked of meal to true/false
         lockMeal(mealToCheck: mealToLock, cellToColor: parentCell)
 
-
         // Save data
         saveMeals()
-
     }
     
     
