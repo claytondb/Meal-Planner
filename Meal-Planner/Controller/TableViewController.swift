@@ -213,49 +213,39 @@ class TableViewController: UITableViewController {
                 }
                 lastMealInt -= 1
             }
-            print("Moved all unlocked meals to mealsToShuffle array, which now contains...")
-            print(mealsToShuffleArray)
+            print("Moved all unlocked meals to mealsToShuffleArray.")
             
-            // step 3
+            // step 3: shuffle the meals
             mealsToShuffleArray = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: mealsToShuffleArray) as! [Meal]
-            print("Shuffled array is...")
-            print(mealsToShuffleArray)
+            print("Shuffled unlocked meals in mealsToShuffleArray")
+            
+            // reset lastMealInt to the bottom item in the list
+            lastMealInt = mealArray.count - 1
+            print("Reset lastmealint. Now it's \(lastMealInt).")
+            
+            var lastShuffledMealInt : Int = mealsToShuffleArray.count - 1
+            print("Lastshuffledmealint is \(lastShuffledMealInt).")
+            
+            // step 4 - never gets to this for some reason?
+            while(lastMealInt > -1 && lastShuffledMealInt > -1)
+            {
+                let mealToCheck : Meal = mealArray[lastMealInt]
+                let mealToSwapIn : Meal = mealsToShuffleArray[lastShuffledMealInt]
+                if mealToCheck.mealLocked == false {
+                    mealArray.remove(at: lastMealInt)
+                    mealArray.insert(mealToSwapIn, at: lastMealInt)
+                    lastShuffledMealInt -= 1
+                }
+                    // step 5
+                else if mealToCheck.mealLocked == true {
+                    // do nothing
+                }
+                lastMealInt -= 1
+            }
         }
         // Second part of Do-Catch
         catch {
             print("Error loading meals. \(error)")
-        }
-        
-        
-        do {
-            mealArray = try context.fetch(request)
-            var lastMealInt : Int = mealArray.count - 1
-            var lastShuffledMealInt : Int = mealsToShuffleArray.count - 1
-        // step 4 - never gets to this for some reason?
-        while(lastMealInt > -1)
-        {
-            let mealToCheck : Meal = mealArray[lastMealInt]
-            let mealToSwapIn : Meal = mealsToShuffleArray[lastShuffledMealInt]
-            if mealToCheck.mealLocked == false {
-                mealArray.insert(mealToSwapIn, at: lastMealInt)
-                mealArray.remove(at: lastMealInt)
-            }
-                // step 5
-            else if mealToCheck.mealLocked == true {
-                // do nothing
-            }
-            lastMealInt -= 1
-            if lastShuffledMealInt > -1 {
-                lastShuffledMealInt -= 1
-            } else {
-                // do nothing
-            }
-        }
-        print("Replaced entire list with shuffled one")
-        }
-        // Second part of Do-Catch
-        catch {
-                print("Error loading meals. \(error)")
         }
         
         saveMeals()
