@@ -108,7 +108,8 @@ class TableViewController: UITableViewController {
         return mealArray.count
         } else {
             return 7
-    }
+        }
+//        return mealArray.count
     }
         
         
@@ -193,11 +194,10 @@ class TableViewController: UITableViewController {
     // 6. Do this swapping until eaching the end/top of the list.
     func randomize(with request: NSFetchRequest<Meal> = Meal.fetchRequest()) {
 
-        // This works right now, but it's only creating a new array with the visible meals (not whole meal list), and then shuffling those. How do I make it go through the entire array, not just the visible meals in the table?
-        // Do-catch statement so that we can catch errors
         do {
             mealArray = try context.fetch(request)
             var lastMealInt : Int = mealArray.count - 1
+            print("LastMealInt is \(lastMealInt).")
 
             // step 1
             while(lastMealInt > -1)
@@ -213,7 +213,9 @@ class TableViewController: UITableViewController {
                 }
                 lastMealInt -= 1
             }
-            print("Moved all unlocked meals to mealsToShuffleArray.")
+            
+            var lastShuffledMealInt : Int = mealsToShuffleArray.count - 1
+            print("Moved \(lastShuffledMealInt) unlocked meals to mealsToShuffleArray.")
             
             // step 3: shuffle the meals
             mealsToShuffleArray = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: mealsToShuffleArray) as! [Meal]
@@ -221,10 +223,7 @@ class TableViewController: UITableViewController {
             
             // reset lastMealInt to the bottom item in the list
             lastMealInt = mealArray.count - 1
-            print("Reset lastmealint. Now it's \(lastMealInt).")
-            
-            var lastShuffledMealInt : Int = mealsToShuffleArray.count - 1
-            print("Lastshuffledmealint is \(lastShuffledMealInt).")
+            print("Reset lastMealInt. Now it's \(lastMealInt).")
             
             // step 4 - never gets to this for some reason?
             while(lastMealInt > -1 && lastShuffledMealInt > -1)
@@ -248,7 +247,6 @@ class TableViewController: UITableViewController {
         catch {
             print("Error loading meals. \(error)")
         }
-        
         saveMeals()
     }
     
