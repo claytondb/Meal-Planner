@@ -234,6 +234,7 @@ class TableViewController: UITableViewController {
                 if mealToCheck.mealLocked == false {
                     mealArray.remove(at: lastMealInt)
                     mealArray.insert(mealToSwapIn, at: lastMealInt)
+                    mealsToShuffleArray.remove(at: lastShuffledMealInt)
                     lastShuffledMealInt -= 1
                 }
                     // step 5
