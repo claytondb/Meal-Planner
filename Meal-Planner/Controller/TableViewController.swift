@@ -104,12 +104,12 @@ class TableViewController: UITableViewController {
 
     // Method 2
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if mealArray.count <= 7 {
-        return mealArray.count
-        } else {
-            return 7
-        }
+//        if mealArray.count <= 7 {
 //        return mealArray.count
+//        } else {
+//            return 7
+//        }
+        return mealArray.count
     }
         
         
