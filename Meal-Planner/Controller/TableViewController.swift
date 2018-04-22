@@ -36,7 +36,6 @@ class TableViewController: UITableViewController {
         
         loadMeals()
         
-        
     }
     
     
@@ -97,10 +96,23 @@ class TableViewController: UITableViewController {
         cell.onLockTapped = {
             self.lockMeal(mealToCheck: meal, cellToColor: cell)
         }
-        
         return cell
     }
     
+//    // Method 2: Sorts tableview rows in order they need to be in.
+//    func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+//
+//        if var items = TableViewController.fetchedObjects as? [Meal],
+//            let itemToMove = TableViewController.objectAtIndexPath(sourceIndexPath) as? Meal {
+//
+//            items.removeAtIndex(sourceIndexPath.row)
+//            items.insert(itemToMove, atIndex: destinationIndexPath.row)
+//
+//            for (index, item) in enumerate(items) {
+//                item.orderIndex = Int32(index)
+//            }
+//        }
+//    }
 
     // Method 2
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -173,9 +185,6 @@ class TableViewController: UITableViewController {
     //MARK: Lock meal function
     func lockMeal(mealToCheck : Meal, cellToColor : UITableViewCell) {
         
-        // I linked mealToCheck to the context, so the context will store which meal is being checked. I think?
-//        let mealToCheck = Meal(context: context)
-        
         if mealToCheck.mealLocked == true {
             mealToCheck.mealLocked = false
             print("\(mealToCheck.mealName!) unlocked")
@@ -198,10 +207,7 @@ class TableViewController: UITableViewController {
     // 6. Do this swapping until eaching the end/top of the list.
     func randomize() {
 
-        // There's a weird bug right now. When you lock an item after shuffling, it shuffles everything including the locked item. But after you do that once it stays in place and it's fine. I need to check where it's loading/saving/reloading table data, where it's randomizing, and make sure they're happening in the right order.
         do {
-            // I shouldn't have to load the meals when I randomize.
-//            mealArray = try context.fetch(request)
             var lastMealInt : Int = mealArray.count - 1
             print("LastMealInt is \(lastMealInt).")
 
@@ -249,11 +255,6 @@ class TableViewController: UITableViewController {
                 lastMealInt -= 1
             }
         }
-        // Second part of Do-Catch
-        catch {
-            print("Error loading meals. \(error)")
-        }
-        saveMeals()
     }
     
     //MARK: Pass in data on segue
@@ -279,6 +280,7 @@ class TableViewController: UITableViewController {
     //MARK: Button to randomize the list
     @IBAction func randomizeListButton(_ sender: Any) {
         randomize()
+        saveMeals()
     }
     
     
