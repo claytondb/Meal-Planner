@@ -172,7 +172,10 @@ class TableViewController: UITableViewController {
     
     //MARK: Lock meal function
     func lockMeal(mealToCheck : Meal, cellToColor : UITableViewCell) {
-        loadMeals()
+        
+        // I linked mealToCheck to the context, so the context will store which meal is being checked. I think?
+//        let mealToCheck = Meal(context: context)
+        
         if mealToCheck.mealLocked == true {
             mealToCheck.mealLocked = false
             print("\(mealToCheck.mealName!) unlocked")
@@ -193,11 +196,12 @@ class TableViewController: UITableViewController {
     // 4. Go back through each item in the list, and if it's unlocked, swap in the first item from mealsToShuffleArray.
     // 5. If it's locked, skip to the next meal in the list.
     // 6. Do this swapping until eaching the end/top of the list.
-    func randomize(with request: NSFetchRequest<Meal> = Meal.fetchRequest()) {
+    func randomize() {
 
         // There's a weird bug right now. When you lock an item after shuffling, it shuffles everything including the locked item. But after you do that once it stays in place and it's fine. I need to check where it's loading/saving/reloading table data, where it's randomizing, and make sure they're happening in the right order.
         do {
-            mealArray = try context.fetch(request)
+            // I shouldn't have to load the meals when I randomize.
+//            mealArray = try context.fetch(request)
             var lastMealInt : Int = mealArray.count - 1
             print("LastMealInt is \(lastMealInt).")
 
@@ -332,9 +336,6 @@ class TableViewController: UITableViewController {
 
         // Use index of row to set mealLocked of meal to true/false
         lockMeal(mealToCheck: mealToLock, cellToColor: parentCell)
-
-        // Save data
-        saveMeals()
     }
     
     
