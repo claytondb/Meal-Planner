@@ -246,6 +246,10 @@ class TableViewController: UITableViewController {
                     mealArray.remove(at: lastMealInt)
                     mealArray.insert(mealToSwapIn, at: lastMealInt)
                     mealsToShuffleArray.remove(at: lastShuffledMealInt)
+                    
+                    // Assign current position in list to mealSortedOrder)
+                    mealToSwapIn.mealSortedOrder = Int32(lastMealInt)
+                        
                     lastShuffledMealInt -= 1
                 }
                     // step 5
@@ -293,7 +297,6 @@ class TableViewController: UITableViewController {
             // Find parent of the button (cell), then parent of cell (table row), then index of that row.
             let parentCell = sender.superview?.superview as! UITableViewCell
             let parentTable = parentCell.superview?.superview as! UITableView
-//            let parentTable = parentCell.superview as! UITableView
             let indexPath = parentTable.indexPath(for: parentCell)
             let mealToDelete = self.mealArray[indexPath!.row]
             
