@@ -19,6 +19,8 @@ class TableViewController: UITableViewController {
     
     var mealsToShuffleArray = [Meal]()
     
+    var storageArray = [Meal]()
+    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
@@ -83,6 +85,8 @@ class TableViewController: UITableViewController {
             cell.mealDay?.text = "Friday"
         } else if indexPath.row == 6 {
             cell.mealDay?.text = "Saturday"
+        } else if indexPath.row > 6 {
+            cell.isHidden = true
         }
         
         // Color cell if it's locked.
@@ -94,16 +98,16 @@ class TableViewController: UITableViewController {
         
         // Accessing the lock button inside CustomMealCell
         cell.onLockTapped = {
-            self.lockMeal(mealToCheck: meal, cellToColor: cell)
+            self.lockMeal(mealToCheck: self.meal, cellToColor: cell)
         }
         return cell
     }
     
-//    // Method 2: Sorts tableview rows in order they need to be in.
+////    // Method 2: Sorts tableview rows in order they need to be in.
 //    func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
 //
-//        if var items = TableViewController.fetchedObjects as? [Meal],
-//            let itemToMove = TableViewController.objectAtIndexPath(sourceIndexPath) as? Meal {
+//        if var items = tableView.fetchedObjects as? [Meal],
+//            let itemToMove = tableView.objectAtIndexPath(sourceIndexPath) as? Meal {
 //
 //            items.removeAtIndex(sourceIndexPath.row)
 //            items.insert(itemToMove, atIndex: destinationIndexPath.row)
@@ -259,6 +263,8 @@ class TableViewController: UITableViewController {
                 lastMealInt -= 1
             }
         }
+        // Store the meal order so we can recall it when app starts up again
+        storageArray = mealArray
     }
     
     //MARK: Pass in data on segue

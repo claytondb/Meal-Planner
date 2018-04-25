@@ -23,8 +23,6 @@ class CustomMealCell: UITableViewCell {
             onLockTapped()
         }
     }
-    //this has to be an outlet to access it in TableViewController
-//    @IBOutlet weak var lockButtonOutlet: UIButton!
     
     
     override func awakeFromNib() {
