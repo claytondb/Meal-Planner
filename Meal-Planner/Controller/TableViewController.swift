@@ -19,8 +19,6 @@ class TableViewController: UITableViewController {
     
     var mealsToShuffleArray = [Meal]()
     
-    var storageArray = [Meal]()
-    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
@@ -54,6 +52,7 @@ class TableViewController: UITableViewController {
         // Set meal name
         if meal.mealName == nil {
             meal.mealName = "Meal name"
+            meal.mealLocked = false
         } else {
             cell.mealLabel?.text = meal.mealName!
         }
@@ -98,7 +97,7 @@ class TableViewController: UITableViewController {
         
         // Accessing the lock button inside CustomMealCell
         cell.onLockTapped = {
-            self.lockMeal(mealToCheck: self.meal, cellToColor: cell)
+            self.lockMeal(mealToCheck: meal, cellToColor: cell)
         }
         return cell
     }
@@ -263,8 +262,6 @@ class TableViewController: UITableViewController {
                 lastMealInt -= 1
             }
         }
-        // Store the meal order so we can recall it when app starts up again
-        storageArray = mealArray
     }
     
     //MARK: Pass in data on segue
@@ -323,9 +320,6 @@ class TableViewController: UITableViewController {
         alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
     }
-    
-
-    
     
     @IBAction func lockButton(_ sender: CustomMealCell) {
 
