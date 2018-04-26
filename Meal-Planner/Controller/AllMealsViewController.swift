@@ -101,6 +101,26 @@ class AllMealsViewController: UITableViewController {
     }
     
     
+    func tableView(_ tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        print("can move rows")
+        
+        return true
+    }
+    func tableView(_ tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
+        let itemToMove = mealArray[fromIndexPath.row]
+        mealArray.remove(at: fromIndexPath.row)
+        mealArray.insert(itemToMove, at: toIndexPath.row)
+        
+        saveMeals()
+    }
+    @IBAction func startEditing(_ sender: UIBarButtonItem) {
+        if self.isEditing == false {
+            setEditing(true, animated: true)
+        } else {
+            setEditing(false, animated: true)
+        }
+    }
+    
     //MARK: Edit meal name function
     func editMealName() {
         print("Editing meal")

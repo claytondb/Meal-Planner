@@ -36,6 +36,9 @@ class TableViewController: UITableViewController {
         
         loadMeals()
         sortMeals()
+//        self.tableView.bounds.height = CGFloat(mealArray.count) * (self.tableView.rowHeight)
+        
+        
     }
     
     
@@ -102,20 +105,6 @@ class TableViewController: UITableViewController {
         return cell
     }
     
-////    // Method 2: Sorts tableview rows in order they need to be in.
-//    func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-//
-//        if var items = tableView.fetchedObjects as? [Meal],
-//            let itemToMove = tableView.objectAtIndexPath(sourceIndexPath) as? Meal {
-//
-//            items.removeAtIndex(sourceIndexPath.row)
-//            items.insert(itemToMove, atIndex: destinationIndexPath.row)
-//
-//            for (index, item) in enumerate(items) {
-//                item.orderIndex = Int32(index)
-//            }
-//        }
-//    }
 
     // Method 2
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

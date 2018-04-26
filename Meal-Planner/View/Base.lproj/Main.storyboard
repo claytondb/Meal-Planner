@@ -77,6 +77,11 @@
                             <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <items>
                                 <navigationItem title="All Meals" id="ana-EK-hvU">
+                                    <barButtonItem key="leftBarButtonItem" title="Edit" id="gii-bc-N9y">
+                                        <connections>
+                                            <action selector="startEditing:" destination="jxk-P9-Fvy" id="E2u-5l-JBB"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem key="rightBarButtonItem" image="ic_add" id="gdX-pM-G3R">
                                         <connections>
                                             <action selector="addMeal:" destination="jxk-P9-Fvy" id="tWl-6S-F04"/>
@@ -216,30 +221,49 @@
                                             <action selector="importImageButton:" destination="qhB-Wg-zV1" eventType="touchUpInside" id="6g4-uz-gv7"/>
                                         </connections>
                                     </button>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="http://yourrecipehere.com" textAlignment="center" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="T0o-zt-hvV">
-                                        <rect key="frame" x="24" y="458" width="272" height="36"/>
+                                    <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="http://yourrecipehere.com" textAlignment="center" minimumFontSize="12" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="T0o-zt-hvV">
+                                        <rect key="frame" x="24" y="458" width="224" height="36"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="36" id="5MC-Ai-4Yl"/>
                                         </constraints>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <textInputTraits key="textInputTraits" keyboardType="URL" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="URL" returnKeyType="done" enablesReturnKeyAutomatically="YES" textContentType="url"/>
                                     </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="http://www.meallinkname.com" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qhb-ez-E33" userLabel="Meal Link label">
+                                        <rect key="frame" x="24" y="458" width="224" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Knp-7H-6Dd" userLabel="Edit Link">
+                                        <rect key="frame" x="272" y="464" width="24" height="24"/>
+                                        <color key="backgroundColor" red="0.0" green="1" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="24" id="xLg-uA-vwR"/>
+                                        </constraints>
+                                        <state key="normal" image="ic_edit"/>
+                                    </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="T0o-zt-hvV" secondAttribute="trailing" constant="24" id="4WF-6t-R8h"/>
                                     <constraint firstItem="uLi-ev-xd2" firstAttribute="leading" secondItem="xtI-So-Q8Y" secondAttribute="leading" constant="24" id="5Cj-7a-ebE"/>
+                                    <constraint firstItem="Knp-7H-6Dd" firstAttribute="leading" secondItem="T0o-zt-hvV" secondAttribute="trailing" constant="24" id="6Yt-pZ-fD6"/>
+                                    <constraint firstItem="Knp-7H-6Dd" firstAttribute="centerY" secondItem="T0o-zt-hvV" secondAttribute="centerY" id="CES-PS-RSR"/>
                                     <constraint firstItem="uLi-ev-xd2" firstAttribute="top" secondItem="So4-zx-i0m" secondAttribute="bottom" constant="24" id="CSK-i0-tLH"/>
                                     <constraint firstAttribute="bottom" secondItem="T0o-zt-hvV" secondAttribute="bottom" constant="60" id="ClS-lm-VsF"/>
+                                    <constraint firstItem="Qhb-ez-E33" firstAttribute="top" secondItem="T0o-zt-hvV" secondAttribute="top" id="EGA-lg-vWh"/>
                                     <constraint firstItem="uLi-ev-xd2" firstAttribute="centerX" secondItem="xtI-So-Q8Y" secondAttribute="centerX" id="IOM-wg-AKn"/>
+                                    <constraint firstItem="Qhb-ez-E33" firstAttribute="trailing" secondItem="T0o-zt-hvV" secondAttribute="trailing" id="JS6-1L-TRz"/>
+                                    <constraint firstAttribute="trailing" secondItem="Knp-7H-6Dd" secondAttribute="trailing" constant="24" id="MuO-sV-bqg"/>
                                     <constraint firstItem="So4-zx-i0m" firstAttribute="centerX" secondItem="xtI-So-Q8Y" secondAttribute="centerX" id="ZDz-ML-Tvv"/>
                                     <constraint firstItem="aeA-ER-aeA" firstAttribute="leading" secondItem="xtI-So-Q8Y" secondAttribute="leading" id="b7i-xr-6GA"/>
                                     <constraint firstItem="T0o-zt-hvV" firstAttribute="top" secondItem="uLi-ev-xd2" secondAttribute="bottom" constant="24" id="eGJ-rM-Y9r"/>
-                                    <constraint firstItem="T0o-zt-hvV" firstAttribute="centerX" secondItem="xtI-So-Q8Y" secondAttribute="centerX" id="gPH-Rx-yrI"/>
                                     <constraint firstAttribute="trailing" secondItem="uLi-ev-xd2" secondAttribute="trailing" constant="24" id="gx8-1D-KN4"/>
                                     <constraint firstItem="T0o-zt-hvV" firstAttribute="leading" secondItem="xtI-So-Q8Y" secondAttribute="leading" constant="24" id="h0F-4z-Rfe"/>
                                     <constraint firstAttribute="trailing" secondItem="aeA-ER-aeA" secondAttribute="trailing" id="iH3-xq-cxG"/>
                                     <constraint firstItem="aeA-ER-aeA" firstAttribute="top" secondItem="xtI-So-Q8Y" secondAttribute="top" id="jwr-hD-Oem"/>
+                                    <constraint firstItem="Qhb-ez-E33" firstAttribute="bottom" secondItem="T0o-zt-hvV" secondAttribute="bottom" id="pdv-o9-VvM"/>
+                                    <constraint firstItem="Qhb-ez-E33" firstAttribute="leading" secondItem="T0o-zt-hvV" secondAttribute="leading" id="qGI-fr-Bhy"/>
                                     <constraint firstItem="So4-zx-i0m" firstAttribute="top" secondItem="aeA-ER-aeA" secondAttribute="bottom" constant="24" id="zoe-UU-mEr"/>
                                 </constraints>
                                 <edgeInsets key="layoutMargins" top="24" left="24" bottom="24" right="24"/>
@@ -272,12 +296,13 @@
     </scenes>
     <resources>
         <image name="ic_add" width="36" height="36"/>
+        <image name="ic_edit" width="24" height="24"/>
         <image name="ic_list" width="36" height="36"/>
         <image name="ic_restaurant" width="36" height="36"/>
         <image name="ic_settings" width="36" height="36"/>
         <image name="mealPlaceholder" width="64" height="64"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="9gB-AA-kie"/>
+        <segue reference="AmH-Fy-kCY"/>
     </inferredMetricsTieBreakers>
 </document>
