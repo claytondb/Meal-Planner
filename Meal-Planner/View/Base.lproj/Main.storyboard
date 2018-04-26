@@ -24,6 +24,11 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <items>
                                 <navigationItem title="Week" id="QZg-sw-TAJ">
+                                    <barButtonItem key="leftBarButtonItem" title="Edit" id="NZz-pI-csS">
+                                        <connections>
+                                            <action selector="startEditing:" destination="od0-LT-Bni" id="m1k-YT-VXE"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem key="rightBarButtonItem" title="Shuffle" id="kZR-Ff-My9">
                                         <connections>
                                             <action selector="randomizeListButton:" destination="od0-LT-Bni" id="eEz-ia-RmP"/>

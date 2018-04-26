@@ -35,7 +35,7 @@ class TableViewController: UITableViewController {
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         
         loadMeals()
-        
+        sortMeals()
     }
     
     
@@ -130,7 +130,6 @@ class TableViewController: UITableViewController {
         
         // Override to support editing the table view. Swipe to delete.
         override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-            
             if editingStyle == .delete {
                 
                 let mealToDelete = self.mealArray[indexPath.row]
@@ -144,8 +143,30 @@ class TableViewController: UITableViewController {
                 self.saveMeals()
                 
             }
-            
         }
+    func tableView(_ tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        print("can move rows")
+        
+        return true
+    }
+    func tableView(_ tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
+        let itemToMove = mealArray[fromIndexPath.row]
+        mealArray.remove(at: fromIndexPath.row)
+        mealArray.insert(itemToMove, at: toIndexPath.row)
+        
+        saveMeals()
+    }
+
+    //MARK: Reordering controls and tableView methods
+    @IBAction func startEditing(_ sender: UIBarButtonItem) {
+        // Editing meals to be able to reorder them
+//        self.isEditing = !self.isEditing
+        if self.isEditing == false {
+        setEditing(true, animated: true)
+        } else {
+            setEditing(false, animated: true)
+        }
+    }
     
 
     
@@ -259,6 +280,20 @@ class TableViewController: UITableViewController {
                 else if mealToCheck.mealLocked == true {
                     // do nothing
                 }
+                lastMealInt -= 1
+            }
+        }
+    }
+    
+    //MARK: Function to sort tableview according to mealSortedIndex
+    func sortMeals() {
+        do {
+            var lastMealInt : Int = mealArray.count - 1
+            lastMealInt = mealArray.count - 1
+            while(lastMealInt > -1)
+            {
+                let mealToCheck : Meal = mealArray[lastMealInt]
+                mealArray.swapAt(lastMealInt, Int(mealToCheck.mealSortedOrder))
                 lastMealInt -= 1
             }
         }
