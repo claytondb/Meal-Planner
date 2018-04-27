@@ -25,6 +25,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     @IBOutlet weak var mealImageView: UIImageView!
     @IBOutlet weak var mealNameField: UITextField!
     @IBOutlet weak var mealLinkField: UITextField!
+    @IBOutlet weak var mealLinkLabel: UILabel!
     
     
     // Start the view controller
@@ -32,7 +33,6 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         super.viewDidLoad()
         
         imagePicker.delegate = self
-        
         mealNameField.delegate = self
         mealLinkField.delegate = self
         
@@ -43,8 +43,13 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         print("\(mealPassedIn.mealName!) detail view")
         
         // Change label to name of meal
-        mealNameField.text = mealPassedIn.mealName
-        mealLinkField.text = mealPassedIn.mealRecipeLink
+        if mealPassedIn.mealRecipeLink == nil {
+            mealLinkField.text = "http://www.allrecipes.com"
+            mealLinkLabel.text = "http://www.allrecipes.com"
+        } else {
+            mealLinkLabel.text = mealPassedIn.mealRecipeLink
+            mealLinkField.text = mealPassedIn.mealRecipeLink
+        }
         
         // Set meal image
         if mealPassedIn.mealImagePath != nil && mealPassedIn.mealImagePath != "" {
@@ -89,6 +94,8 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     {
         mealNameField.resignFirstResponder()
         mealLinkField.resignFirstResponder()
+        mealLinkField.isHidden = true
+        mealLinkLabel.isHidden = false
         return true
     }
     
@@ -233,6 +240,22 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         }
     }
     
+    //MARK: Edit link button pressed
+    @IBAction func editLinkPressed(_ sender: UIButton) {
+        if mealLinkField.isHidden == true {
+            mealLinkField.isHidden = false
+            mealLinkLabel.isHidden = true
+            mealLinkField.isEnabled = true
+        } else if mealLinkField.isHidden == false {
+            mealLinkField.isHidden = true
+            mealLinkLabel.isHidden = false
+            mealLinkField.isEnabled = false
+        }
+    }
+    
+    @IBAction func mealLinkButtonPressed(_ sender: UIButton) {
+        // Open URL of mealRecipesLink
+    }
     
     //MARK: Model manipulation methods
     func saveMealDetail(){

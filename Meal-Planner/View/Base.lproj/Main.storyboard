@@ -221,6 +221,23 @@
                                             <action selector="importImageButton:" destination="qhB-Wg-zV1" eventType="touchUpInside" id="6g4-uz-gv7"/>
                                         </connections>
                                     </button>
+                                    <label hidden="YES" opaque="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="http://www.allrecipes.com" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qhb-ez-E33" userLabel="Meal Link label">
+                                        <rect key="frame" x="24" y="458" width="224" height="36"/>
+                                        <accessibility key="accessibilityConfiguration">
+                                            <accessibilityTraits key="traits" link="YES" staticText="YES"/>
+                                        </accessibility>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f3V-uX-a6k" userLabel="Meal Link button">
+                                        <rect key="frame" x="24" y="458" width="224" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <state key="normal" title="http://www.allrecipes.com"/>
+                                        <connections>
+                                            <action selector="mealLinkButtonPressed:" destination="qhB-Wg-zV1" eventType="touchUpInside" id="eft-9p-aUz"/>
+                                        </connections>
+                                    </button>
                                     <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="http://yourrecipehere.com" textAlignment="center" minimumFontSize="12" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="T0o-zt-hvV">
                                         <rect key="frame" x="24" y="458" width="224" height="36"/>
                                         <constraints>
@@ -230,19 +247,15 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <textInputTraits key="textInputTraits" keyboardType="URL" returnKeyType="done" enablesReturnKeyAutomatically="YES" textContentType="url"/>
                                     </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="http://www.meallinkname.com" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qhb-ez-E33" userLabel="Meal Link label">
-                                        <rect key="frame" x="24" y="458" width="224" height="36"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Knp-7H-6Dd" userLabel="Edit Link">
+                                    <button opaque="NO" alpha="0.54000000000000004" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Knp-7H-6Dd" userLabel="Edit Link">
                                         <rect key="frame" x="272" y="464" width="24" height="24"/>
-                                        <color key="backgroundColor" red="0.0" green="1" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="24" id="xLg-uA-vwR"/>
                                         </constraints>
                                         <state key="normal" image="ic_edit"/>
+                                        <connections>
+                                            <action selector="editLinkPressed:" destination="qhB-Wg-zV1" eventType="touchUpInside" id="xlo-z1-nhS"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -252,10 +265,14 @@
                                     <constraint firstItem="uLi-ev-xd2" firstAttribute="top" secondItem="So4-zx-i0m" secondAttribute="bottom" constant="24" id="CSK-i0-tLH"/>
                                     <constraint firstAttribute="bottom" secondItem="T0o-zt-hvV" secondAttribute="bottom" constant="60" id="ClS-lm-VsF"/>
                                     <constraint firstItem="Qhb-ez-E33" firstAttribute="top" secondItem="T0o-zt-hvV" secondAttribute="top" id="EGA-lg-vWh"/>
+                                    <constraint firstItem="f3V-uX-a6k" firstAttribute="leading" secondItem="T0o-zt-hvV" secondAttribute="leading" id="Hnb-Dx-wSg"/>
                                     <constraint firstItem="uLi-ev-xd2" firstAttribute="centerX" secondItem="xtI-So-Q8Y" secondAttribute="centerX" id="IOM-wg-AKn"/>
                                     <constraint firstItem="Qhb-ez-E33" firstAttribute="trailing" secondItem="T0o-zt-hvV" secondAttribute="trailing" id="JS6-1L-TRz"/>
+                                    <constraint firstItem="f3V-uX-a6k" firstAttribute="top" secondItem="Qhb-ez-E33" secondAttribute="top" id="Kdc-RV-BfA"/>
                                     <constraint firstAttribute="trailing" secondItem="Knp-7H-6Dd" secondAttribute="trailing" constant="24" id="MuO-sV-bqg"/>
+                                    <constraint firstItem="f3V-uX-a6k" firstAttribute="trailing" secondItem="Qhb-ez-E33" secondAttribute="trailing" id="Z0l-gJ-2Ak"/>
                                     <constraint firstItem="So4-zx-i0m" firstAttribute="centerX" secondItem="xtI-So-Q8Y" secondAttribute="centerX" id="ZDz-ML-Tvv"/>
+                                    <constraint firstItem="f3V-uX-a6k" firstAttribute="bottom" secondItem="Qhb-ez-E33" secondAttribute="bottom" id="aA4-uO-WQg"/>
                                     <constraint firstItem="aeA-ER-aeA" firstAttribute="leading" secondItem="xtI-So-Q8Y" secondAttribute="leading" id="b7i-xr-6GA"/>
                                     <constraint firstItem="T0o-zt-hvV" firstAttribute="top" secondItem="uLi-ev-xd2" secondAttribute="bottom" constant="24" id="eGJ-rM-Y9r"/>
                                     <constraint firstAttribute="trailing" secondItem="uLi-ev-xd2" secondAttribute="trailing" constant="24" id="gx8-1D-KN4"/>
@@ -284,6 +301,7 @@
                     <connections>
                         <outlet property="mealImageView" destination="aeA-ER-aeA" id="2fP-Hl-6oT"/>
                         <outlet property="mealLinkField" destination="T0o-zt-hvV" id="VVq-XU-DWW"/>
+                        <outlet property="mealLinkLabel" destination="Qhb-ez-E33" id="dPg-3N-eR7"/>
                         <outlet property="mealNameField" destination="uLi-ev-xd2" id="nEB-g5-FFI"/>
                         <outlet property="scrollView" destination="xtI-So-Q8Y" id="d0l-3l-xzL"/>
                         <segue destination="emp-Xl-kwo" kind="show" identifier="segueDismissMealDetail" id="oHm-tp-4ax"/>
