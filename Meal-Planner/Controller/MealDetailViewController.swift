@@ -26,6 +26,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     @IBOutlet weak var mealNameField: UITextField!
     @IBOutlet weak var mealLinkField: UITextField!
     @IBOutlet weak var mealLinkLabel: UILabel!
+    @IBOutlet weak var mealLinkButtonOutlet: UIButton!
     
     
     // Start the view controller
@@ -43,12 +44,22 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         print("\(mealPassedIn.mealName!) detail view")
         
         // Change label to name of meal
+        if mealPassedIn.mealName == nil {
+            mealPassedIn.mealName = "New meal"
+        } else if mealPassedIn.mealName != nil {
+            mealNameField.text = mealPassedIn.mealName
+        }
+        
+        // Change recipe link text
         if mealPassedIn.mealRecipeLink == nil {
             mealLinkField.text = "http://www.allrecipes.com"
             mealLinkLabel.text = "http://www.allrecipes.com"
-        } else {
+            mealPassedIn.mealRecipeLink = "http://www.allrecipes.com"
+            mealLinkButtonOutlet.setTitle("http://www.allrecipes.com", for: .normal)
+        } else if mealPassedIn.mealRecipeLink != nil {
             mealLinkLabel.text = mealPassedIn.mealRecipeLink
             mealLinkField.text = mealPassedIn.mealRecipeLink
+            mealLinkButtonOutlet.setTitle(mealPassedIn.mealRecipeLink, for: .normal)
         }
         
         // Set meal image
@@ -95,7 +106,10 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         mealNameField.resignFirstResponder()
         mealLinkField.resignFirstResponder()
         mealLinkField.isHidden = true
-        mealLinkLabel.isHidden = false
+//        mealLinkLabel.isHidden = false
+        mealLinkButtonOutlet.isHidden = false
+        mealLinkButtonOutlet.setTitle(mealLinkField.text, for: .normal)
+        mealPassedIn.mealRecipeLink = mealLinkField.text
         return true
     }
     
@@ -255,6 +269,10 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     
     @IBAction func mealLinkButtonPressed(_ sender: UIButton) {
         // Open URL of mealRecipesLink
+        if let url = NSURL(string: mealPassedIn.mealRecipeLink!){
+//            UIApplication.shared.openURL(url as URL)
+            UIApplication.shared.open(url as URL)
+        }
     }
     
     //MARK: Model manipulation methods
