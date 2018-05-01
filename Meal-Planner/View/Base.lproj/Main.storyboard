@@ -14,7 +14,7 @@
         <!--Week-->
         <scene sceneID="pna-Vp-UND">
             <objects>
-                <tableViewController storyboardIdentifier="homeTableView" id="od0-LT-Bni" customClass="TableViewController" customModule="Meal_Planner" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="homeTableView" title="Week" id="od0-LT-Bni" customClass="TableViewController" customModule="Meal_Planner" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="mealsTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="YuM-ZT-UlN">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -58,6 +58,9 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <tabBarItem key="tabBarItem" title="Week" image="ic_restaurant" id="CvR-XA-YBn"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue destination="t0D-hE-n2k" kind="show" identifier="segueToReplaceMeal" id="1vS-Hg-knm"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KqJ-4Y-jIR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -114,6 +117,80 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ycb-yX-5wH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1699" y="132"/>
+        </scene>
+        <!--Replace Meal Controller-->
+        <scene sceneID="5Kt-Tv-L7b">
+            <objects>
+                <viewController title="Replace Meal Controller" id="t0D-hE-n2k" customClass="ReplaceMealController" customModule="Meal_Planner" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="gqd-xQ-LvD">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="f44-PI-m2v">
+                                <rect key="frame" x="0.0" y="100" width="320" height="468"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="customMealCell" id="Yez-zJ-dTn" customClass="CustomMealCell" customModule="Meal_Planner" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Yez-zJ-dTn" id="AgS-0y-BXz">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oaw-nQ-HLp">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <items>
+                                    <navigationItem title="Replace with..." id="hb6-0A-2Sn">
+                                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="X90-Kc-i4B">
+                                            <connections>
+                                                <action selector="startEditing:" destination="jxk-P9-Fvy" id="4Av-nA-Gkw"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="Replace" id="xxn-2F-0Ed">
+                                            <connections>
+                                                <action selector="addMeal:" destination="jxk-P9-Fvy" id="a6l-vt-nYP"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <searchBar contentMode="redraw" placeholder="Search for a meal" translatesAutoresizingMaskIntoConstraints="NO" id="wp6-2L-xQd">
+                                <rect key="frame" x="0.0" y="44" width="320" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <scopeButtonTitles>
+                                    <string>Title</string>
+                                    <string>Title</string>
+                                </scopeButtonTitles>
+                            </searchBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="oaw-nQ-HLp" firstAttribute="leading" secondItem="gqd-xQ-LvD" secondAttribute="leading" id="41Y-m6-mqb"/>
+                            <constraint firstItem="oaw-nQ-HLp" firstAttribute="leading" secondItem="wp6-2L-xQd" secondAttribute="leading" id="LAf-k4-AZi"/>
+                            <constraint firstItem="oaw-nQ-HLp" firstAttribute="trailing" secondItem="wp6-2L-xQd" secondAttribute="trailing" id="RAe-sT-SUr"/>
+                            <constraint firstAttribute="trailing" secondItem="oaw-nQ-HLp" secondAttribute="trailing" id="RRp-Wg-5un"/>
+                            <constraint firstItem="oaw-nQ-HLp" firstAttribute="top" secondItem="gqd-xQ-LvD" secondAttribute="top" id="Xhk-xf-BTX"/>
+                            <constraint firstItem="oaw-nQ-HLp" firstAttribute="leading" secondItem="f44-PI-m2v" secondAttribute="leading" id="dVC-hT-ZVE"/>
+                            <constraint firstItem="oaw-nQ-HLp" firstAttribute="trailing" secondItem="f44-PI-m2v" secondAttribute="trailing" id="izM-g8-JeG"/>
+                            <constraint firstItem="oaw-nQ-HLp" firstAttribute="bottom" secondItem="wp6-2L-xQd" secondAttribute="top" id="kNb-Hh-cIP"/>
+                            <constraint firstItem="f44-PI-m2v" firstAttribute="bottom" secondItem="7ms-3l-zMR" secondAttribute="bottom" id="p1Q-dD-AEm"/>
+                            <constraint firstItem="f44-PI-m2v" firstAttribute="top" secondItem="wp6-2L-xQd" secondAttribute="bottom" id="taV-lg-ydM"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="7ms-3l-zMR"/>
+                    </view>
+                    <connections>
+                        <outlet property="mealSearchField" destination="wp6-2L-xQd" id="VoQ-Q8-ATA"/>
+                        <outlet property="tableView" destination="f44-PI-m2v" id="fyT-qe-cvC"/>
+                        <segue destination="od0-LT-Bni" kind="show" identifier="segueToWeekMeals" id="wQv-aP-V03"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0DU-zq-qMN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1698.75" y="907.3943661971831"/>
         </scene>
         <!--Settings-->
         <scene sceneID="eud-fw-lWj">
@@ -178,7 +255,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JQt-IW-51D">
+                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JQt-IW-51D">
                                 <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <items>
@@ -196,7 +273,7 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xtI-So-Q8Y">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xtI-So-Q8Y">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mealPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="aeA-ER-aeA">
@@ -290,6 +367,7 @@
                         <constraints>
                             <constraint firstItem="xtI-So-Q8Y" firstAttribute="leading" secondItem="JQt-IW-51D" secondAttribute="leading" id="1k8-El-vwO"/>
                             <constraint firstAttribute="trailing" secondItem="xtI-So-Q8Y" secondAttribute="trailing" id="5Y3-h1-nYy"/>
+                            <constraint firstItem="JQt-IW-51D" firstAttribute="top" secondItem="Qop-lq-xWH" secondAttribute="top" id="Atv-dl-rBU"/>
                             <constraint firstItem="xtI-So-Q8Y" firstAttribute="bottom" secondItem="Qop-lq-xWH" secondAttribute="bottom" id="CG2-4A-T7e"/>
                             <constraint firstItem="xtI-So-Q8Y" firstAttribute="leading" secondItem="SWJ-Yx-9v3" secondAttribute="leading" id="ev9-ki-tCY"/>
                             <constraint firstItem="xtI-So-Q8Y" firstAttribute="trailing" secondItem="JQt-IW-51D" secondAttribute="trailing" id="lTY-5Y-aLF"/>
@@ -322,6 +400,8 @@
         <image name="mealPlaceholder" width="64" height="64"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="AmH-Fy-kCY"/>
+        <segue reference="1vS-Hg-knm"/>
+        <segue reference="9gB-AA-kie"/>
+        <segue reference="wQv-aP-V03"/>
     </inferredMetricsTieBreakers>
 </document>

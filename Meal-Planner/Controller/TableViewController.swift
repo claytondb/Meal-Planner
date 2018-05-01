@@ -19,6 +19,9 @@ class TableViewController: UITableViewController {
     
     var mealsToShuffleArray = [Meal]()
     
+    var mealToSwapIn = Meal()
+    var mealToSwapOut = Meal()
+    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
@@ -101,6 +104,11 @@ class TableViewController: UITableViewController {
         // Accessing the lock button inside CustomMealCell
         cell.onLockTapped = {
             self.lockMeal(mealToCheck: meal, cellToColor: cell)
+        }
+        
+        // Accessing the swap button inside CustomMealCell
+        cell.onSwapTapped = {
+            self.performSegue(withIdentifier: "segueToReplaceMeal", sender: UIButton.self)
         }
         return cell
     }
@@ -296,7 +304,12 @@ class TableViewController: UITableViewController {
                 let indexPath = tableView.indexPathForSelectedRow
                 destinationVC.mealPassedIn = mealArray[(indexPath?.row)!]
                 print("Passed in meal")
-
+            }
+        } else if segue.identifier == "segueToReplaceMeal" {
+            if let destinationVC = segue.destination as? ReplaceMealController {
+                print("Prepared for segue to replace meal")
+                destinationVC.mealPassedIn = mealToSwapOut
+                print("Passed in meal to replace")
             }
         }
     }
@@ -365,6 +378,26 @@ class TableViewController: UITableViewController {
 
         // Use index of row to set mealLocked of meal to true/false
         lockMeal(mealToCheck: mealToLock, cellToColor: parentCell)
+    }
+    
+    @IBAction func mealSwapTapped(_ sender: CustomMealCell) {
+        print("Tapped swap button")
+        
+        // find parent of button, then cell, then index of row.
+        let parentCell = sender.superview?.superview as! UITableViewCell
+        print("set parentCell")
+        
+        // Fixed error - added second superview so it's not just UITableViewWrapper being cast as UITableView.
+        let parentTable = parentCell.superview?.superview as! UITableView
+        print("set parentTable")
+        
+        let indexPath = parentTable.indexPath(for: parentCell)
+        print("set indexPath")
+        
+        mealToSwapOut = self.mealArray[indexPath!.row]
+        print("set meal to swap out")
+        
+        
     }
     
     

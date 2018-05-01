@@ -14,8 +14,10 @@ class CustomMealCell: UITableViewCell {
     @IBOutlet weak var mealLabel: UILabel!
     @IBOutlet weak var mealDay: UILabel!
     @IBOutlet weak var mealLockIconBtn: UIButton!
+    @IBOutlet weak var mealSwapBtn: UIButton!
     
     var onLockTapped : (() -> Void)? = nil
+    var onSwapTapped : (() -> Void)? = nil
 
 
     @IBAction func mealLockTapped(_ sender: UIButton) {
@@ -24,6 +26,11 @@ class CustomMealCell: UITableViewCell {
         }
     }
     
+    @IBAction func mealSwapTapped(_ sender: UIButton) {
+        if let onSwapTapped = self.onSwapTapped {
+            onSwapTapped()
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()

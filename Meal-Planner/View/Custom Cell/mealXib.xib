@@ -31,7 +31,7 @@
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="3bd-hA-PJt" userLabel="Meal text">
-                                <rect key="frame" x="72" y="0.0" width="247" height="64"/>
+                                <rect key="frame" x="72" y="0.0" width="199" height="64"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sunday" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4of-OB-ZbL">
                                         <rect key="frame" x="0.0" y="0.0" width="42" height="13"/>
@@ -40,23 +40,39 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Test meal label here is what you would see if you had a really long meal but that's weird." lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jev-c1-RPD">
-                                        <rect key="frame" x="0.0" y="13" width="247" height="51"/>
+                                        <rect key="frame" x="0.0" y="13" width="0.0" height="51"/>
                                         <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="16"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                             </stackView>
-                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tbt-mk-CT7">
-                                <rect key="frame" x="327" y="0.0" width="48" height="64"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="48" id="UAb-gn-hv8"/>
-                                </constraints>
-                                <state key="normal" image="ic_lock"/>
-                                <connections>
-                                    <action selector="mealLockTapped:" destination="ziL-ua-O8o" eventType="touchUpInside" id="NSN-WS-eeI"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="732-Bl-uyr">
+                                <rect key="frame" x="279" y="0.0" width="96" height="64"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Yf-U1-CoA" userLabel="Replace Meal Button">
+                                        <rect key="frame" x="0.0" y="0.0" width="48" height="64"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="48" id="yKe-Yr-4WI"/>
+                                        </constraints>
+                                        <state key="normal" image="ic_swap_horiz"/>
+                                        <connections>
+                                            <action selector="mealLockTapped:" destination="ziL-ua-O8o" eventType="touchUpInside" id="2a6-4z-aV3"/>
+                                            <action selector="mealSwapTapped:" destination="ziL-ua-O8o" eventType="touchUpInside" id="Wxd-Q5-R20"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tbt-mk-CT7">
+                                        <rect key="frame" x="48" y="0.0" width="48" height="64"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="48" id="UAb-gn-hv8"/>
+                                        </constraints>
+                                        <state key="normal" image="ic_lock"/>
+                                        <connections>
+                                            <action selector="mealLockTapped:" destination="ziL-ua-O8o" eventType="touchUpInside" id="NSN-WS-eeI"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                     </stackView>
                 </subviews>
@@ -73,6 +89,7 @@
                 <outlet property="mealImage" destination="LRg-yJ-XR4" id="kay-bj-g2H"/>
                 <outlet property="mealLabel" destination="Jev-c1-RPD" id="NPX-zz-Pnb"/>
                 <outlet property="mealLockIconBtn" destination="tbt-mk-CT7" id="kbt-HC-u8N"/>
+                <outlet property="mealSwapBtn" destination="0Yf-U1-CoA" id="9j2-Oq-hX9"/>
             </connections>
             <point key="canvasLocation" x="33.5" y="50"/>
         </tableViewCell>
@@ -80,6 +97,7 @@
     </objects>
     <resources>
         <image name="ic_lock" width="24" height="24"/>
+        <image name="ic_swap_horiz" width="24" height="24"/>
         <image name="mealPlaceholder" width="64" height="64"/>
     </resources>
 </document>
