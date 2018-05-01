@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 import CoreData
 
-class ReplaceMealController: UIViewController {
+class ReplaceMealController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var mealArray = [Meal]()
     
@@ -39,6 +39,9 @@ class ReplaceMealController: UIViewController {
         tableView.backgroundColor = UIColor.white
     
         navigationItem.rightBarButtonItem?.isEnabled = false
+        
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
     }
     
     
