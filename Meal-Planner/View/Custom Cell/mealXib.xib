@@ -57,7 +57,6 @@
                                         </constraints>
                                         <state key="normal" image="ic_swap_horiz"/>
                                         <connections>
-                                            <action selector="mealLockTapped:" destination="ziL-ua-O8o" eventType="touchUpInside" id="2a6-4z-aV3"/>
                                             <action selector="mealSwapTapped:" destination="ziL-ua-O8o" eventType="touchUpInside" id="Wxd-Q5-R20"/>
                                         </connections>
                                     </button>

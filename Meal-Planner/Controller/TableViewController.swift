@@ -14,14 +14,11 @@ import GameplayKit
 class TableViewController: UITableViewController {
     
     var mealArray = [Meal]()
-    
     var meal = Meal()
-    
     var mealsToShuffleArray = [Meal]()
-    
     var mealToSwapIn = Meal()
-    var mealToSwapOut = Meal()
-    
+    var mealToReplace = Meal()
+    var mealReplacing = Meal()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
@@ -39,11 +36,7 @@ class TableViewController: UITableViewController {
         
         loadMeals()
         sortMeals()
-//        self.tableView.bounds.height = CGFloat(mealArray.count) * (self.tableView.rowHeight)
-        
-        
     }
-    
     
     //MARK: Tableview datasource methods
     // Create the two datasource methods that specify 1. what the cells should display, and 2. how many rows we want in the tableview.
@@ -51,7 +44,13 @@ class TableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // indexPath.row has to do with the table. It takes that number and gets the meal from mealArray at that number. For example, it looks at indexPath.row of the table and if it's 3, it gets the meal at 3 in the array.
-        let meal = mealArray[indexPath.row]
+        var meal = mealArray[indexPath.row]
+        
+        if meal.mealReplaceMe == true {
+            print("Replacing meal with mealToSwapIn")
+            mealArray.swapAt(Int(meal.mealSortedOrder), Int(mealReplacing.mealSortedOrder))
+            print("Replaced \(meal.mealName!) with \(mealReplacing.mealName!)")
+        }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
 
@@ -110,6 +109,7 @@ class TableViewController: UITableViewController {
         cell.onSwapTapped = {
             self.performSegue(withIdentifier: "segueToReplaceMeal", sender: UIButton.self)
         }
+    
         return cell
     }
     
@@ -308,7 +308,7 @@ class TableViewController: UITableViewController {
         } else if segue.identifier == "segueToReplaceMeal" {
             if let destinationVC = segue.destination as? ReplaceMealController {
                 print("Prepared for segue to replace meal")
-                destinationVC.mealPassedIn = mealToSwapOut
+                destinationVC.mealPassedIn = mealToReplace
                 print("Passed in meal to replace")
             }
         }
@@ -380,7 +380,7 @@ class TableViewController: UITableViewController {
         lockMeal(mealToCheck: mealToLock, cellToColor: parentCell)
     }
     
-    @IBAction func mealSwapTapped(_ sender: CustomMealCell) {
+    @IBAction func mealSwapTapped(_ sender: CustomMealCell ) {
         print("Tapped swap button")
         
         // find parent of button, then cell, then index of row.
@@ -394,9 +394,10 @@ class TableViewController: UITableViewController {
         let indexPath = parentTable.indexPath(for: parentCell)
         print("set indexPath")
         
-        mealToSwapOut = self.mealArray[indexPath!.row]
+        mealToReplace = mealArray[indexPath!.row]
+        print("mealToReplace is \(mealToReplace.mealName!)")
+        mealToReplace.mealReplaceMe = true
         print("set meal to swap out")
-        
         
     }
     

@@ -64,9 +64,16 @@ class AllMealsViewController: UITableViewController {
             cell.mealImage.image = UIImage(named: "mealPlaceholder")
         }
         
-        cell.mealDay.text = ""
+        if cell.mealDay != nil {
+            cell.mealDay.removeFromSuperview()
+        }
+        
         if cell.mealLockIconBtn != nil {
-        cell.mealLockIconBtn.removeFromSuperview()
+            cell.mealLockIconBtn.removeFromSuperview()
+        }
+        
+        if cell.mealSwapBtn != nil {
+            cell.mealSwapBtn.removeFromSuperview()
         }
         
         return cell

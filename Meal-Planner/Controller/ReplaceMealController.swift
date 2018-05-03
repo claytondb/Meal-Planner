@@ -13,15 +13,12 @@ import CoreData
 class ReplaceMealController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var mealArray = [Meal]()
-    
     let meal = Meal()
-    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
     var mealPassedIn = Meal()
+    var mealToPassBack = Meal()
     
     @IBOutlet weak var tableView: UITableView!
-
     @IBOutlet weak var mealSearchField: UISearchBar!
     
     override func viewDidLoad() {
@@ -42,6 +39,7 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
     }
     
     
@@ -101,24 +99,29 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     
     
     
-    //MARK: Tableview delegate methods - select row, change background and enable Replace button in navigation
+    //MARK: Tableview delegate methods - select row and it will segue back to week view and pass in the selection.
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
         cell.backgroundColor = UIColor.blue
-        navigationItem.rightBarButtonItem?.isEnabled = true
+        mealToPassBack = mealArray[indexPath.row]
+        saveMeals()
+        performSegue(withIdentifier: "segueToWeekMeals", sender: self)
     }
     
 
+    @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "segueToWeekMeals", sender: self)
+    }
+    
     
     //MARK: Pass in data on segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueToWeekMeals" {
-            if let destinationVC = segue.destination as? TableViewController {
                 print("Prepared for segue")
-                let indexPath = tableView.indexPathForSelectedRow
-                destinationVC.mealToSwapIn = mealArray[(indexPath?.row)!]
+//                let indexPath = tableView.indexPathForSelectedRow
+            let destinationVC = TableViewController()
+                destinationVC.mealReplacing = mealToPassBack
                 print("Passed in meal")
-            }
         }
     }
     
