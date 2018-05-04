@@ -393,7 +393,7 @@ class TableViewController: UITableViewController {
         print("set parentCell")
         
         // Fixed error - added second superview so it's not just UITableViewWrapper being cast as UITableView.
-        let parentTable = parentCell.superview?.superview as! UITableView
+        let parentTable = parentCell.superview as! UITableView
         print("set parentTable")
         
         let indexPath = parentTable.indexPath(for: parentCell)
