@@ -44,12 +44,14 @@ class TableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // indexPath.row has to do with the table. It takes that number and gets the meal from mealArray at that number. For example, it looks at indexPath.row of the table and if it's 3, it gets the meal at 3 in the array.
-        var meal = mealArray[indexPath.row]
+        let meal = mealArray[indexPath.row]
         
-        if meal.mealReplaceMe == true {
+        if meal.mealReplaceMe == true && mealReplacing.mealIsReplacing == true {
             print("Replacing meal with mealToSwapIn")
-            mealArray.swapAt(Int(meal.mealSortedOrder), Int(mealReplacing.mealSortedOrder))
+            mealArray.swapAt(Int(mealToReplace.mealSortedOrder), Int(mealReplacing.mealSortedOrder))
             print("Replaced \(meal.mealName!) with \(mealReplacing.mealName!)")
+        } else {
+            // do nothing
         }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
@@ -107,6 +109,7 @@ class TableViewController: UITableViewController {
         
         // Accessing the swap button inside CustomMealCell
         cell.onSwapTapped = {
+            self.mealSwapTapped(cell)
             self.performSegue(withIdentifier: "segueToReplaceMeal", sender: UIButton.self)
         }
     
@@ -384,7 +387,9 @@ class TableViewController: UITableViewController {
         print("Tapped swap button")
         
         // find parent of button, then cell, then index of row.
-        let parentCell = sender.superview?.superview as! UITableViewCell
+//        let parentCell = sender.superview?.superview as! UITableViewCell
+//        print("set parentCell")
+        let parentCell = sender as UITableViewCell
         print("set parentCell")
         
         // Fixed error - added second superview so it's not just UITableViewWrapper being cast as UITableView.
