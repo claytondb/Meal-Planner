@@ -36,6 +36,7 @@ class TableViewController: UITableViewController {
         
         loadMeals()
         sortMeals()
+        swapMeals()
     }
     
     //MARK: Tableview datasource methods
@@ -45,14 +46,18 @@ class TableViewController: UITableViewController {
         
         // indexPath.row has to do with the table. It takes that number and gets the meal from mealArray at that number. For example, it looks at indexPath.row of the table and if it's 3, it gets the meal at 3 in the array.
         let meal = mealArray[indexPath.row]
+        print("Set meal to mealArray[indexPath.row]")
         
-        if meal.mealReplaceMe == true && mealReplacing.mealIsReplacing == true {
-            print("Replacing meal with mealToSwapIn")
-            mealArray.swapAt(Int(mealToReplace.mealSortedOrder), Int(mealReplacing.mealSortedOrder))
-            print("Replaced \(meal.mealName!) with \(mealReplacing.mealName!)")
-        } else {
-            // do nothing
-        }
+        // This block is causing problems - crashes with NSException. mealReplacing is the issue. It doesn't know which meal it's talking about - it's set to the generic Meal class but not identifying one in the array.
+//        if meal.mealReplaceMe == true {
+//            print("Meal to replace is \(meal.mealName!)")
+//            print("Meal replacing is \(mealReplacing.mealName!)")
+//            print("Replacing meal with mealToSwapIn")
+//            mealArray.swapAt(Int(meal.mealSortedOrder), Int(mealReplacing.mealSortedOrder))
+//            print("Replaced \(meal.mealName!) with \(mealReplacing.mealName!)")
+//        } else {
+//            // do nothing
+//            }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
 
@@ -125,6 +130,7 @@ class TableViewController: UITableViewController {
 //            return 7
 //        }
         return mealArray.count
+//        return 7
     }
         
         
@@ -230,11 +236,9 @@ class TableViewController: UITableViewController {
     // 5. If it's locked, skip to the next meal in the list.
     // 6. Do this swapping until eaching the end/top of the list.
     func randomize() {
-
         do {
             var lastMealInt : Int = mealArray.count - 1
             print("LastMealInt is \(lastMealInt).")
-
             // step 1
             while(lastMealInt > -1)
             {
@@ -249,7 +253,6 @@ class TableViewController: UITableViewController {
                 }
                 lastMealInt -= 1
             }
-            
             var lastShuffledMealInt : Int = mealsToShuffleArray.count - 1
             print("Moved \(lastShuffledMealInt) unlocked meals to mealsToShuffleArray.")
             
@@ -297,6 +300,58 @@ class TableViewController: UITableViewController {
                 lastMealInt -= 1
             }
         }
+        print("Sorted meals.")
+    }
+    
+    //MARK: Swap meals function
+    func swapMeals() {
+        // Pseudocode for swap:
+        // Go through list of meals, find the one that has the flag mealIsReplacing set to true
+        // assign that meal to mealReplacing
+        // Go through list of meals, find the one that has the flag mealReplaceMe set to true
+        // assign that meal to mealToReplace
+        // mealArray.swapAt(Int(meal.mealSortedOrder), Int(mealReplacing.mealSortedOrder))
+        // done.
+        do {
+            var lastMealInt : Int = mealArray.count - 1
+            print("LastMealInt is \(lastMealInt).")
+            // step 1
+            while(lastMealInt > -1)
+            {
+                let mealToCheck : Meal = mealArray[lastMealInt]
+                if mealToCheck.mealIsReplacing == true {
+                    mealReplacing = mealToCheck
+                    print("Assigned \(mealToCheck.mealName!) to mealReplacing.")
+                }
+                    // step 2
+                else if mealToCheck.mealIsReplacing == false {
+                    // do nothing
+                }
+                lastMealInt -= 1
+            }
+            
+            // reset lastMealInt to the bottom item in the list
+            lastMealInt = mealArray.count - 1
+            print("Reset lastMealInt. Now it's \(lastMealInt).")
+            
+            // step 4 - never gets to this for some reason?
+            while(lastMealInt > -1)
+            {
+                let mealToCheck : Meal = mealArray[lastMealInt]
+                if mealToCheck.mealReplaceMe == true {
+                    mealToReplace = mealToCheck
+                    print("Assigned \(mealToCheck.mealName!) to mealToReplace.")
+                    
+                    mealArray.swapAt(Int(mealToReplace.mealSortedOrder), Int(mealReplacing.mealSortedOrder))
+                    print("Swapped \(mealToReplace.mealName!) with \(mealReplacing.mealName!).")
+                }
+                    // step 2
+                else if mealToCheck.mealReplaceMe == false {
+                    // do nothing
+                }
+                lastMealInt -= 1
+            }
+        }
     }
     
     //MARK: Pass in data on segue
@@ -332,34 +387,34 @@ class TableViewController: UITableViewController {
     
     
     // Both deleteMeal and lockButton cause the app to crash on my phone. What's the issue?
-    @IBAction func deleteMeal(_ sender: UIButton) {
-        print("Deleting meal")
-        let alert = UIAlertController(title:"Delete meal?", message: "This action cannot be undone.", preferredStyle: .alert)
-        let delete = UIAlertAction(title:"Delete", style: .destructive) { (action) in
-            
-            // Find parent of the button (cell), then parent of cell (table row), then index of that row.
-            let parentCell = sender.superview?.superview as! UITableViewCell
-            let parentTable = parentCell.superview?.superview as! UITableView
-            let indexPath = parentTable.indexPath(for: parentCell)
-            let mealToDelete = self.mealArray[indexPath!.row]
-            
-            // Use index of row to delete it from table and CoreData
-            self.context.delete(mealToDelete)
-            self.mealArray.remove(at: indexPath!.row)
-            print("Successfully deleted meal.")
-            
-            // Save data and reload
-            self.saveMeals()
-
-        }
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-            // do nothing
-            print("Cancelled")
-        }
-        alert.addAction(delete)
-        alert.addAction(cancel)
-        present(alert, animated: true, completion: nil)
-    }
+//    @IBAction func deleteMeal(_ sender: UIButton) {
+//        print("Deleting meal")
+//        let alert = UIAlertController(title:"Delete meal?", message: "This action cannot be undone.", preferredStyle: .alert)
+//        let delete = UIAlertAction(title:"Delete", style: .destructive) { (action) in
+//
+//            // Find parent of the button (cell), then parent of cell (table row), then index of that row.
+//            let parentCell = sender.superview?.superview as! UITableViewCell
+//            let parentTable = parentCell.superview?.superview as! UITableView
+//            let indexPath = parentTable.indexPath(for: parentCell)
+//            let mealToDelete = self.mealArray[indexPath!.row]
+//
+//            // Use index of row to delete it from table and CoreData
+//            self.context.delete(mealToDelete)
+//            self.mealArray.remove(at: indexPath!.row)
+//            print("Successfully deleted meal.")
+//
+//            // Save data and reload
+//            self.saveMeals()
+//
+//        }
+//        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+//            // do nothing
+//            print("Cancelled")
+//        }
+//        alert.addAction(delete)
+//        alert.addAction(cancel)
+//        present(alert, animated: true, completion: nil)
+//    }
     
     @IBAction func lockButton(_ sender: CustomMealCell) {
 

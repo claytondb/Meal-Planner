@@ -104,6 +104,7 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
         cell.backgroundColor = UIColor.blue
         mealToPassBack = mealArray[indexPath.row]
+        mealToPassBack.mealIsReplacing = true
         saveMeals()
         performSegue(withIdentifier: "segueToWeekMeals", sender: self)
     }
