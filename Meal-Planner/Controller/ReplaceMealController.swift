@@ -28,6 +28,7 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
         super.viewDidLoad()
         
         loadMeals()
+        sortMeals()
         
         //TODO: Register your mealXib.xib file here:
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
@@ -105,13 +106,29 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
         cell.backgroundColor = UIColor.blue
         mealToPassBack = mealArray[indexPath.row]
         mealToPassBack.mealIsReplacing = true
+        
         saveMeals()
         performSegue(withIdentifier: "segueToWeekMeals", sender: self)
     }
     
+    //MARK: Function to sort tableview according to mealSortedIndex
+    func sortMeals() {
+        do {
+            var lastMealInt : Int = mealArray.count - 1
+            lastMealInt = mealArray.count - 1
+            while(lastMealInt > -1)
+            {
+                let mealToCheck : Meal = mealArray[lastMealInt]
+                mealArray.swapAt(lastMealInt, Int(mealToCheck.mealSortedOrder))
+                lastMealInt -= 1
+            }
+        }
+        print("Sorted meals.")
+    }
+    
 
     @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
-        performSegue(withIdentifier: "segueToWeekMeals", sender: self)
+        performSegue(withIdentifier: "segueCancelToWeekMeals", sender: self)
     }
     
     
@@ -122,7 +139,11 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
 //                let indexPath = tableView.indexPathForSelectedRow
             let destinationVC = TableViewController()
                 destinationVC.mealReplacing = mealToPassBack
-                print("Passed in meal")
+                destinationVC.mealToReplace = mealPassedIn
+                print("Passed meals back")
+        } else if segue.identifier == "segueCancelToWeekMeals" {
+            let destinationVC = TableViewController()
+            destinationVC.mealToReplace.mealReplaceMe = false
         }
     }
     

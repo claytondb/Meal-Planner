@@ -181,6 +181,7 @@
                         <outlet property="mealSearchField" destination="wp6-2L-xQd" id="VoQ-Q8-ATA"/>
                         <outlet property="tableView" destination="f44-PI-m2v" id="fyT-qe-cvC"/>
                         <segue destination="emp-Xl-kwo" kind="show" identifier="segueToWeekMeals" id="Duy-Yj-R3o"/>
+                        <segue destination="od0-LT-Bni" kind="show" identifier="segueCancelToWeekMeals" id="L77-aS-DDO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0DU-zq-qMN" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -397,5 +398,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="9gB-AA-kie"/>
         <segue reference="Duy-Yj-R3o"/>
+        <segue reference="L77-aS-DDO"/>
     </inferredMetricsTieBreakers>
 </document>

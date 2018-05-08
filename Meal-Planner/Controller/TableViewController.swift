@@ -19,6 +19,8 @@ class TableViewController: UITableViewController {
     var mealToSwapIn = Meal()
     var mealToReplace = Meal()
     var mealReplacing = Meal()
+    var mealToReplaceNewSortOrder : Int32 = 0
+    var mealReplacingNewSortOrder : Int32 = 0
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
@@ -35,8 +37,9 @@ class TableViewController: UITableViewController {
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         
         loadMeals()
-        sortMeals()
         swapMeals()
+        sortMeals()
+
     }
     
     //MARK: Tableview datasource methods
@@ -46,18 +49,7 @@ class TableViewController: UITableViewController {
         
         // indexPath.row has to do with the table. It takes that number and gets the meal from mealArray at that number. For example, it looks at indexPath.row of the table and if it's 3, it gets the meal at 3 in the array.
         let meal = mealArray[indexPath.row]
-        print("Set meal to mealArray[indexPath.row]")
-        
-        // This block is causing problems - crashes with NSException. mealReplacing is the issue. It doesn't know which meal it's talking about - it's set to the generic Meal class but not identifying one in the array.
-//        if meal.mealReplaceMe == true {
-//            print("Meal to replace is \(meal.mealName!)")
-//            print("Meal replacing is \(mealReplacing.mealName!)")
-//            print("Replacing meal with mealToSwapIn")
-//            mealArray.swapAt(Int(meal.mealSortedOrder), Int(mealReplacing.mealSortedOrder))
-//            print("Replaced \(meal.mealName!) with \(mealReplacing.mealName!)")
-//        } else {
-//            // do nothing
-//            }
+//        print("Set meal to mealArray[indexPath.row]")
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
 
@@ -334,7 +326,7 @@ class TableViewController: UITableViewController {
             lastMealInt = mealArray.count - 1
             print("Reset lastMealInt. Now it's \(lastMealInt).")
             
-            // step 4 - never gets to this for some reason?
+            // step 4
             while(lastMealInt > -1)
             {
                 let mealToCheck : Meal = mealArray[lastMealInt]
@@ -344,6 +336,16 @@ class TableViewController: UITableViewController {
                     
                     mealArray.swapAt(Int(mealToReplace.mealSortedOrder), Int(mealReplacing.mealSortedOrder))
                     print("Swapped \(mealToReplace.mealName!) with \(mealReplacing.mealName!).")
+                    
+                    // Swap the sorted orders.
+                    mealReplacingNewSortOrder = mealToReplace.mealSortedOrder
+                    mealToReplaceNewSortOrder = mealReplacing.mealSortedOrder
+                    mealToReplace.mealSortedOrder = mealToReplaceNewSortOrder
+                    mealReplacing.mealSortedOrder = mealReplacingNewSortOrder
+                    
+                    // Set flags to false after the swap
+                    mealToReplace.mealReplaceMe = false
+                    mealReplacing.mealIsReplacing = false
                 }
                     // step 2
                 else if mealToCheck.mealReplaceMe == false {
