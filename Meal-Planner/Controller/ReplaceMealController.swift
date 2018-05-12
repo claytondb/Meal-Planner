@@ -156,10 +156,12 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
                 destinationVC.mealToReplace = mealPassedIn
                 print("Passed meals back")
         } else if segue.identifier == "segueCancelToWeekMeals" {
-            let destinationVC = TableViewController()
-            destinationVC.mealToReplace.mealReplaceMe = false
+//            let destinationVC = TableViewController()
+//            destinationVC.mealToReplace.mealReplaceMe = false
+            // do nothing
         }
     }
+    
     
     
     //MARK: Model manipulation methods
