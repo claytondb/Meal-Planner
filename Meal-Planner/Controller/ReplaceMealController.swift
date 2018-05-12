@@ -17,6 +17,8 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var mealPassedIn = Meal()
     var mealToPassBack = Meal()
+    var mealToPassBackNewSortOrder : Int32 = 0
+    var mealPassedInNewSortOrder : Int32 = 0
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var mealSearchField: UISearchBar!
@@ -107,9 +109,21 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
         mealToPassBack = mealArray[indexPath.row]
         mealToPassBack.mealIsReplacing = true
         
+        swapSortingOrders()
+        
         saveMeals()
         performSegue(withIdentifier: "segueToWeekMeals", sender: self)
     }
+    
+    //MARK: Function to swap sorting orders
+    func swapSortingOrders() {
+        mealToPassBackNewSortOrder = mealPassedIn.mealSortedOrder
+        mealPassedInNewSortOrder = mealToPassBack.mealSortedOrder
+        mealPassedIn.mealSortedOrder = mealPassedInNewSortOrder
+        mealToPassBack.mealSortedOrder = mealToPassBackNewSortOrder
+        print("Swapped sorted orders")
+    }
+    
     
     //MARK: Function to sort tableview according to mealSortedIndex
     func sortMeals() {

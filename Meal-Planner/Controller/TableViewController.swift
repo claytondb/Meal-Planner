@@ -37,9 +37,8 @@ class TableViewController: UITableViewController {
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         
         loadMeals()
-        swapMeals()
+//        swapMeals()
         sortMeals()
-
     }
     
     //MARK: Tableview datasource methods
@@ -49,7 +48,6 @@ class TableViewController: UITableViewController {
         
         // indexPath.row has to do with the table. It takes that number and gets the meal from mealArray at that number. For example, it looks at indexPath.row of the table and if it's 3, it gets the meal at 3 in the array.
         let meal = mealArray[indexPath.row]
-//        print("Set meal to mealArray[indexPath.row]")
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
 
@@ -304,6 +302,8 @@ class TableViewController: UITableViewController {
         // assign that meal to mealToReplace
         // mealArray.swapAt(Int(meal.mealSortedOrder), Int(mealReplacing.mealSortedOrder))
         // done.
+        
+        // Don't use this function if I can do it by swapping the sort positions and then using the sort function.
         do {
             var lastMealInt : Int = mealArray.count - 1
             print("LastMealInt is \(lastMealInt).")
@@ -317,6 +317,7 @@ class TableViewController: UITableViewController {
                 }
                     // step 2
                 else if mealToCheck.mealIsReplacing == false {
+                    print("mealToCheck.mealIsReplacing is false")
                     // do nothing
                 }
                 lastMealInt -= 1
@@ -342,13 +343,18 @@ class TableViewController: UITableViewController {
                     mealToReplaceNewSortOrder = mealReplacing.mealSortedOrder
                     mealToReplace.mealSortedOrder = mealToReplaceNewSortOrder
                     mealReplacing.mealSortedOrder = mealReplacingNewSortOrder
+                    print("Swapped sorted orders")
                     
                     // Set flags to false after the swap
                     mealToReplace.mealReplaceMe = false
                     mealReplacing.mealIsReplacing = false
+                    print("Cleared replacing flags")
+                    
+                    saveMeals()
                 }
                     // step 2
                 else if mealToCheck.mealReplaceMe == false {
+                    print("mealToCheck.mealReplaceMe is false.")
                     // do nothing
                 }
                 lastMealInt -= 1
@@ -367,6 +373,7 @@ class TableViewController: UITableViewController {
             }
         } else if segue.identifier == "segueToReplaceMeal" {
             if let destinationVC = segue.destination as? ReplaceMealController {
+                saveMeals()
                 print("Prepared for segue to replace meal")
                 destinationVC.mealPassedIn = mealToReplace
                 print("Passed in meal to replace")
@@ -457,9 +464,9 @@ class TableViewController: UITableViewController {
         print("set indexPath")
         
         mealToReplace = mealArray[indexPath!.row]
-        print("mealToReplace is \(mealToReplace.mealName!)")
+        print("Set mealToReplace to \(mealToReplace.mealName!)")
         mealToReplace.mealReplaceMe = true
-        print("set meal to swap out")
+        print("Set \(mealToReplace) swap to true.")
         
     }
     
