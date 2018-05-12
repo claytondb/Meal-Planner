@@ -19,8 +19,6 @@ class TableViewController: UITableViewController {
     var mealToSwapIn = Meal()
     var mealToReplace = Meal()
     var mealReplacing = Meal()
-    var mealToReplaceNewSortOrder : Int32 = 0
-    var mealReplacingNewSortOrder : Int32 = 0
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
@@ -37,7 +35,6 @@ class TableViewController: UITableViewController {
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         
         loadMeals()
-//        swapMeals()
         sortMeals()
     }
     
@@ -114,13 +111,7 @@ class TableViewController: UITableViewController {
 
     // Method 2
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        if mealArray.count <= 7 {
-//        return mealArray.count
-//        } else {
-//            return 7
-//        }
         return mealArray.count
-//        return 7
     }
         
         
@@ -293,75 +284,6 @@ class TableViewController: UITableViewController {
         print("Sorted meals.")
     }
     
-    //MARK: Swap meals function
-    func swapMeals() {
-        // Pseudocode for swap:
-        // Go through list of meals, find the one that has the flag mealIsReplacing set to true
-        // assign that meal to mealReplacing
-        // Go through list of meals, find the one that has the flag mealReplaceMe set to true
-        // assign that meal to mealToReplace
-        // mealArray.swapAt(Int(meal.mealSortedOrder), Int(mealReplacing.mealSortedOrder))
-        // done.
-        
-        // Don't use this function if I can do it by swapping the sort positions and then using the sort function.
-        do {
-            var lastMealInt : Int = mealArray.count - 1
-            print("LastMealInt is \(lastMealInt).")
-            // step 1
-            while(lastMealInt > -1)
-            {
-                let mealToCheck : Meal = mealArray[lastMealInt]
-                if mealToCheck.mealIsReplacing == true {
-                    mealReplacing = mealToCheck
-                    print("Assigned \(mealToCheck.mealName!) to mealReplacing.")
-                }
-                    // step 2
-                else if mealToCheck.mealIsReplacing == false {
-                    print("mealToCheck.mealIsReplacing is false")
-                    // do nothing
-                }
-                lastMealInt -= 1
-            }
-            
-            // reset lastMealInt to the bottom item in the list
-            lastMealInt = mealArray.count - 1
-            print("Reset lastMealInt. Now it's \(lastMealInt).")
-            
-            // step 4
-            while(lastMealInt > -1)
-            {
-                let mealToCheck : Meal = mealArray[lastMealInt]
-                if mealToCheck.mealReplaceMe == true {
-                    mealToReplace = mealToCheck
-                    print("Assigned \(mealToCheck.mealName!) to mealToReplace.")
-                    
-                    mealArray.swapAt(Int(mealToReplace.mealSortedOrder), Int(mealReplacing.mealSortedOrder))
-                    print("Swapped \(mealToReplace.mealName!) with \(mealReplacing.mealName!).")
-                    
-                    // Swap the sorted orders.
-                    mealReplacingNewSortOrder = mealToReplace.mealSortedOrder
-                    mealToReplaceNewSortOrder = mealReplacing.mealSortedOrder
-                    mealToReplace.mealSortedOrder = mealToReplaceNewSortOrder
-                    mealReplacing.mealSortedOrder = mealReplacingNewSortOrder
-                    print("Swapped sorted orders")
-                    
-                    // Set flags to false after the swap
-                    mealToReplace.mealReplaceMe = false
-                    mealReplacing.mealIsReplacing = false
-                    print("Cleared replacing flags")
-                    
-                    saveMeals()
-                }
-                    // step 2
-                else if mealToCheck.mealReplaceMe == false {
-                    print("mealToCheck.mealReplaceMe is false.")
-                    // do nothing
-                }
-                lastMealInt -= 1
-            }
-        }
-    }
-    
     //MARK: Pass in data on segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueToMealDetail" {
@@ -394,36 +316,6 @@ class TableViewController: UITableViewController {
         saveMeals()
     }
     
-    
-    // Both deleteMeal and lockButton cause the app to crash on my phone. What's the issue?
-//    @IBAction func deleteMeal(_ sender: UIButton) {
-//        print("Deleting meal")
-//        let alert = UIAlertController(title:"Delete meal?", message: "This action cannot be undone.", preferredStyle: .alert)
-//        let delete = UIAlertAction(title:"Delete", style: .destructive) { (action) in
-//
-//            // Find parent of the button (cell), then parent of cell (table row), then index of that row.
-//            let parentCell = sender.superview?.superview as! UITableViewCell
-//            let parentTable = parentCell.superview?.superview as! UITableView
-//            let indexPath = parentTable.indexPath(for: parentCell)
-//            let mealToDelete = self.mealArray[indexPath!.row]
-//
-//            // Use index of row to delete it from table and CoreData
-//            self.context.delete(mealToDelete)
-//            self.mealArray.remove(at: indexPath!.row)
-//            print("Successfully deleted meal.")
-//
-//            // Save data and reload
-//            self.saveMeals()
-//
-//        }
-//        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-//            // do nothing
-//            print("Cancelled")
-//        }
-//        alert.addAction(delete)
-//        alert.addAction(cancel)
-//        present(alert, animated: true, completion: nil)
-//    }
     
     @IBAction func lockButton(_ sender: CustomMealCell) {
 
