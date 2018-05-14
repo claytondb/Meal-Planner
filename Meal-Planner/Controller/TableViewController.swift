@@ -16,9 +16,11 @@ class TableViewController: UITableViewController {
     var mealArray = [Meal]()
     var meal = Meal()
     var mealsToShuffleArray = [Meal]()
-    var mealToSwapIn = Meal()
+//    var mealToSwapIn = Meal()
     var mealToReplace = Meal()
     var mealReplacing = Meal()
+//    var mealToReplaceNewSortOrder : Int32 = 0
+//    var mealReplacingNewSortOrder : Int32 = 0
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
@@ -35,8 +37,19 @@ class TableViewController: UITableViewController {
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         
         loadMeals()
+//        swapMeals()
         sortMeals()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        //Fix weird overlapping of status bar with navigation bar
+        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+        self.tableView.backgroundColor = UIColor.white
+        tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
+        loadMeals()
+        sortMeals()
+    }
+    
     
     //MARK: Tableview datasource methods
     // Create the two datasource methods that specify 1. what the cells should display, and 2. how many rows we want in the tableview.
@@ -284,6 +297,74 @@ class TableViewController: UITableViewController {
         print("Sorted meals.")
     }
     
+//    //MARK: Swap meals function
+//    func swapMeals() {
+//        // Pseudocode for swap:
+//        // Go through list of meals, find the one that has the flag mealIsReplacing set to true
+//        // assign that meal to mealReplacing
+//        // Go through list of meals, find the one that has the flag mealReplaceMe set to true
+//        // assign that meal to mealToReplace
+//        // mealArray.swapAt(Int(meal.mealSortedOrder), Int(mealReplacing.mealSortedOrder))
+//        // done.
+//        // Don't use this function if I can do it by swapping the sort positions and then using the sort function.
+//        do {
+//            var lastMealInt : Int = mealArray.count - 1
+//            print("LastMealInt is \(lastMealInt).")
+//                // step 1
+//                        while(lastMealInt > -1)
+//                        {
+//                            let mealToCheck : Meal = mealArray[lastMealInt]
+//                            if mealToCheck.mealIsReplacing == true {
+//                                mealReplacing = mealToCheck
+//                                print("Assigned \(mealToCheck.mealName!) to mealReplacing.")
+//                            }
+//                                // step 2
+//                            else if mealToCheck.mealIsReplacing == false {
+//                                print("mealToCheck.mealIsReplacing is false")
+//                                // do nothing
+//                            }
+//                            lastMealInt -= 1
+//                        }
+//
+//                        // reset lastMealInt to the bottom item in the list
+//                        lastMealInt = mealArray.count - 1
+//                        print("Reset lastMealInt. Now it's \(lastMealInt).")
+//
+//                        // step 4
+//                        while(lastMealInt > -1)
+//                        {
+//                            let mealToCheck : Meal = mealArray[lastMealInt]
+//                            if mealToCheck.mealReplaceMe == true {
+//                                mealToReplace = mealToCheck
+//                                print("Assigned \(mealToCheck.mealName!) to mealToReplace.")
+//
+//                                mealArray.swapAt(Int(mealToReplace.mealSortedOrder), Int(mealReplacing.mealSortedOrder))
+//                                print("Swapped \(mealToReplace.mealName!) with \(mealReplacing.mealName!).")
+//
+//                                // Swap the sorted orders.
+//                                mealReplacingNewSortOrder = mealToReplace.mealSortedOrder
+//                                mealToReplaceNewSortOrder = mealReplacing.mealSortedOrder
+//                                mealToReplace.mealSortedOrder = mealToReplaceNewSortOrder
+//                                mealReplacing.mealSortedOrder = mealReplacingNewSortOrder
+//                                print("Swapped sorted orders")
+//
+//                                // Set flags to false after the swap
+//                                mealToReplace.mealReplaceMe = false
+//                                mealReplacing.mealIsReplacing = false
+//                                print("Cleared replacing flags")
+//
+//                                saveMeals()
+//                            }
+//                                // step 2
+//                            else if mealToCheck.mealReplaceMe == false {
+//                                print("mealToCheck.mealReplaceMe is false.")
+//                                // do nothing
+//                            }
+//                            lastMealInt -= 1
+//            }
+//        }
+//    }
+    
     //MARK: Pass in data on segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueToMealDetail" {
@@ -357,8 +438,8 @@ class TableViewController: UITableViewController {
         
         mealToReplace = mealArray[indexPath!.row]
         print("Set mealToReplace to \(mealToReplace.mealName!)")
-        mealToReplace.mealReplaceMe = true
-        print("Set \(mealToReplace) swap to true.")
+//        mealToReplace.mealReplaceMe = true
+//        print("Set \(mealToReplace.mealName!) swap to true.")
         
     }
     

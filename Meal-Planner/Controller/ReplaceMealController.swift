@@ -104,10 +104,11 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     
     //MARK: Tableview delegate methods - select row and it will segue back to week view and pass in the selection.
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
-        cell.backgroundColor = UIColor.blue
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
+//        cell.backgroundColor = UIColor.blue
         mealToPassBack = mealArray[indexPath.row]
-        mealToPassBack.mealIsReplacing = true
+        print("mealToPassBack is \(mealToPassBack.mealName!)")
+//        mealToPassBack.mealIsReplacing = true
         
         swapSortingOrders()
         
@@ -151,10 +152,10 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
         if segue.identifier == "segueToWeekMeals" {
                 print("Prepared for segue")
 //                let indexPath = tableView.indexPathForSelectedRow
-            let destinationVC = TableViewController()
-                destinationVC.mealReplacing = mealToPassBack
-                destinationVC.mealToReplace = mealPassedIn
-                print("Passed meals back")
+//            let destinationVC = TableViewController()
+//                destinationVC.mealReplacing = mealToPassBack
+//                destinationVC.mealToReplace = mealPassedIn
+//                print("Passed meals back")
         } else if segue.identifier == "segueCancelToWeekMeals" {
 //            let destinationVC = TableViewController()
 //            destinationVC.mealToReplace.mealReplaceMe = false

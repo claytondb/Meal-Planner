@@ -196,7 +196,7 @@ class AllMealsViewController: UITableViewController {
             // stuff that happens when user taps add
             let newMeal = Meal(context: self.context)
             newMeal.mealName = textField.text!
-            newMeal.mealLocked = true
+            newMeal.mealLocked = false
             self.mealArray.append(newMeal)
             
             print("Assigned index to new meal")
