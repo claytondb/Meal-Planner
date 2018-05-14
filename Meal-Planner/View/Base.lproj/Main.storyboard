@@ -380,9 +380,12 @@
                         <outlet property="mealNameField" destination="uLi-ev-xd2" id="nEB-g5-FFI"/>
                         <outlet property="scrollView" destination="xtI-So-Q8Y" id="d0l-3l-xzL"/>
                         <segue destination="emp-Xl-kwo" kind="show" identifier="segueDismissMealDetail" id="oHm-tp-4ax"/>
+                        <segue destination="K4B-MR-SBD" kind="unwind" identifier="unwindToAllMeals" unwindAction="unwindToAllMealsWithSegue:" id="5c5-gD-6Hw"/>
+                        <segue destination="K4B-MR-SBD" kind="unwind" identifier="unwindToWeekMeals" unwindAction="unwindToWeekMealsWithSegue:" id="Bbo-cY-aMk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v7L-Gy-1Vs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="K4B-MR-SBD" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1254.375" y="-589.43661971830988"/>
         </scene>
@@ -397,6 +400,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="9gB-AA-kie"/>
-        <segue reference="S1w-A0-Hg9"/>
+        <segue reference="oHm-tp-4ax"/>
     </inferredMetricsTieBreakers>
 </document>

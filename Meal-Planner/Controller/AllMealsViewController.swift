@@ -32,6 +32,7 @@ class AllMealsViewController: UITableViewController {
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         
         loadMeals()
+        sortMeals()
     }
     
     
@@ -177,6 +178,21 @@ class AllMealsViewController: UITableViewController {
         saveMeals()
     }
     
+    //MARK: Function to sort tableview according to mealSortedIndex
+    func sortMeals() {
+        do {
+            var lastMealInt : Int = mealArray.count - 1
+            lastMealInt = mealArray.count - 1
+            while(lastMealInt > -1)
+            {
+                let mealToCheck : Meal = mealArray[lastMealInt]
+                mealArray.swapAt(lastMealInt, Int(mealToCheck.mealSortedOrder))
+                lastMealInt -= 1
+            }
+        }
+        print("Sorted meals.")
+    }
+    
     
     //MARK: Tableview delegate methods - select row, segue to meal detail
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -253,6 +269,8 @@ class AllMealsViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueFromAllMealsToDetail" {
             if let destinationVC = segue.destination as? MealDetailViewController {
+                destinationVC.cameFromWeekMeals = false
+                destinationVC.cameFromAllMeals = true
                 print("Prepared for segue")
                 let indexPath = tableView.indexPathForSelectedRow
                 destinationVC.mealPassedIn = mealArray[(indexPath?.row)!]
@@ -260,6 +278,10 @@ class AllMealsViewController: UITableViewController {
                 
             }
         }
+    }
+    
+    @IBAction func unwindToAllMeals(segue: UIStoryboardSegue) {
+        // nothing here but I think I need this.
     }
     
     

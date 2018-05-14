@@ -365,11 +365,17 @@ class TableViewController: UITableViewController {
 //        }
 //    }
     
+    @IBAction func unwindToWeekMeals(segue: UIStoryboardSegue) {
+        // nothing here but I think I need this.
+    }
+    
     //MARK: Pass in data on segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueToMealDetail" {
             if let destinationVC = segue.destination as? MealDetailViewController {
                 print("Prepared for segue")
+                destinationVC.cameFromWeekMeals = true
+                destinationVC.cameFromAllMeals = false
                 let indexPath = tableView.indexPathForSelectedRow
                 destinationVC.mealPassedIn = mealArray[(indexPath?.row)!]
                 print("Passed in meal")
