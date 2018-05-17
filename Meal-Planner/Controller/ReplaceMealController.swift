@@ -113,7 +113,7 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
         swapSortingOrders()
         
         saveMeals()
-        performSegue(withIdentifier: "segueToWeekMeals", sender: self)
+        performSegue(withIdentifier: "unwindToWeekMeals", sender: self)
     }
     
     //MARK: Function to swap sorting orders
@@ -143,7 +143,7 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     
 
     @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
-        performSegue(withIdentifier: "segueCancelToWeekMeals", sender: self)
+        performSegue(withIdentifier: "unwindToWeekMeals", sender: self)
     }
     
     

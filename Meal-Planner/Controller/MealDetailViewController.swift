@@ -132,11 +132,14 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         // Change meal name to what's in the text field
         mealPassedIn.mealName = mealNameField.text
         saveMealDetail()
-        performSegue(withIdentifier: "segueDismissMealDetail", sender: self)
+        if cameFromAllMeals == true {
+            self.performSegue(withIdentifier: "unwindToAllMeals", sender: self)
+        } else if cameFromWeekMeals == true {
+            self.performSegue(withIdentifier: "unwindToWeekMeals", sender: self)
+        }
     }
     
     @IBAction func cancelButton(_ sender: UIBarButtonItem) {
-//        performSegue(withIdentifier: "segueDismissMealDetail", sender: self)
         if cameFromAllMeals == true {
             self.performSegue(withIdentifier: "unwindToAllMeals", sender: self)
         } else if cameFromWeekMeals == true {
