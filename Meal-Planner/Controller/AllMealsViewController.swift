@@ -35,6 +35,15 @@ class AllMealsViewController: UITableViewController {
         sortMeals()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        //Fix weird overlapping of status bar with navigation bar
+        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+        self.tableView.backgroundColor = UIColor.white
+        tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
+        loadMeals()
+        sortMeals()
+    }
+    
     
     //MARK: Tableview datasource methods
     // Create the two datasource methods that specify 1. what the cells should display, and 2. how many rows we want in the tableview.
@@ -213,6 +222,7 @@ class AllMealsViewController: UITableViewController {
             let newMeal = Meal(context: self.context)
             newMeal.mealName = textField.text!
             newMeal.mealLocked = false
+            newMeal.mealSortedOrder = Int32(self.mealArray.count)
             self.mealArray.append(newMeal)
             
             print("Assigned index to new meal")

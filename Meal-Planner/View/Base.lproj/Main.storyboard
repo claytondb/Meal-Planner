@@ -182,9 +182,11 @@
                         <outlet property="tableView" destination="f44-PI-m2v" id="fyT-qe-cvC"/>
                         <segue destination="emp-Xl-kwo" kind="show" identifier="segueToWeekMeals" id="Duy-Yj-R3o"/>
                         <segue destination="emp-Xl-kwo" kind="show" identifier="segueCancelToWeekMeals" id="S1w-A0-Hg9"/>
+                        <segue destination="LOE-44-Ded" kind="unwind" identifier="unwindToWeekMeals" unwindAction="unwindToWeekMealsWithSegue:" id="rk7-Kk-Mm7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0DU-zq-qMN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="LOE-44-Ded" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1698.75" y="907.3943661971831"/>
         </scene>
@@ -400,6 +402,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="9gB-AA-kie"/>
-        <segue reference="oHm-tp-4ax"/>
+        <segue reference="S1w-A0-Hg9"/>
     </inferredMetricsTieBreakers>
 </document>
