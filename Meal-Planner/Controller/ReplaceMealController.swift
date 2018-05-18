@@ -13,6 +13,7 @@ import CoreData
 class ReplaceMealController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var mealArray = [Meal]()
+    var mealSortedOrderArray = [Meal]()
     let meal = Meal()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var mealPassedIn = Meal()
@@ -131,12 +132,18 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
         do {
             var lastMealInt : Int = mealArray.count - 1
             lastMealInt = mealArray.count - 1
+            mealSortedOrderArray = mealArray
             while(lastMealInt > -1)
             {
                 let mealToCheck : Meal = mealArray[lastMealInt]
-                mealArray.swapAt(lastMealInt, Int(mealToCheck.mealSortedOrder))
+                do {
+                    mealSortedOrderArray.remove(at: Int(mealToCheck.mealSortedOrder))
+                    mealSortedOrderArray.insert(mealToCheck, at: Int(mealToCheck.mealSortedOrder))
+                }
                 lastMealInt -= 1
             }
+            mealArray = mealSortedOrderArray
+            mealSortedOrderArray = [Meal]()
         }
         print("Sorted meals.")
     }
