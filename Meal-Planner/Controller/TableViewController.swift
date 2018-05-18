@@ -16,6 +16,7 @@ class TableViewController: UITableViewController {
     var mealArray = [Meal]()
     var meal = Meal()
     var mealsToShuffleArray = [Meal]()
+    var mealSortedOrderArray = [Meal]()
 //    var mealToSwapIn = Meal()
     var mealToReplace = Meal()
     var mealReplacing = Meal()
@@ -283,16 +284,26 @@ class TableViewController: UITableViewController {
     }
     
     //MARK: Function to sort tableview according to mealSortedIndex
+    //Pseudocode:
+    //1. Go through list from bottom to top, and put each meal into mealSortedOrderArray at the sortedOrder of that meal.
+    //2. When you get to the top of the list, copy over the meals from mealSortedOrderArray to mealArray.
+    //3. Destroy mealSortedOrderArray (empty it out).
     func sortMeals() {
         do {
             var lastMealInt : Int = mealArray.count - 1
             lastMealInt = mealArray.count - 1
+            mealSortedOrderArray = mealArray
             while(lastMealInt > -1)
             {
                 let mealToCheck : Meal = mealArray[lastMealInt]
-                mealArray.swapAt(lastMealInt, Int(mealToCheck.mealSortedOrder))
+                do {
+                    mealSortedOrderArray.remove(at: Int(mealToCheck.mealSortedOrder))
+                mealSortedOrderArray.insert(mealToCheck, at: Int(mealToCheck.mealSortedOrder))
+                }
                 lastMealInt -= 1
             }
+            mealArray = mealSortedOrderArray
+            mealSortedOrderArray = [Meal]()
         }
         print("Sorted meals.")
     }
@@ -392,6 +403,7 @@ class TableViewController: UITableViewController {
     
     //MARK: Tableview delegate methods - select row, segue to meal detail
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        saveMeals()
         performSegue(withIdentifier: "segueToMealDetail", sender: self)
         print("Performed segue to meal detail")
     }
