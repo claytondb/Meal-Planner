@@ -25,7 +25,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         super.viewDidLoad()
         
         loadMeals()
-        sortMeals()
+        
         
         //TODO: Register your mealXib.xib file here:
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
@@ -41,6 +41,8 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         self.tableView.dataSource = self
         self.mealSearchField.delegate = self
         filteredMealsArray = mealArray
+        
+        sortMeals()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -49,6 +51,11 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
 //        self.tableView.backgroundColor = UIColor.white
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         loadMeals()
+
+        filteredMealsArray = mealArray
+        
+        mealSearchField.text = ""
+        
         sortMeals()
     }
     
@@ -112,12 +119,14 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         
         if editingStyle == .delete {
             
-            let mealToDelete = self.mealArray[indexPath.row]
+            let mealToDelete = self.filteredMealsArray[indexPath.row]
             
             // Use index of row to delete it from table and CoreData
             self.context.delete(mealToDelete)
-            self.mealArray.remove(at: indexPath.row)
+            self.filteredMealsArray.remove(at: indexPath.row)
             print("Successfully deleted meal.")
+            
+            mealArray = filteredMealsArray
             
             // Save data and reload
             self.saveMeals()
@@ -132,9 +141,10 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         return true
     }
     func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to toIndexPath: IndexPath) {
-        let itemToMove = mealArray[fromIndexPath.row]
-        mealArray.remove(at: fromIndexPath.row)
-        mealArray.insert(itemToMove, at: toIndexPath.row)
+        let itemToMove = filteredMealsArray[fromIndexPath.row]
+        filteredMealsArray.remove(at: fromIndexPath.row)
+        filteredMealsArray.insert(itemToMove, at: toIndexPath.row)
+        mealArray = filteredMealsArray
         saveMeals()
     }
     @IBAction func startEditing(_ sender: UIBarButtonItem) {
@@ -168,7 +178,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         let alert = UIAlertController(title: "Edit meal name", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Save", style: .default) { (action) in
             
-            let editingMeal = self.mealArray[indexPath.row]
+            let editingMeal = self.filteredMealsArray[indexPath.row]
             editingMeal.mealName = textField.text
             
             print("Changed meal name")
@@ -176,7 +186,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         }
         
         alert.addTextField { (alertTextField) in
-            let editingMeal = self.mealArray[indexPath.row]
+            let editingMeal = self.filteredMealsArray[indexPath.row]
             print("let editingMeal = Meal")
             alertTextField.text = editingMeal.mealName
             textField = alertTextField
@@ -232,10 +242,8 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     //MARK: Tableview delegate methods - select row, segue to meal detail
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         performSegue(withIdentifier: "segueFromAllMealsToDetail", sender: self)
         print("Performed segue to meal detail")
-        
     }
     
     
@@ -310,7 +318,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                 destinationVC.cameFromAllMeals = true
                 print("Prepared for segue")
                 let indexPath = tableView.indexPathForSelectedRow
-                destinationVC.mealPassedIn = mealArray[(indexPath?.row)!]
+                destinationVC.mealPassedIn = filteredMealsArray[(indexPath?.row)!]
                 print("Passed in meal")
                 
             }
