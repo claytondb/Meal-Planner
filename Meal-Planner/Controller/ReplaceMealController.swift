@@ -10,10 +10,11 @@ import UIKit
 import Foundation
 import CoreData
 
-class ReplaceMealController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ReplaceMealController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     var mealArray = [Meal]()
     var mealSortedOrderArray = [Meal]()
+    var filteredMealsArray = [Meal]()
     let meal = Meal()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var mealPassedIn = Meal()
@@ -43,6 +44,8 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.mealSearchField.delegate = self
+        filteredMealsArray = mealArray
         
     }
     
@@ -53,7 +56,8 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // indexPath.row has to do with the table. It takes that number and gets the meal from mealArray at that number. For example, it looks at indexPath.row of the table and if it's 3, it gets the meal at 3 in the array.
-        let meal = mealArray[indexPath.row]
+//        let meal = mealArray[indexPath.row]
+        let meal = filteredMealsArray[indexPath.row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
         
@@ -96,8 +100,8 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     
     // Method 2
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        let count = mealArray.count
+//        let count = mealArray.count
+        let count = filteredMealsArray.count
         return count
     }
     
@@ -107,7 +111,7 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
 //        cell.backgroundColor = UIColor.blue
-        mealToPassBack = mealArray[indexPath.row]
+        mealToPassBack = filteredMealsArray[indexPath.row]
         print("mealToPassBack is \(mealToPassBack.mealName!)")
 //        mealToPassBack.mealIsReplacing = true
         
@@ -130,19 +134,19 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     //MARK: Function to sort tableview according to mealSortedIndex
     func sortMeals() {
         do {
-            var lastMealInt : Int = mealArray.count - 1
-            lastMealInt = mealArray.count - 1
-            mealSortedOrderArray = mealArray
+            var lastMealInt : Int = filteredMealsArray.count - 1
+            lastMealInt = filteredMealsArray.count - 1
+            mealSortedOrderArray = filteredMealsArray
             while(lastMealInt > -1)
             {
-                let mealToCheck : Meal = mealArray[lastMealInt]
+                let mealToCheck : Meal = filteredMealsArray[lastMealInt]
                 do {
                     mealSortedOrderArray.remove(at: Int(mealToCheck.mealSortedOrder))
                     mealSortedOrderArray.insert(mealToCheck, at: Int(mealToCheck.mealSortedOrder))
                 }
                 lastMealInt -= 1
             }
-            mealArray = mealSortedOrderArray
+            filteredMealsArray = mealSortedOrderArray
             mealSortedOrderArray = [Meal]()
         }
         print("Sorted meals.")
@@ -151,6 +155,22 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
 
     @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
         performSegue(withIdentifier: "unwindToWeekMeals", sender: self)
+    }
+    
+    
+    // This method updates filteredData based on the text in the Search Box
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // When there is no text, filteredData is the same as the original data
+        // When user has entered text into the search box
+        // Use the filter method to iterate over all items in the data array
+        // For each item, return true if the item should be included and false if the
+        // item should NOT be included
+        filteredMealsArray = searchText.isEmpty ? mealArray : mealArray.filter { (item: Meal) -> Bool in
+            // If dataItem matches the searchText, return true to include it
+            return item.mealName?.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
+        }
+        
+        tableView.reloadData()
     }
     
     
