@@ -26,9 +26,6 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     @IBOutlet weak var mealSearchField: UISearchBar!
     
     override func viewDidLoad() {
-        
-        print("View did load ReplaceMealController")
-        
         super.viewDidLoad()
         
         loadMeals()
@@ -89,10 +86,6 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
         if cell.mealSwapBtn != nil {
             cell.mealSwapBtn.removeFromSuperview()
         }
-        
-        // Hide the swap and lock buttons
-//        cell.mealSwapBtn.isHidden = true
-//        cell.mealLockIconBtn.isHidden = true
         
         return cell
     }

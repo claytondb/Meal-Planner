@@ -10,34 +10,43 @@ import UIKit
 import Foundation
 import CoreData
 
-class AllMealsViewController: UITableViewController {
+class AllMealsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     var mealArray = [Meal]()
     var mealSortedOrderArray = [Meal]()
+    var filteredMealsArray = [Meal]()
     let meal = Meal()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var mealSearchField: UISearchBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Fix weird overlapping of status bar with navigation bar
-        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
-        
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-        
-        self.tableView.backgroundColor = UIColor.white
+        loadMeals()
+        sortMeals()
         
         //TODO: Register your mealXib.xib file here:
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         
-        loadMeals()
-        sortMeals()
+        //Fix weird overlapping of status bar with navigation bar
+//        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+        
+        tableView.backgroundColor = UIColor.white
+        
+//        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+        
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.mealSearchField.delegate = self
+        filteredMealsArray = mealArray
     }
     
     override func viewDidAppear(_ animated: Bool) {
         //Fix weird overlapping of status bar with navigation bar
-        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
-        self.tableView.backgroundColor = UIColor.white
+//        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+//        self.tableView.backgroundColor = UIColor.white
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         loadMeals()
         sortMeals()
@@ -47,10 +56,11 @@ class AllMealsViewController: UITableViewController {
     //MARK: Tableview datasource methods
     // Create the two datasource methods that specify 1. what the cells should display, and 2. how many rows we want in the tableview.
     // Method 1
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // indexPath.row has to do with the table. It takes that number and gets the meal from mealArray at that number. For example, it looks at indexPath.row of the table and if it's 3, it gets the meal at 3 in the array.
-        let meal = mealArray[indexPath.row]
+//        let meal = mealArray[indexPath.row]
+        let meal = filteredMealsArray[indexPath.row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
         
@@ -90,15 +100,15 @@ class AllMealsViewController: UITableViewController {
     
     
     // Method 2
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            
-                    let count = mealArray.count
-                    return count
-        }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//                    let count = mealArray.count
+        let count = filteredMealsArray.count
+        return count
+    }
     
     
     // Override to support editing the table view. Swipe to delete.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
         if editingStyle == .delete {
             
@@ -117,16 +127,14 @@ class AllMealsViewController: UITableViewController {
     }
     
     
-    func tableView(_ tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         print("can move rows")
-        
         return true
     }
-    func tableView(_ tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to toIndexPath: IndexPath) {
         let itemToMove = mealArray[fromIndexPath.row]
         mealArray.remove(at: fromIndexPath.row)
         mealArray.insert(itemToMove, at: toIndexPath.row)
-        
         saveMeals()
     }
     @IBAction func startEditing(_ sender: UIBarButtonItem) {
@@ -135,6 +143,20 @@ class AllMealsViewController: UITableViewController {
         } else {
             setEditing(false, animated: true)
         }
+    }
+    
+    // This method updates filteredData based on the text in the Search Box
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // When there is no text, filteredData is the same as the original data
+        // When user has entered text into the search box
+        // Use the filter method to iterate over all items in the data array
+        // For each item, return true if the item should be included and false if the
+        // item should NOT be included
+        filteredMealsArray = searchText.isEmpty ? mealArray : mealArray.filter { (item: Meal) -> Bool in
+            // If dataItem matches the searchText, return true to include it
+            return item.mealName?.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
+        }
+        tableView.reloadData()
     }
     
     //MARK: Edit meal name function
@@ -189,19 +211,19 @@ class AllMealsViewController: UITableViewController {
     //MARK: Function to sort tableview according to mealSortedIndex
     func sortMeals() {
         do {
-            var lastMealInt : Int = mealArray.count - 1
-            lastMealInt = mealArray.count - 1
-            mealSortedOrderArray = mealArray
+            var lastMealInt : Int = filteredMealsArray.count - 1
+            lastMealInt = filteredMealsArray.count - 1
+            mealSortedOrderArray = filteredMealsArray
             while(lastMealInt > -1)
             {
-                let mealToCheck : Meal = mealArray[lastMealInt]
+                let mealToCheck : Meal = filteredMealsArray[lastMealInt]
                 do {
                     mealSortedOrderArray.remove(at: Int(mealToCheck.mealSortedOrder))
                     mealSortedOrderArray.insert(mealToCheck, at: Int(mealToCheck.mealSortedOrder))
                 }
                 lastMealInt -= 1
             }
-            mealArray = mealSortedOrderArray
+            filteredMealsArray = mealSortedOrderArray
             mealSortedOrderArray = [Meal]()
         }
         print("Sorted meals.")
@@ -209,7 +231,7 @@ class AllMealsViewController: UITableViewController {
     
     
     //MARK: Tableview delegate methods - select row, segue to meal detail
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         performSegue(withIdentifier: "segueFromAllMealsToDetail", sender: self)
         print("Performed segue to meal detail")
