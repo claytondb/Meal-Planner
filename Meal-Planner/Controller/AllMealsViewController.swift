@@ -55,6 +55,8 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         filteredMealsArray = mealArray
         
         mealSearchField.text = ""
+        searchBar(mealSearchField, textDidChange: "")
+        tableView.reloadData()
         
         sortMeals()
     }
