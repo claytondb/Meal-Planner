@@ -29,9 +29,6 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Fix weird overlapping of status bar with navigation bar
-//        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
-        
 //        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
         self.tableView.backgroundColor = UIColor.white
@@ -48,8 +45,6 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        //Fix weird overlapping of status bar with navigation bar
-        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
         self.tableView.backgroundColor = UIColor.white
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         loadMeals()
