@@ -37,9 +37,9 @@ class TableViewController: UITableViewController {
         //TODO: Register your mealXib.xib file here:
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         
-        loadMeals()
+//        loadMeals()
 //        swapMeals()
-        sortMeals()
+//        sortMeals()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -448,7 +448,7 @@ class TableViewController: UITableViewController {
         print("set parentCell")
         
         // Fixed error - added second superview so it's not just UITableViewWrapper being cast as UITableView.
-        let parentTable = parentCell.superview as! UITableView
+        let parentTable = parentCell.superview?.superview as! UITableView
         print("set parentTable")
         
         let indexPath = parentTable.indexPath(for: parentCell)

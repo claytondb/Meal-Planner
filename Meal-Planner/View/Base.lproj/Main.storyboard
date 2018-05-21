@@ -56,7 +56,7 @@
                         </connections>
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <tabBarItem key="tabBarItem" title="Week" image="ic_restaurant" id="CvR-XA-YBn"/>
+                    <tabBarItem key="tabBarItem" title="Week" image="twotone_calendar_today_black_24pt" id="CvR-XA-YBn"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <segue destination="t0D-hE-n2k" kind="show" identifier="segueToReplaceMeal" id="1vS-Hg-knm"/>
@@ -168,7 +168,7 @@
                             <outlet property="delegate" destination="nHO-cL-CUj" id="IRR-ss-EBW"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Settings" image="ic_settings" id="9Wl-uY-U2A"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="twotone_settings_black_24pt" id="9Wl-uY-U2A"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wOH-9P-YLF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -406,7 +406,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="dvr-Ha-SIU"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="All Meals" image="ic_list" id="sL0-1T-N7J"/>
+                    <tabBarItem key="tabBarItem" title="All Meals" image="twotone_restaurant_black_24pt" id="sL0-1T-N7J"/>
                     <connections>
                         <outlet property="mealSearchField" destination="wVh-k7-REg" id="SFQ-ST-nHV"/>
                         <outlet property="tableView" destination="Lul-dG-LlB" id="GZ0-iC-byi"/>
@@ -419,10 +419,10 @@
     </scenes>
     <resources>
         <image name="ic_edit" width="24" height="24"/>
-        <image name="ic_list" width="36" height="36"/>
-        <image name="ic_restaurant" width="36" height="36"/>
-        <image name="ic_settings" width="36" height="36"/>
         <image name="mealPlaceholder" width="64" height="64"/>
+        <image name="twotone_calendar_today_black_24pt" width="24" height="24"/>
+        <image name="twotone_restaurant_black_24pt" width="24" height="24"/>
+        <image name="twotone_settings_black_24pt" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="HXa-UF-XBn"/>

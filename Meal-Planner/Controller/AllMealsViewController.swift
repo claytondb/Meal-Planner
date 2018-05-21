@@ -261,8 +261,17 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             newMeal.mealLocked = false
             newMeal.mealSortedOrder = Int32(self.mealArray.count)
             self.mealArray.append(newMeal)
+            self.filteredMealsArray = self.mealArray
             
             print("Assigned index to new meal")
+            
+            // Trying to scroll to new meal but haven't figured it out.
+//            let indexOfNewMeal = self.mealArray.index(of: newMeal) as! IndexPath
+//            let indexOfNewMeal = self.mealArray.index(after: Int(newMeal.mealSortedOrder))
+//            var indexOfNewMeal = IndexPath()
+//            indexOfNewMeal.append(mealArray<IndexPath.Element>)
+//            self.tableView.scrollToRow(at: indexOfNewMeal, at: .bottom, animated: true)
+            
             self.saveMeals()
         }
         
