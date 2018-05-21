@@ -11,61 +11,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Week-->
-        <scene sceneID="pna-Vp-UND">
-            <objects>
-                <tableViewController title="Week" id="od0-LT-Bni" customClass="TableViewController" customModule="Meal_Planner" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="mealsTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="YuM-ZT-UlN">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <navigationBar key="tableHeaderView" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" id="rwv-Jx-l0X">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <items>
-                                <navigationItem title="Week" id="QZg-sw-TAJ">
-                                    <barButtonItem key="leftBarButtonItem" title="Edit" id="NZz-pI-csS">
-                                        <connections>
-                                            <action selector="startEditing:" destination="od0-LT-Bni" id="m1k-YT-VXE"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem key="rightBarButtonItem" title="Shuffle" id="kZR-Ff-My9">
-                                        <connections>
-                                            <action selector="randomizeListButton:" destination="od0-LT-Bni" id="eEz-ia-RmP"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </navigationItem>
-                            </items>
-                        </navigationBar>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="customMealCell" id="45a-Hp-Zfe" customClass="CustomMealCell" customModule="Meal_Planner" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="72" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="45a-Hp-Zfe" id="G9t-D2-dk0">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="qhB-Wg-zV1" kind="show" identifier="segueToMealDetail" id="9gB-AA-kie"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="od0-LT-Bni" id="4xG-rk-Dde"/>
-                            <outlet property="delegate" destination="od0-LT-Bni" id="xLg-qx-j2u"/>
-                        </connections>
-                    </tableView>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <tabBarItem key="tabBarItem" title="Week" image="twotone_calendar_today_black_24pt" id="CvR-XA-YBn"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <segue destination="t0D-hE-n2k" kind="show" identifier="segueToReplaceMeal" id="1vS-Hg-knm"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KqJ-4Y-jIR" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="855" y="132.04225352112675"/>
-        </scene>
         <!--Replace Meal Controller-->
         <scene sceneID="5Kt-Tv-L7b">
             <objects>
@@ -184,9 +129,9 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="od0-LT-Bni" kind="relationship" relationship="viewControllers" id="rJ9-S4-060"/>
                         <segue destination="0fw-uv-Z7J" kind="relationship" relationship="viewControllers" id="h0B-rF-6P9"/>
                         <segue destination="nHO-cL-CUj" kind="relationship" relationship="viewControllers" id="scp-PI-OhH"/>
+                        <segue destination="coo-CD-AWO" kind="relationship" relationship="viewControllers" id="Fxj-eI-vpX"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qtd-AY-dh7" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -416,6 +361,72 @@
             </objects>
             <point key="canvasLocation" x="1699" y="132"/>
         </scene>
+        <!--Week-->
+        <scene sceneID="9ns-jd-jcg">
+            <objects>
+                <viewController title="Week" id="coo-CD-AWO" customClass="WeekViewController" customModule="Meal_Planner" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="huB-rX-cLk">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="m6w-uq-2r5">
+                                <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="customMealCell" id="SdZ-Da-u38" customClass="CustomMealCell" customModule="Meal_Planner" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SdZ-Da-u38" id="jNu-Fo-gfo">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="qhB-Wg-zV1" kind="show" identifier="segueToMealDetail" id="gjj-cg-CU0"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ulc-lZ-jmX">
+                                <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <items>
+                                    <navigationItem title="Week" id="f1p-gO-A3G">
+                                        <barButtonItem key="leftBarButtonItem" title="Edit" id="WkA-Ja-rSL">
+                                            <connections>
+                                                <action selector="editPressed:" destination="coo-CD-AWO" id="31z-aH-tzf"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="Shuffle" id="C5K-TZ-XDe">
+                                            <connections>
+                                                <action selector="shuffleButtonPressed:" destination="coo-CD-AWO" id="f2G-K3-mvL"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="m6w-uq-2r5" firstAttribute="top" secondItem="ulc-lZ-jmX" secondAttribute="bottom" id="1bQ-bn-KY4"/>
+                            <constraint firstItem="ulc-lZ-jmX" firstAttribute="leading" secondItem="huB-rX-cLk" secondAttribute="leading" id="D7I-gG-pHK"/>
+                            <constraint firstItem="ulc-lZ-jmX" firstAttribute="leading" secondItem="m6w-uq-2r5" secondAttribute="leading" id="OPR-vv-pqz"/>
+                            <constraint firstAttribute="trailing" secondItem="ulc-lZ-jmX" secondAttribute="trailing" id="X4V-D2-qoG"/>
+                            <constraint firstItem="ulc-lZ-jmX" firstAttribute="trailing" secondItem="m6w-uq-2r5" secondAttribute="trailing" id="bEX-oA-XOC"/>
+                            <constraint firstItem="m6w-uq-2r5" firstAttribute="bottom" secondItem="isx-kz-nrO" secondAttribute="bottom" id="xTh-L6-PYe"/>
+                            <constraint firstItem="ulc-lZ-jmX" firstAttribute="top" secondItem="huB-rX-cLk" secondAttribute="top" constant="20" id="yGo-Ig-Oam"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="isx-kz-nrO"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Week" image="twotone_calendar_today_black_24pt" id="hxd-79-kG3"/>
+                    <connections>
+                        <outlet property="tableView" destination="m6w-uq-2r5" id="Du8-Ix-X2f"/>
+                        <segue destination="t0D-hE-n2k" kind="show" identifier="segueToReplaceMeal" id="lSy-dd-VCF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Ri-OJ-1ja" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="855" y="131"/>
+        </scene>
     </scenes>
     <resources>
         <image name="ic_edit" width="24" height="24"/>
@@ -425,7 +436,7 @@
         <image name="twotone_settings_black_24pt" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="HXa-UF-XBn"/>
+        <segue reference="gjj-cg-CU0"/>
         <segue reference="Duy-Yj-R3o"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -1,5 +1,5 @@
 //
-//  TableViewController.swift
+//  WeekViewController.swift
 //  Meal Planner
 //
 //  Created by Clayton, David on 2/23/18.
@@ -11,7 +11,7 @@ import Foundation
 import CoreData
 import GameplayKit
 
-class TableViewController: UITableViewController {
+class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var mealArray = [Meal]()
     var meal = Meal()
@@ -20,7 +20,9 @@ class TableViewController: UITableViewController {
 //    var mealToSwapIn = Meal()
     var mealToReplace = Meal()
     var mealReplacing = Meal()
-//    var mealToReplaceNewSortOrder : Int32 = 0
+    @IBOutlet weak var tableView: UITableView!
+    
+    //    var mealToReplaceNewSortOrder : Int32 = 0
 //    var mealReplacingNewSortOrder : Int32 = 0
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -28,9 +30,9 @@ class TableViewController: UITableViewController {
         super.viewDidLoad()
         
         //Fix weird overlapping of status bar with navigation bar
-        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+//        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
         
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+//        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
         self.tableView.backgroundColor = UIColor.white
         
@@ -40,6 +42,9 @@ class TableViewController: UITableViewController {
 //        loadMeals()
 //        swapMeals()
 //        sortMeals()
+        
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -55,7 +60,7 @@ class TableViewController: UITableViewController {
     //MARK: Tableview datasource methods
     // Create the two datasource methods that specify 1. what the cells should display, and 2. how many rows we want in the tableview.
     // Method 1
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // indexPath.row has to do with the table. It takes that number and gets the meal from mealArray at that number. For example, it looks at indexPath.row of the table and if it's 3, it gets the meal at 3 in the array.
         let meal = mealArray[indexPath.row]
@@ -124,13 +129,13 @@ class TableViewController: UITableViewController {
     
 
     // Method 2
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return mealArray.count
     }
         
         
         // Override to support editing the table view. Swipe to delete.
-        override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
             if editingStyle == .delete {
                 
                 let mealToDelete = self.mealArray[indexPath.row]
@@ -159,18 +164,15 @@ class TableViewController: UITableViewController {
     }
 
     //MARK: Reordering controls and tableView methods
-    @IBAction func startEditing(_ sender: UIBarButtonItem) {
+    @IBAction func editPressed(_ sender: UIBarButtonItem) {
         // Editing meals to be able to reorder them
-//        self.isEditing = !self.isEditing
-        if self.isEditing == false {
-        setEditing(true, animated: true)
+        //        self.isEditing = !self.isEditing
+        if tableView.isEditing == false {
+            setEditing(true, animated: true)
         } else {
             setEditing(false, animated: true)
         }
     }
-    
-
-    
     
     //MARK: Edit meal name function
     func editMealName() {
@@ -204,8 +206,6 @@ class TableViewController: UITableViewController {
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
-    
-    
     
     //MARK: Lock meal function
     func lockMeal(mealToCheck : Meal, cellToColor : UITableViewCell) {
@@ -308,74 +308,6 @@ class TableViewController: UITableViewController {
         print("Sorted meals.")
     }
     
-//    //MARK: Swap meals function
-//    func swapMeals() {
-//        // Pseudocode for swap:
-//        // Go through list of meals, find the one that has the flag mealIsReplacing set to true
-//        // assign that meal to mealReplacing
-//        // Go through list of meals, find the one that has the flag mealReplaceMe set to true
-//        // assign that meal to mealToReplace
-//        // mealArray.swapAt(Int(meal.mealSortedOrder), Int(mealReplacing.mealSortedOrder))
-//        // done.
-//        // Don't use this function if I can do it by swapping the sort positions and then using the sort function.
-//        do {
-//            var lastMealInt : Int = mealArray.count - 1
-//            print("LastMealInt is \(lastMealInt).")
-//                // step 1
-//                        while(lastMealInt > -1)
-//                        {
-//                            let mealToCheck : Meal = mealArray[lastMealInt]
-//                            if mealToCheck.mealIsReplacing == true {
-//                                mealReplacing = mealToCheck
-//                                print("Assigned \(mealToCheck.mealName!) to mealReplacing.")
-//                            }
-//                                // step 2
-//                            else if mealToCheck.mealIsReplacing == false {
-//                                print("mealToCheck.mealIsReplacing is false")
-//                                // do nothing
-//                            }
-//                            lastMealInt -= 1
-//                        }
-//
-//                        // reset lastMealInt to the bottom item in the list
-//                        lastMealInt = mealArray.count - 1
-//                        print("Reset lastMealInt. Now it's \(lastMealInt).")
-//
-//                        // step 4
-//                        while(lastMealInt > -1)
-//                        {
-//                            let mealToCheck : Meal = mealArray[lastMealInt]
-//                            if mealToCheck.mealReplaceMe == true {
-//                                mealToReplace = mealToCheck
-//                                print("Assigned \(mealToCheck.mealName!) to mealToReplace.")
-//
-//                                mealArray.swapAt(Int(mealToReplace.mealSortedOrder), Int(mealReplacing.mealSortedOrder))
-//                                print("Swapped \(mealToReplace.mealName!) with \(mealReplacing.mealName!).")
-//
-//                                // Swap the sorted orders.
-//                                mealReplacingNewSortOrder = mealToReplace.mealSortedOrder
-//                                mealToReplaceNewSortOrder = mealReplacing.mealSortedOrder
-//                                mealToReplace.mealSortedOrder = mealToReplaceNewSortOrder
-//                                mealReplacing.mealSortedOrder = mealReplacingNewSortOrder
-//                                print("Swapped sorted orders")
-//
-//                                // Set flags to false after the swap
-//                                mealToReplace.mealReplaceMe = false
-//                                mealReplacing.mealIsReplacing = false
-//                                print("Cleared replacing flags")
-//
-//                                saveMeals()
-//                            }
-//                                // step 2
-//                            else if mealToCheck.mealReplaceMe == false {
-//                                print("mealToCheck.mealReplaceMe is false.")
-//                                // do nothing
-//                            }
-//                            lastMealInt -= 1
-//            }
-//        }
-//    }
-    
     @IBAction func unwindToWeekMeals(segue: UIStoryboardSegue) {
         // nothing here but I think I need this.
     }
@@ -402,7 +334,7 @@ class TableViewController: UITableViewController {
     }
     
     //MARK: Tableview delegate methods - select row, segue to meal detail
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        saveMeals()
         performSegue(withIdentifier: "segueToMealDetail", sender: self)
         print("Performed segue to meal detail")
@@ -410,7 +342,7 @@ class TableViewController: UITableViewController {
     
     
     //MARK: Button to randomize the list
-    @IBAction func randomizeListButton(_ sender: Any) {
+    @IBAction func shuffleButtonPressed(_ sender: UIBarButtonItem) {
         randomize()
         saveMeals()
     }
@@ -448,7 +380,7 @@ class TableViewController: UITableViewController {
         print("set parentCell")
         
         // Fixed error - added second superview so it's not just UITableViewWrapper being cast as UITableView.
-        let parentTable = parentCell.superview?.superview as! UITableView
+        let parentTable = parentCell.superview as! UITableView
         print("set parentTable")
         
         let indexPath = parentTable.indexPath(for: parentCell)
