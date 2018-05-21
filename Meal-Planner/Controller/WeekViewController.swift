@@ -130,7 +130,12 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     // Method 2
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return mealArray.count
+//        return mealArray.count
+        if mealArray.count < 7 {
+            return mealArray.count
+        } else {
+            return 7
+        }
     }
         
         
