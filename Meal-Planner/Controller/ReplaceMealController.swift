@@ -10,6 +10,7 @@ import UIKit
 import Foundation
 import CoreData
 
+//@objc(ReplaceMealController)  // match the ObjC symbol name inside Storyboard
 class ReplaceMealController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     var mealArray = [Meal]()
@@ -46,6 +47,15 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        //MARK: Google analytics stuff
+        guard let tracker = GAI.sharedInstance().defaultTracker else { return }
+        tracker.set(kGAIScreenName, value: "Replace Meal view controller")
+        
+        guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
+        tracker.send(builder.build() as [NSObject : AnyObject])
+        //End google analytics stuff.
+    }
     
     //MARK: Tableview datasource methods
     // Create the two datasource methods that specify 1. what the cells should display, and 2. how many rows we want in the tableview.

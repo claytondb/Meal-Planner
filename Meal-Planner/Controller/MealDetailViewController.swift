@@ -10,6 +10,7 @@ import UIKit
 import Foundation
 import CoreData
 
+//@objc(MealDetailViewController)  // match the ObjC symbol name inside Storyboard
 class MealDetailViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     var mealArray = [Meal]()
@@ -72,10 +73,19 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         }
     }
     
+    
     //Mark: Make page scroll up when keyboard appears.
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerKeyboardNotifications()
+        
+        //MARK: Google analytics stuff
+        guard let tracker = GAI.sharedInstance().defaultTracker else { return }
+        tracker.set(kGAIScreenName, value: "Meal Detail view controller")
+            
+        guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
+        tracker.send(builder.build() as [NSObject : AnyObject])
+        //End google analytics stuff.
     }
     func registerKeyboardNotifications() {
         NotificationCenter.default.addObserver(self,

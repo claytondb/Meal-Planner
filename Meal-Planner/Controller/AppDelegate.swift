@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,6 +19,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
 //        print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as String)
+        
+        //MARK: Google Analytics stuff
+        guard let gai = GAI.sharedInstance() else {
+            assert(false, "Google Analytics not configured correctly")
+        }
+        gai.tracker(withTrackingId: "UA-119917106-1")
+        // Optional: automatically report uncaught exceptions.
+        gai.trackUncaughtExceptions = true
+        
+        // Optional: set Logger to VERBOSE for debug information.
+        // Remove before app release.
+        gai.logger.logLevel = .verbose;
+        // end Google Analytics stuff
+        
+        //Config firebase
+        FirebaseApp.configure()
         
         return true
     }

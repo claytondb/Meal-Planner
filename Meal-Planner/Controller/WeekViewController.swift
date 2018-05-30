@@ -11,6 +11,7 @@ import Foundation
 import CoreData
 import GameplayKit
 
+//@objc(WeekViewController)  // match the ObjC symbol name inside Storyboard
 class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var mealArray = [Meal]()
@@ -44,6 +45,15 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.tableView.dataSource = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        //MARK: Google analytics stuff
+        guard let tracker = GAI.sharedInstance().defaultTracker else { return }
+        tracker.set(kGAIScreenName, value: "Week view controller")
+        
+        guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
+        tracker.send(builder.build() as [NSObject : AnyObject])
+        //End google analytics stuff.
+    }
     override func viewDidAppear(_ animated: Bool) {
         self.tableView.backgroundColor = UIColor.white
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
@@ -103,9 +113,11 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         // Color cell if it's locked.
         if meal.mealLocked == true {
-            cell.backgroundColor = UIColor.lightGray
+            cell.backgroundColor = UIColor.orange
+            cell.mealLockIconBtn.setImage(#imageLiteral(resourceName: "twotone_lock_black_24pt"), for: .normal)
         } else {
             cell.backgroundColor = UIColor.clear
+            cell.mealLockIconBtn.setImage(#imageLiteral(resourceName: "twotone_lock_open_black_24pt"), for: .normal)
         }
         
         // Accessing the lock button inside CustomMealCell
@@ -150,12 +162,12 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 
             }
         }
-    func tableView(_ tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         print("can move rows")
         
         return true
     }
-    func tableView(_ tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to toIndexPath: IndexPath) {
         let itemToMove = mealArray[fromIndexPath.row]
         mealArray.remove(at: fromIndexPath.row)
         mealArray.insert(itemToMove, at: toIndexPath.row)

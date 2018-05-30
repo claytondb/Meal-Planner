@@ -10,6 +10,7 @@ import UIKit
 import Foundation
 import CoreData
 
+//@objc(AllMealsViewController)  // match the ObjC symbol name inside Storyboard
 class AllMealsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     var mealArray = [Meal]()
@@ -43,6 +44,16 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         filteredMealsArray = mealArray
         
         sortMeals()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        //MARK: Google analytics stuff
+        guard let tracker = GAI.sharedInstance().defaultTracker else { return }
+        tracker.set(kGAIScreenName, value: "All Meals view controller")
+        
+        guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
+        tracker.send(builder.build() as [NSObject : AnyObject])
+        //End google analytics stuff.
     }
     
     override func viewDidAppear(_ animated: Bool) {

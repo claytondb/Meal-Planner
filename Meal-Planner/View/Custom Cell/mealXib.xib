@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -40,7 +40,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Test meal label here is what you would see if you had a really long meal but that's weird." lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jev-c1-RPD">
-                                        <rect key="frame" x="0.0" y="13" width="0.0" height="51"/>
+                                        <rect key="frame" x="0.0" y="13" width="191" height="51"/>
                                         <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="16"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -55,7 +55,7 @@
                                         <constraints>
                                             <constraint firstAttribute="width" constant="48" id="yKe-Yr-4WI"/>
                                         </constraints>
-                                        <state key="normal" image="ic_swap_horiz"/>
+                                        <state key="normal" image="twotone_swap_horiz_black_24pt"/>
                                         <connections>
                                             <action selector="mealSwapTapped:" destination="ziL-ua-O8o" eventType="touchUpInside" id="Wxd-Q5-R20"/>
                                         </connections>
@@ -65,7 +65,7 @@
                                         <constraints>
                                             <constraint firstAttribute="width" constant="48" id="UAb-gn-hv8"/>
                                         </constraints>
-                                        <state key="normal" image="ic_lock"/>
+                                        <state key="normal" image="twotone_lock_open_black_24pt"/>
                                         <connections>
                                             <action selector="mealLockTapped:" destination="ziL-ua-O8o" eventType="touchUpInside" id="NSN-WS-eeI"/>
                                         </connections>
@@ -95,8 +95,8 @@
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
     </objects>
     <resources>
-        <image name="ic_lock" width="24" height="24"/>
-        <image name="ic_swap_horiz" width="24" height="24"/>
         <image name="mealPlaceholder" width="64" height="64"/>
+        <image name="twotone_lock_open_black_24pt" width="24" height="24"/>
+        <image name="twotone_swap_horiz_black_24pt" width="24" height="24"/>
     </resources>
 </document>
