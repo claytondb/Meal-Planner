@@ -9,6 +9,7 @@
 import UIKit
 import Foundation
 import CoreData
+import Firebase
 
 //@objc(SettingsViewController)  // match the ObjC symbol name inside Storyboard
 class SettingsViewController: UIViewController, UITextFieldDelegate {
@@ -29,7 +30,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         emailField.delegate = self
         passwordField.delegate = self
         
-//        self.passwordField.keyboardType = UIKeyboardType.default
+        self.emailField.keyboardType = UIKeyboardType.emailAddress
+        self.passwordField.keyboardType = UIKeyboardType.default
         
         loadSettings()
     }
@@ -85,6 +87,13 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: Register is pressed
     @IBAction func registerPressed(_ sender: UIButton) {
+        Auth.auth().createUser(withEmail: emailField.text!, password: passwordField.text!) { (user, error) in
+            if error != nil {
+                print(error!)
+            } else {
+                print("Registration successful.")
+            }
+        }
     }
     
     //MARK: Log in is pressed
