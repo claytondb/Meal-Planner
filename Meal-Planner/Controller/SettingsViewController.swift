@@ -11,26 +11,33 @@ import Foundation
 import CoreData
 
 //@objc(SettingsViewController)  // match the ObjC symbol name inside Storyboard
-class SettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     var settingsArray = [Setting]()
+    
+    @IBOutlet weak var instructionText: UILabel!
+    @IBOutlet weak var emailField: UITextField!
+    @IBOutlet weak var passwordField: UITextField!
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
-        self.tableView.backgroundColor = UIColor.white
+        emailField.delegate = self
+        passwordField.delegate = self
         
-        //TODO: Register your mealXib.xib file here:
-        tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
+//        self.passwordField.keyboardType = UIKeyboardType.default
         
         loadSettings()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        //Mark: Make page scroll up when keyboard appears.
+        registerKeyboardNotifications()
+        
         //MARK: Google analytics stuff
         guard let tracker = GAI.sharedInstance().defaultTracker else { return }
         tracker.set(kGAIScreenName, value: "Settings view controller")
@@ -38,30 +45,51 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
         tracker.send(builder.build() as [NSObject : AnyObject])
         //End google analytics stuff.
+        
+        instructionText.lineBreakMode = NSLineBreakMode.byWordWrapping
+        instructionText.numberOfLines = 0
     }
     
-    //MARK: Tableview datasource methods
-    // Create the two datasource methods that specify 1. what the cells should display, and 2. how many rows we want in the tableview.
-    // Method 1
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let settingsItem = settingsArray[indexPath.row]
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsCell", for: indexPath)
-        
-        cell.textLabel?.text = settingsItem.settingName
-        
-        return cell
+    func registerKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow(notification:)),
+                                               name: NSNotification.Name.UIKeyboardWillShow,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide(notification:)),
+                                               name: NSNotification.Name.UIKeyboardWillHide,
+                                               object: nil)
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    @objc func keyboardWillShow(notification: NSNotification) {
+        let userInfo: NSDictionary = notification.userInfo! as NSDictionary
+        let keyboardInfo = userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue
+        let keyboardSize = keyboardInfo.cgRectValue.size
+        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height + 24, right: 0)
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
     }
     
-    
-    // Method 2
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return settingsArray.count
+    @objc func keyboardWillHide(notification: NSNotification) {
+        scrollView.contentInset = .zero
+        scrollView.scrollIndicatorInsets = .zero
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool // called when 'return' key pressed. return NO to ignore.
+    {
+        emailField.resignFirstResponder()
+        passwordField.resignFirstResponder()
+        return true
     }
     
+    //MARK: Register is pressed
+    @IBAction func registerPressed(_ sender: UIButton) {
+    }
     
-    
-    
+    //MARK: Log in is pressed
+    @IBAction func loginPressed(_ sender: UIButton) {
+    }
     
     //MARK: Model manipulation methods
     func saveSettings(){
@@ -70,7 +98,6 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         } catch {
             print("Error saving settings. \(error)")
         }
-        self.tableView.reloadData()
         print("Settings saved and data reloaded")
     }
     
@@ -80,7 +107,6 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         } catch {
             print("Error loading meals. \(error)")
         }
-        self.tableView.reloadData()
         print("Settings loaded")
     }
     
