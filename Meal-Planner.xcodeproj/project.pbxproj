@@ -98,8 +98,6 @@
 		82883CB820412B3300F37F04 /* Meal Planner */ = {
 			isa = PBXGroup;
 			children = (
-				82883CC520412B3300F37F04 /* Info.plist */,
-				827D32BF20BE4FE900089C81 /* GoogleService-Info.plist */,
 				82883CCE20412CDB00F37F04 /* Supporting files */,
 				82883CCD20412CAE00F37F04 /* Controller */,
 				82883CCC20412CA700F37F04 /* View */,
@@ -144,6 +142,8 @@
 		82883CCE20412CDB00F37F04 /* Supporting files */ = {
 			isa = PBXGroup;
 			children = (
+				827D32BF20BE4FE900089C81 /* GoogleService-Info.plist */,
+				82883CC520412B3300F37F04 /* Info.plist */,
 				82883CC020412B3300F37F04 /* Assets.xcassets */,
 			);
 			path = "Supporting files";
@@ -438,12 +438,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4S4665QGAY;
-				INFOPLIST_FILE = "$(SRCROOT)/Meal-Planner/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Meal-Planner/Supporting files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.davidclayton.Meal-Planner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "/Users/claytod/Dropbox (Shure Incorporated)/01-Employee/swift/udemy-course/Meal-Planner/Meal-Planner/Controller/BridgingHeader.h";
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "/Users/claytod/Documents/box-problem-files/swift/udemy-course/Meal-Planner/Meal-Planner/Controller/BridgingHeader.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -456,12 +456,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4S4665QGAY;
-				INFOPLIST_FILE = "$(SRCROOT)/Meal-Planner/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Meal-Planner/Supporting files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.davidclayton.Meal-Planner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "/Users/claytod/Dropbox (Shure Incorporated)/01-Employee/swift/udemy-course/Meal-Planner/Meal-Planner/Controller/BridgingHeader.h";
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "/Users/claytod/Documents/box-problem-files/swift/udemy-course/Meal-Planner/Meal-Planner/Controller/BridgingHeader.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

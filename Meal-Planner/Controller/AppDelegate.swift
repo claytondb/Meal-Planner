@@ -35,6 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //Config firebase
         FirebaseApp.configure()
+        let myDatabase = Database.database().reference()
+        myDatabase.setValue("We've got data.")
         
         return true
     }
