@@ -436,7 +436,7 @@
                                                 <rect key="frame" x="0.0" y="152" width="324" height="152"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="lBb-BY-yf4">
-                                                        <rect key="frame" x="24" y="0.0" width="276" height="154.5"/>
+                                                        <rect key="frame" x="24" y="0.0" width="276" height="162.5"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="iFu-2k-mWo">
                                                                 <rect key="frame" x="0.0" y="0.0" width="276" height="72"/>
@@ -466,7 +466,7 @@
                                                                 </constraints>
                                                             </view>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="qlE-Bh-Idb">
-                                                                <rect key="frame" x="0.0" y="96" width="276" height="58.5"/>
+                                                                <rect key="frame" x="0.0" y="96" width="276" height="66.5"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NZ9-Xj-cEQ">
                                                                         <rect key="frame" x="0.0" y="0.0" width="276" height="14.5"/>
@@ -483,6 +483,12 @@
                                                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES" secureTextEntry="YES" textContentType="password"/>
                                                                     </textField>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MMg-hP-E2h">
+                                                                        <rect key="frame" x="0.0" y="66.5" width="276" height="0.0"/>
+                                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                                        <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
                                                                 </subviews>
                                                                 <constraints>
                                                                     <constraint firstItem="lA4-Wn-Gnw" firstAttribute="top" secondItem="NZ9-Xj-cEQ" secondAttribute="bottom" constant="8" id="RcR-G0-KUQ"/>
@@ -561,6 +567,7 @@
                     <tabBarItem key="tabBarItem" title="Settings" image="twotone_settings_black_24pt" id="cD7-Oa-fZB"/>
                     <connections>
                         <outlet property="emailField" destination="gGx-cx-Sz1" id="tDQ-go-ASQ"/>
+                        <outlet property="errorLabel" destination="MMg-hP-E2h" id="95N-7l-Y8H"/>
                         <outlet property="instructionText" destination="QXK-z7-pWR" id="Q5t-gO-GVS"/>
                         <outlet property="passwordField" destination="lA4-Wn-Gnw" id="wqj-Sg-bdj"/>
                         <outlet property="scrollView" destination="MuH-6N-Zyf" id="tME-zH-Ebb"/>

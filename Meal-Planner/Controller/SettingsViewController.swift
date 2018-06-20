@@ -20,6 +20,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var errorLabel: UILabel!
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -90,8 +91,10 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         Auth.auth().createUser(withEmail: emailField.text!, password: passwordField.text!) { (user, error) in
             if error != nil {
                 print(error!)
+                self.errorLabel.text = "\(error!.localizedDescription)"
             } else {
                 print("Registration successful.")
+                self.errorLabel.text = ""
             }
         }
     }
