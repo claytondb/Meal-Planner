@@ -101,6 +101,15 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: Log in is pressed
     @IBAction func loginPressed(_ sender: UIButton) {
+        Auth.auth().signIn(withEmail: emailField.text!, password: passwordField.text!) { (user, error) in
+            if error != nil {
+                print(error!)
+                self.errorLabel.text = "\(error!.localizedDescription)"
+            } else {
+                print("Login successful.")
+                self.errorLabel.text = ""
+            }
+        }
     }
     
     //MARK: Model manipulation methods
