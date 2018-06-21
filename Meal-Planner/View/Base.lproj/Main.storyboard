@@ -397,7 +397,7 @@
         <scene sceneID="9OE-B8-9Pw">
             <objects>
                 <viewController title="Settings" id="agR-si-bTc" customClass="SettingsViewController" customModule="Meal_Planner" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Ynj-yi-9xS">
+                    <view key="view" contentMode="scaleToFill" id="Ynj-yi-9xS" userLabel="Register or Log In">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -550,17 +550,51 @@
                                     <constraint firstItem="vhx-rg-DRw" firstAttribute="leading" secondItem="MuH-6N-Zyf" secondAttribute="leading" id="vH4-Y5-Ifh"/>
                                 </constraints>
                             </scrollView>
+                            <view hidden="YES" alpha="0.29999999999999999" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="s8n-8F-1Ux" customClass="CPLoadingView" customModule="CPLoadingView">
+                                <rect key="frame" x="72" y="196" width="176" height="176"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" notEnabled="YES"/>
+                                </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="176" id="NR9-Mm-Gty"/>
+                                    <constraint firstAttribute="width" constant="176" id="tki-8q-hWB"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="strokeColor">
+                                        <color key="value" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="fontSize">
+                                        <integer key="value" value="30"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cNE-ck-FdJ">
+                                <rect key="frame" x="0.0" y="56" width="320" height="455"/>
+                                <color key="backgroundColor" red="0.0" green="1" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <segue destination="yPH-Dh-7tC" kind="embed" identifier="loggedInSegue" id="f6e-Zo-6XS"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="nw9-z5-ZIR" firstAttribute="trailing" secondItem="MuH-6N-Zyf" secondAttribute="trailing" id="20D-XQ-MHP"/>
                             <constraint firstItem="nw9-z5-ZIR" firstAttribute="bottom" secondItem="MuH-6N-Zyf" secondAttribute="bottom" id="4Lm-gw-vbD"/>
+                            <constraint firstItem="cNE-ck-FdJ" firstAttribute="trailing" secondItem="MuH-6N-Zyf" secondAttribute="trailing" id="Hrg-5w-tCr"/>
                             <constraint firstItem="MuH-6N-Zyf" firstAttribute="centerX" secondItem="Ynj-yi-9xS" secondAttribute="centerX" id="JcJ-1r-cBH"/>
                             <constraint firstItem="MuH-6N-Zyf" firstAttribute="top" secondItem="qYP-Gg-X7m" secondAttribute="bottom" id="KPC-dy-qsF"/>
                             <constraint firstItem="qYP-Gg-X7m" firstAttribute="trailing" secondItem="MuH-6N-Zyf" secondAttribute="trailing" id="LiQ-Va-KvJ"/>
                             <constraint firstItem="qYP-Gg-X7m" firstAttribute="leading" secondItem="MuH-6N-Zyf" secondAttribute="leading" id="Nnk-BX-CDX"/>
+                            <constraint firstItem="cNE-ck-FdJ" firstAttribute="leading" secondItem="MuH-6N-Zyf" secondAttribute="leading" id="P1u-b0-kax"/>
                             <constraint firstItem="MuH-6N-Zyf" firstAttribute="leading" secondItem="nw9-z5-ZIR" secondAttribute="leading" id="YCB-0W-DJO"/>
+                            <constraint firstItem="s8n-8F-1Ux" firstAttribute="centerY" secondItem="Ynj-yi-9xS" secondAttribute="centerY" id="aPC-bs-9Pd"/>
+                            <constraint firstItem="cNE-ck-FdJ" firstAttribute="top" secondItem="nw9-z5-ZIR" secondAttribute="top" constant="36" id="cWA-XY-QaT"/>
+                            <constraint firstItem="s8n-8F-1Ux" firstAttribute="centerX" secondItem="Ynj-yi-9xS" secondAttribute="centerX" id="eVX-zV-Fal"/>
                             <constraint firstItem="qYP-Gg-X7m" firstAttribute="top" secondItem="nw9-z5-ZIR" secondAttribute="top" id="m6B-n3-wsD"/>
+                            <constraint firstItem="cNE-ck-FdJ" firstAttribute="centerY" secondItem="s8n-8F-1Ux" secondAttribute="centerY" id="w81-IS-ANZ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nw9-z5-ZIR"/>
                     </view>
@@ -569,6 +603,8 @@
                         <outlet property="emailField" destination="gGx-cx-Sz1" id="tDQ-go-ASQ"/>
                         <outlet property="errorLabel" destination="MMg-hP-E2h" id="95N-7l-Y8H"/>
                         <outlet property="instructionText" destination="QXK-z7-pWR" id="Q5t-gO-GVS"/>
+                        <outlet property="loadingView" destination="s8n-8F-1Ux" id="2EX-Wi-s6R"/>
+                        <outlet property="loggedInContainerView" destination="cNE-ck-FdJ" id="MMm-m3-bBU"/>
                         <outlet property="passwordField" destination="lA4-Wn-Gnw" id="wqj-Sg-bdj"/>
                         <outlet property="scrollView" destination="MuH-6N-Zyf" id="tME-zH-Ebb"/>
                     </connections>
@@ -576,6 +612,46 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Bp-4e-h3J" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2559.375" y="130.98591549295776"/>
+        </scene>
+        <!--Logged In View Controller-->
+        <scene sceneID="ZYI-5J-SQr">
+            <objects>
+                <viewController id="yPH-Dh-7tC" customClass="LoggedInViewController" customModule="Meal_Planner" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="BkR-hZ-UrT">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You are logged in." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PY9-up-RJd">
+                                <rect key="frame" x="92" y="217" width="137" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="np7-xB-UBm">
+                                <rect key="frame" x="134" y="300" width="52" height="30"/>
+                                <state key="normal" title="Log out"/>
+                                <connections>
+                                    <action selector="logOutButtonPressed:" destination="BLU-sS-zWE" eventType="touchUpInside" id="3JY-6d-Ba4"/>
+                                    <action selector="logOutPressed:" destination="yPH-Dh-7tC" eventType="touchUpInside" id="xzl-GV-Smj"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="PY9-up-RJd" firstAttribute="centerY" secondItem="BkR-hZ-UrT" secondAttribute="centerY" id="SoY-tI-Fik"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="np7-xB-UBm" secondAttribute="bottom" constant="125" id="W8v-z1-QRV"/>
+                            <constraint firstItem="np7-xB-UBm" firstAttribute="centerX" secondItem="BkR-hZ-UrT" secondAttribute="centerX" id="WDd-CU-sLa"/>
+                            <constraint firstItem="PY9-up-RJd" firstAttribute="centerX" secondItem="BkR-hZ-UrT" secondAttribute="centerX" id="en0-LZ-EM9"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="loggedInLabel" destination="PY9-up-RJd" id="u2p-TK-ADY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="K8o-AG-rcE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="BLU-sS-zWE" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="2559" y="861"/>
         </scene>
     </scenes>
     <resources>

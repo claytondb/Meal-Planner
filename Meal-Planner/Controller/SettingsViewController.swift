@@ -10,18 +10,22 @@ import UIKit
 import Foundation
 import CoreData
 import Firebase
+import CPLoadingView
+// Pod for loading animation is documented here https://github.com/cp3hnu/CPLoading
 
 //@objc(SettingsViewController)  // match the ObjC symbol name inside Storyboard
 class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     var settingsArray = [Setting]()
     
+    @IBOutlet weak var loadingView: CPLoadingView!
     @IBOutlet weak var instructionText: UILabel!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var errorLabel: UILabel!
-    
+    @IBOutlet weak var loggedInContainerView: UIView!
+
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
@@ -88,28 +92,60 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: Register is pressed
     @IBAction func registerPressed(_ sender: UIButton) {
+        // Show loading podfile animation
+        self.loadingView.isHidden = false
+        self.loadingView.startLoading()
+        self.loadingView.progress = 0.0
+        self.loadingView.strokeColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
+        
         Auth.auth().createUser(withEmail: emailField.text!, password: passwordField.text!) { (user, error) in
             if error != nil {
                 print(error!)
+                self.loadingView.strokeColor = UIColor(red: 255, green: 0, blue: 0, alpha: 1.0)
+                self.loadingView.progress = 1.0
+                self.loadingView.completeLoading(success: false)
+                self.loadingView.hidesWhenCompleted = true
                 self.errorLabel.text = "\(error!.localizedDescription)"
             } else {
                 print("Registration successful.")
                 self.errorLabel.text = ""
+                self.loadingView.strokeColor = UIColor(red: 0, green: 255, blue: 0, alpha: 1.0)
+                self.loadingView.progress = 1.0
+                self.loadingView.completeLoading(success: true)
+                self.loadingView.hidesWhenCompleted = true
             }
         }
     }
     
     //MARK: Log in is pressed
     @IBAction func loginPressed(_ sender: UIButton) {
+        self.loadingView.isHidden = false
+        self.loadingView.startLoading()
+        self.loadingView.progress = 0.0
+        self.loadingView.strokeColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
+        
         Auth.auth().signIn(withEmail: emailField.text!, password: passwordField.text!) { (user, error) in
             if error != nil {
                 print(error!)
+                self.loadingView.strokeColor = UIColor(red: 255, green: 0, blue: 0, alpha: 1.0)
+                self.loadingView.progress = 1.0
+                self.loadingView.completeLoading(success: false)
+                self.loadingView.hidesWhenCompleted = true
                 self.errorLabel.text = "\(error!.localizedDescription)"
             } else {
                 print("Login successful.")
                 self.errorLabel.text = ""
+                self.loadingView.strokeColor = UIColor(red: 0, green: 255, blue: 0, alpha: 1.0)
+                self.loadingView.progress = 1.0
+                self.loadingView.completeLoading(success: true)
+                self.loadingView.hidesWhenCompleted = true
+                self.loggedInContainerView.isHidden = false
             }
         }
+    }
+    
+    @IBAction func logOutButtonPressed(_ sender: UIButton) {
+        self.loggedInContainerView.isHidden = true
     }
     
     //MARK: Model manipulation methods
