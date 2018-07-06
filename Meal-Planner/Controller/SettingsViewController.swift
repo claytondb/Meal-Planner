@@ -144,8 +144,9 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    @IBAction func logOutButtonPressed(_ sender: UIButton) {
-        self.loggedInContainerView.isHidden = true
+    //Unwind segue from LoggedInViewController
+    @IBAction func unwindToSettingsViewController(segue: UIStoryboardSegue) {
+        //nothing goes here
     }
     
     //MARK: Model manipulation methods

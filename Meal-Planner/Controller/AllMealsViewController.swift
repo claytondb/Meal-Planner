@@ -9,6 +9,7 @@
 import UIKit
 import Foundation
 import CoreData
+import Firebase
 
 //@objc(AllMealsViewController)  // match the ObjC symbol name inside Storyboard
 class AllMealsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
@@ -26,6 +27,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         super.viewDidLoad()
         
         loadMeals()
+        retrieveMealsFromFirebase()
         
         
         //TODO: Register your mealXib.xib file here:
@@ -276,12 +278,23 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             
             print("Assigned index to new meal")
             
-            // Trying to scroll to new meal but haven't figured it out.
-//            let indexOfNewMeal = self.mealArray.index(of: newMeal) as! IndexPath
-//            let indexOfNewMeal = self.mealArray.index(after: Int(newMeal.mealSortedOrder))
-//            var indexOfNewMeal = IndexPath()
-//            indexOfNewMeal.append(mealArray<IndexPath.Element>)
-//            self.tableView.scrollToRow(at: indexOfNewMeal, at: .bottom, animated: true)
+            //Saving new meal to Firebase database
+            let mealsDB = Database.database().reference().child("Meals")
+            print("Created mealsDB")
+            
+            let mealDictionary = ["Sender": Auth.auth().currentUser?.email as Any,
+                                  "MealName": newMeal.mealName!,
+                                  "MealLockStatus": newMeal.mealLocked,
+                                  "MealSortOrder": newMeal.mealSortedOrder] as [String : Any]
+            
+            mealsDB.childByAutoId().setValue(mealDictionary) {
+                (error, reference) in
+                if error != nil {
+                    print(error!)
+                } else {
+                    print("Meal saved successfully to Firebase")
+                }
+            }
             
             self.saveMeals()
         }
@@ -299,6 +312,22 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         alert.addAction(cancel)
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
+    }
+    
+    func retrieveMealsFromFirebase() {
+        let mealsDB = Database.database().reference().child("Meals")
+        mealsDB.observe(.childAdded) { (snapshot) in
+            let snapshotValue = snapshot.value as! Dictionary<String, Any>
+            let name = snapshotValue["MealName"]
+            let lockStatus = snapshotValue["MealLockStatus"]
+            let sortOrder = snapshotValue["MealSortOrder"]
+//            let sender = snapshotValue["Sender"]
+            let meal = Meal()
+            meal.mealName = name as? String
+            meal.mealLocked = (lockStatus != nil)
+            meal.mealSortedOrder = sortOrder as! Int32
+            self.mealArray.append(meal)
+        }
     }
     
     // Both deleteMeal and lockButton cause the app to crash on my phone. What's the issue?

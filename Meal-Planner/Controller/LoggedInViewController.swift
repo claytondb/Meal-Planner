@@ -23,9 +23,9 @@ class LoggedInViewController: UIViewController {
         // something here
     }
     
-//    @IBAction func logOutPressed(_ sender: Any) {
-//        unwind(for: loggedInSegue, towardsViewController: SettingsViewController)
-//    }
+    @IBAction func logOutPressed(_ sender: Any) {
+//        unwind(for: UIStoryboardSegue, towardsViewController: SettingsViewController)
+    }
     
     
     
