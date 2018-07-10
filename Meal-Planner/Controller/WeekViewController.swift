@@ -13,11 +13,9 @@ import GameplayKit
 //import Firebase
 //import FirebaseStorage
 
-//@objc(WeekViewController)  // match the ObjC symbol name inside Storyboard
 class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-//    var meal = Meal.init(entity: NSEntityDescription.entityForName("Meal", inManagedObjectContext:mox)!, insertIntoManagedObjectContext: mox)
     var meal = Meal()
     var mealArray = [Meal]()
     var mealsToShuffleArray = [Meal]()
@@ -25,22 +23,18 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var mealToReplace = Meal()
     var mealReplacing = Meal()
     
-//    // Firebase Storage
-//    let storage = Storage.storage()
-//    var imageReference: StorageReference {
-//        return Storage.storage().reference().child("images")
-//    }
+    //    // Firebase Storage
+    //    let storage = Storage.storage()
+    //    var imageReference: StorageReference {
+    //        return Storage.storage().reference().child("images")
+    //    }
     
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.tableView.backgroundColor = UIColor.white
-        
-        //TODO: Register your mealXib.xib file here:
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
-        
         self.tableView.delegate = self
         self.tableView.dataSource = self
     }
@@ -49,11 +43,11 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         //MARK: Google analytics stuff
         guard let tracker = GAI.sharedInstance().defaultTracker else { return }
         tracker.set(kGAIScreenName, value: "Week view controller")
-        
         guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
         tracker.send(builder.build() as [NSObject : AnyObject])
         //End google analytics stuff.
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         self.tableView.backgroundColor = UIColor.white
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
@@ -61,17 +55,12 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         sortMeals()
     }
     
-    
     //MARK: Tableview datasource methods
-    // Create the two datasource methods that specify 1. what the cells should display, and 2. how many rows we want in the tableview.
-    // Method 1
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        // indexPath.row has to do with the table. It takes that number and gets the meal from mealArray at that number. For example, it looks at indexPath.row of the table and if it's 3, it gets the meal at 3 in the array.
         let meal = mealArray[indexPath.row]
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
-
+        
         // Set meal name
         if meal.mealName == nil {
             meal.mealName = "Meal name"
@@ -130,38 +119,34 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self.mealSwapTapped(cell)
             self.performSegue(withIdentifier: "segueToReplaceMeal", sender: UIButton.self)
         }
-    
+        
         return cell
     }
     
-
-    // Method 2
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return mealArray.count
         if mealArray.count < 7 {
             return mealArray.count
         } else {
             return 7
         }
     }
-        
-        
-        // Override to support editing the table view. Swipe to delete.
-        func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-            if editingStyle == .delete {
-                
-                let mealToDelete = self.mealArray[indexPath.row]
-                
-                // Use index of row to delete it from table and CoreData
-                self.context.delete(mealToDelete)
-                self.mealArray.remove(at: indexPath.row)
-                print("Successfully deleted meal.")
-                
-                // Save data and reload
-                self.saveMeals()
-                
-            }
+    
+    // Override to support editing the table view. Swipe to delete.
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            
+            let mealToDelete = self.mealArray[indexPath.row]
+            
+            // Use index of row to delete it from table and CoreData
+            self.context.delete(mealToDelete)
+            self.mealArray.remove(at: indexPath.row)
+            print("Successfully deleted meal.")
+            
+            // Save data and reload
+            self.saveMeals()
+            
         }
+    }
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         print("can move rows")
         
@@ -174,7 +159,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         saveMeals()
     }
-
+    
     //MARK: Reordering controls and tableView methods
     @IBAction func editPressed(_ sender: UIBarButtonItem) {
         // Editing meals to be able to reorder them
@@ -254,7 +239,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     mealsToShuffleArray.append(mealToCheck)
                     print("Put \(mealToCheck.mealName!) into mealsToShuffleArray.")
                 }
-                // step 2
+                    // step 2
                 else if mealToCheck.mealLocked == true {
                     // do nothing
                 }
@@ -283,7 +268,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     
                     // Assign current position in list to mealSortedOrder)
                     mealToSwapIn.mealSortedOrder = Int32(lastMealInt)
-                        
+                    
                     lastShuffledMealInt -= 1
                 }
                     // step 5
@@ -310,7 +295,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 let mealToCheck : Meal = mealArray[lastMealInt]
                 do {
                     mealSortedOrderArray.remove(at: Int(mealToCheck.mealSortedOrder))
-                mealSortedOrderArray.insert(mealToCheck, at: Int(mealToCheck.mealSortedOrder))
+                    mealSortedOrderArray.insert(mealToCheck, at: Int(mealToCheck.mealSortedOrder))
                 }
                 lastMealInt -= 1
             }
@@ -347,7 +332,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     //MARK: Tableview delegate methods - select row, segue to meal detail
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        saveMeals()
+        //        saveMeals()
         performSegue(withIdentifier: "segueToMealDetail", sender: self)
         print("Performed segue to meal detail")
     }
@@ -361,23 +346,23 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     
     @IBAction func lockButton(_ sender: CustomMealCell) {
-
+        
         print("Setting lock state")
-
+        
         // find parent of button, then cell, then index of row.
         let parentCell = sender.superview?.superview as! UITableViewCell
         print("set parentCell")
-
+        
         // Fixed error - added second superview so it's not just UITableViewWrapper being cast as UITableView.
         let parentTable = parentCell.superview?.superview as! UITableView
         print("set parentTable")
-
+        
         let indexPath = parentTable.indexPath(for: parentCell)
         print("set indexPath")
-
+        
         let mealToLock = self.mealArray[indexPath!.row]
         print("set mealToLock")
-
+        
         // Use index of row to set mealLocked of meal to true/false
         lockMeal(mealToCheck: mealToLock, cellToColor: parentCell)
     }
@@ -386,8 +371,8 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         print("Tapped swap button")
         
         // find parent of button, then cell, then index of row.
-//        let parentCell = sender.superview?.superview as! UITableViewCell
-//        print("set parentCell")
+        //        let parentCell = sender.superview?.superview as! UITableViewCell
+        //        print("set parentCell")
         let parentCell = sender as UITableViewCell
         print("set parentCell")
         
@@ -400,11 +385,10 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         mealToReplace = mealArray[indexPath!.row]
         print("Set mealToReplace to \(mealToReplace.mealName!)")
-//        mealToReplace.mealReplaceMe = true
-//        print("Set \(mealToReplace.mealName!) swap to true.")
+        //        mealToReplace.mealReplaceMe = true
+        //        print("Set \(mealToReplace.mealName!) swap to true.")
         
     }
-    
     
     //MARK: Model manipulation methods
     func saveMeals(){
@@ -426,8 +410,6 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.tableView.reloadData()
         print("Meals loaded")
     }
-    
-    
 }
 
 extension UIColor {
@@ -435,7 +417,6 @@ extension UIColor {
         assert(red >= 0 && red <= 255, "Invalid red component")
         assert(green >= 0 && green <= 255, "Invalid green component")
         assert(blue >= 0 && blue <= 255, "Invalid blue component")
-        
         self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
     }
     

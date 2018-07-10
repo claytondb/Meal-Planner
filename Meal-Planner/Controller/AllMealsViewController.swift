@@ -12,7 +12,6 @@ import CoreData
 //import Firebase
 //import FirebaseStorage
 
-//@objc(AllMealsViewController)  // match the ObjC symbol name inside Storyboard
 class AllMealsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     var mealArray = [Meal]()
@@ -21,11 +20,11 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     let meal = Meal()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-//    // Firebase Storage
-//    let storage = Storage.storage()
-//    var imageReference: StorageReference {
-//        return Storage.storage().reference().child("images")
-//    }
+    //    // Firebase Storage
+    //    let storage = Storage.storage()
+    //    var imageReference: StorageReference {
+    //        return Storage.storage().reference().child("images")
+    //    }
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var mealSearchField: UISearchBar!
@@ -34,17 +33,11 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         super.viewDidLoad()
         
         loadMeals()
-//        retrieveMealsFromFirebase()
+        //        retrieveMealsFromFirebase()
         
-        //TODO: Register your mealXib.xib file here:
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         
-        //Fix weird overlapping of status bar with navigation bar
-//        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
-        
         tableView.backgroundColor = UIColor.white
-        
-//        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -65,13 +58,10 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        //Fix weird overlapping of status bar with navigation bar
-//        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
-//        self.tableView.backgroundColor = UIColor.white
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         loadMeals()
-//        retrieveMealsFromFirebase()
-
+        //        retrieveMealsFromFirebase()
+        
         filteredMealsArray = mealArray
         
         mealSearchField.text = ""
@@ -83,12 +73,8 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     
     //MARK: Tableview datasource methods
-    // Create the two datasource methods that specify 1. what the cells should display, and 2. how many rows we want in the tableview.
-    // Method 1
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        // indexPath.row has to do with the table. It takes that number and gets the meal from mealArray at that number. For example, it looks at indexPath.row of the table and if it's 3, it gets the meal at 3 in the array.
-//        let meal = mealArray[indexPath.row]
         let meal = filteredMealsArray[indexPath.row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
@@ -130,7 +116,6 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // Method 2
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//                    let count = mealArray.count
         let count = filteredMealsArray.count
         return count
     }
@@ -183,11 +168,6 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // This method updates filteredData based on the text in the Search Box
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        // When there is no text, filteredData is the same as the original data
-        // When user has entered text into the search box
-        // Use the filter method to iterate over all items in the data array
-        // For each item, return true if the item should be included and false if the
-        // item should NOT be included
         filteredMealsArray = searchText.isEmpty ? mealArray : mealArray.filter { (item: Meal) -> Bool in
             // If dataItem matches the searchText, return true to include it
             return item.mealName?.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
@@ -291,25 +271,25 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             self.mealArray.append(newMeal)
             self.filteredMealsArray = self.mealArray
             
-//            //Saving new meal to Firebase database
-//            let mealsDB = Database.database().reference().child("Meals")
-//            print("Created mealsDB")
-//            let mealDictionary = ["MealOwner": Auth.auth().currentUser?.email ?? "",
-//                                  "MealName": newMeal.mealName!,
-//                                  "MealLocked": newMeal.mealLocked,
-//                                  "MealSortedOrder": newMeal.mealSortedOrder,
-//                                  "MealImagePath": newMeal.mealImagePath ?? "",
-//                                  "MealIsReplacing": newMeal.mealIsReplacing,
-//                                  "MealRecipeLink": newMeal.mealRecipeLink ?? "http://www.allrecipes.com",
-//                                  "MealReplaceMe": newMeal.mealReplaceMe] as [String : Any]
-//            mealsDB.childByAutoId().setValue(mealDictionary) {
-//                (error, reference) in
-//                if error != nil {
-//                    print(error!)
-//                } else {
-//                    print("Meal saved successfully to Firebase")
-//                }
-//            }
+            //            //Saving new meal to Firebase database
+            //            let mealsDB = Database.database().reference().child("Meals")
+            //            print("Created mealsDB")
+            //            let mealDictionary = ["MealOwner": Auth.auth().currentUser?.email ?? "",
+            //                                  "MealName": newMeal.mealName!,
+            //                                  "MealLocked": newMeal.mealLocked,
+            //                                  "MealSortedOrder": newMeal.mealSortedOrder,
+            //                                  "MealImagePath": newMeal.mealImagePath ?? "",
+            //                                  "MealIsReplacing": newMeal.mealIsReplacing,
+            //                                  "MealRecipeLink": newMeal.mealRecipeLink ?? "http://www.allrecipes.com",
+            //                                  "MealReplaceMe": newMeal.mealReplaceMe] as [String : Any]
+            //            mealsDB.childByAutoId().setValue(mealDictionary) {
+            //                (error, reference) in
+            //                if error != nil {
+            //                    print(error!)
+            //                } else {
+            //                    print("Meal saved successfully to Firebase")
+            //                }
+            //            }
             
             self.saveMeals()
         }
@@ -329,30 +309,30 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         present(alert, animated: true, completion: nil)
     }
     
-//    func retrieveMealsFromFirebase() {
-//        let mealsDB = Database.database().reference().child("Meals")
-//        mealsDB.observe(.childAdded) { (snapshot) in
-//            let snapshotValue = snapshot.value as! Dictionary<String, Any>
-//            let FBmealName = snapshotValue["MealName"]
-//            let FBmealLocked = snapshotValue["MealLocked"]
-//            let FBmealSortOrder = snapshotValue["MealSortOrder"]
-//            let FBmealOwner = snapshotValue["MealOwner"]
-//            let FBmealImagePath = snapshotValue["MealImagePath"]
-//            let FBmealIsReplacing = snapshotValue["MealIsReplacing"]
-//            let FBmealReplaceMe = snapshotValue["MealReplaceMe"]
-//            let FBmealRecipeLink = snapshotValue["MealRecipeLink"]
-//            let meal = Meal()
-//            meal.mealName = FBmealName as? String
-//            meal.mealLocked = (FBmealLocked != nil)
-//            meal.mealSortedOrder = FBmealSortOrder as! Int32
-//            meal.mealOwner = FBmealOwner as? String
-//            meal.mealImagePath = FBmealImagePath as? String
-//            meal.mealIsReplacing = FBmealIsReplacing as! Bool
-//            meal.mealReplaceMe = FBmealReplaceMe as! Bool
-//            meal.mealRecipeLink = FBmealRecipeLink as? String
-//            self.mealArray.append(meal)
-//        }
-//    }
+    //    func retrieveMealsFromFirebase() {
+    //        let mealsDB = Database.database().reference().child("Meals")
+    //        mealsDB.observe(.childAdded) { (snapshot) in
+    //            let snapshotValue = snapshot.value as! Dictionary<String, Any>
+    //            let FBmealName = snapshotValue["MealName"]
+    //            let FBmealLocked = snapshotValue["MealLocked"]
+    //            let FBmealSortOrder = snapshotValue["MealSortOrder"]
+    //            let FBmealOwner = snapshotValue["MealOwner"]
+    //            let FBmealImagePath = snapshotValue["MealImagePath"]
+    //            let FBmealIsReplacing = snapshotValue["MealIsReplacing"]
+    //            let FBmealReplaceMe = snapshotValue["MealReplaceMe"]
+    //            let FBmealRecipeLink = snapshotValue["MealRecipeLink"]
+    //            let meal = Meal()
+    //            meal.mealName = FBmealName as? String
+    //            meal.mealLocked = (FBmealLocked != nil)
+    //            meal.mealSortedOrder = FBmealSortOrder as! Int32
+    //            meal.mealOwner = FBmealOwner as? String
+    //            meal.mealImagePath = FBmealImagePath as? String
+    //            meal.mealIsReplacing = FBmealIsReplacing as! Bool
+    //            meal.mealReplaceMe = FBmealReplaceMe as! Bool
+    //            meal.mealRecipeLink = FBmealRecipeLink as? String
+    //            self.mealArray.append(meal)
+    //        }
+    //    }
     
     // Both deleteMeal and lockButton cause the app to crash on my phone. What's the issue?
     @IBAction func deleteMeal(_ sender: UIButton) {
@@ -427,7 +407,6 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         self.tableView.reloadData()
         print("Meals loaded")
     }
-    
     
 }
 

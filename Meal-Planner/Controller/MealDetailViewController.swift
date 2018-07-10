@@ -12,7 +12,6 @@ import CoreData
 import Firebase
 import FirebaseStorage
 
-//@objc(MealDetailViewController)  // match the ObjC symbol name inside Storyboard
 class MealDetailViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     var mealArray = [Meal]()
@@ -90,7 +89,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         //MARK: Google analytics stuff
         guard let tracker = GAI.sharedInstance().defaultTracker else { return }
         tracker.set(kGAIScreenName, value: "Meal Detail view controller")
-            
+        
         guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
         tracker.send(builder.build() as [NSObject : AnyObject])
         //End google analytics stuff.
@@ -126,7 +125,6 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         mealNameField.resignFirstResponder()
         mealLinkField.resignFirstResponder()
         mealLinkField.isHidden = true
-//        mealLinkLabel.isHidden = false
         mealLinkButtonOutlet.isHidden = false
         mealLinkButtonOutlet.setTitle(mealLinkField.text, for: .normal)
         mealPassedIn.mealRecipeLink = mealLinkField.text
@@ -140,7 +138,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         print("Meal image URL is \(mealImageURL!)")
         
         if let imageData = try? Data(contentsOf: mealImageURL!) {
-        mealImageView.image = UIImage(data: imageData)
+            mealImageView.image = UIImage(data: imageData)
         } else {
             // do nothing
         }
@@ -169,13 +167,13 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     //MARK: Action sheet for photo actions (import, take photo, delete)
     func photoActionSheet() {
         let photoActions = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
-    
+        
         self.present(photoActions, animated: true, completion: nil)
         
         photoActions.addAction(UIAlertAction(title: "Take photo", style: UIAlertActionStyle.default, handler: { action in
             self.takePhoto()
         }))
-    
+        
         photoActions.addAction(UIAlertAction(title: "Import photo", style: .default, handler: { action in
             self.chooseImage()
         }))
@@ -202,7 +200,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             
             // Write image to photo album
-//            UIImageWriteToSavedPhotosAlbum(pickedImage, self, #selector(imageSaveToLibrary(_:didFinishSavingWithError:contextInfo:)), nil)
+            UIImageWriteToSavedPhotosAlbum(pickedImage, self, #selector(imageSaveToLibrary(_:didFinishSavingWithError:contextInfo:)), nil)
             
             mealImageView.contentMode = .scaleAspectFill
             mealImageView.image = pickedImage
@@ -317,7 +315,6 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     @IBAction func mealLinkButtonPressed(_ sender: UIButton) {
         // Open URL of mealRecipesLink
         if let url = NSURL(string: mealPassedIn.mealRecipeLink!){
-//            UIApplication.shared.openURL(url as URL)
             UIApplication.shared.open(url as URL)
         }
     }
@@ -340,7 +337,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         }
         print("Meals loaded")
     }
-
+    
     
 }
 

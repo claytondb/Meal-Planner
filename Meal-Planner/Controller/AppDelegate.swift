@@ -12,7 +12,7 @@ import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -21,8 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         let myDatabase = Database.database().reference()
         myDatabase.setValue("We've got data.")
-        
-//        print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as String)
         
         //MARK: Google Analytics stuff
         guard let gai = GAI.sharedInstance() else {
@@ -39,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
-
+    
     func applicationWillTerminate(_ application: UIApplication) {
         
         self.saveContext()
@@ -72,8 +70,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
-
+    
+    
 }
 
 

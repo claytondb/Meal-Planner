@@ -13,7 +13,6 @@ import Firebase
 import CPLoadingView
 // Pod for loading animation is documented here https://github.com/cp3hnu/CPLoading
 
-//@objc(SettingsViewController)  // match the ObjC symbol name inside Storyboard
 class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     var settingsArray = [Setting]()
@@ -25,7 +24,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var loggedInContainerView: UIView!
-
+    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {

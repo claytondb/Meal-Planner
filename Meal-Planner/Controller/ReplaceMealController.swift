@@ -12,7 +12,6 @@ import CoreData
 //import Firebase
 //import FirebaseStorage
 
-//@objc(ReplaceMealController)  // match the ObjC symbol name inside Storyboard
 class ReplaceMealController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     var mealArray = [Meal]()
@@ -25,11 +24,11 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     var mealToPassBackNewSortOrder : Int32 = 0
     var mealPassedInNewSortOrder : Int32 = 0
     
-//    // Firebase Storage
-//    let storage = Storage.storage()
-//    var imageReference: StorageReference {
-//        return Storage.storage().reference().child("images")
-//    }
+    //    // Firebase Storage
+    //    let storage = Storage.storage()
+    //    var imageReference: StorageReference {
+    //        return Storage.storage().reference().child("images")
+    //    }
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var mealSearchField: UISearchBar!
@@ -40,12 +39,11 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
         loadMeals()
         sortMeals()
         
-        //TODO: Register your mealXib.xib file here:
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         print("Loaded custom mealXib")
         
         tableView.backgroundColor = UIColor.white
-    
+        
         navigationItem.rightBarButtonItem?.isEnabled = false
         
         self.tableView.delegate = self
@@ -66,12 +64,8 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     //MARK: Tableview datasource methods
-    // Create the two datasource methods that specify 1. what the cells should display, and 2. how many rows we want in the tableview.
-    // Method 1
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        // indexPath.row has to do with the table. It takes that number and gets the meal from mealArray at that number. For example, it looks at indexPath.row of the table and if it's 3, it gets the meal at 3 in the array.
-//        let meal = mealArray[indexPath.row]
         let meal = filteredMealsArray[indexPath.row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
@@ -108,23 +102,16 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
         return cell
     }
     
-    
     // Method 2
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        let count = mealArray.count
         let count = filteredMealsArray.count
         return count
     }
     
-    
-    
     //MARK: Tableview delegate methods - select row and it will segue back to week view and pass in the selection.
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
-//        cell.backgroundColor = UIColor.blue
         mealToPassBack = filteredMealsArray[indexPath.row]
         print("mealToPassBack is \(mealToPassBack.mealName!)")
-//        mealToPassBack.mealIsReplacing = true
         
         swapSortingOrders()
         
@@ -163,7 +150,7 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
         print("Sorted meals.")
     }
     
-
+    
     @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
         performSegue(withIdentifier: "unwindToWeekMeals", sender: self)
     }
@@ -171,11 +158,7 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     
     // This method updates filteredData based on the text in the Search Box
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        // When there is no text, filteredData is the same as the original data
-        // When user has entered text into the search box
-        // Use the filter method to iterate over all items in the data array
-        // For each item, return true if the item should be included and false if the
-        // item should NOT be included
+        
         filteredMealsArray = searchText.isEmpty ? mealArray : mealArray.filter { (item: Meal) -> Bool in
             // If dataItem matches the searchText, return true to include it
             return item.mealName?.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
@@ -188,15 +171,9 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     //MARK: Pass in data on segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueToWeekMeals" {
-                print("Prepared for segue")
-//                let indexPath = tableView.indexPathForSelectedRow
-//            let destinationVC = TableViewController()
-//                destinationVC.mealReplacing = mealToPassBack
-//                destinationVC.mealToReplace = mealPassedIn
-//                print("Passed meals back")
+            print("Prepared for segue")
+            // do nothing
         } else if segue.identifier == "segueCancelToWeekMeals" {
-//            let destinationVC = TableViewController()
-//            destinationVC.mealToReplace.mealReplaceMe = false
             // do nothing
         }
     }
