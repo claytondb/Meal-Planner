@@ -10,8 +10,8 @@ import UIKit
 import Foundation
 import CoreData
 import GameplayKit
-import Firebase
-import FirebaseStorage
+//import Firebase
+//import FirebaseStorage
 
 //@objc(WeekViewController)  // match the ObjC symbol name inside Storyboard
 class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
@@ -25,11 +25,11 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var mealToReplace = Meal()
     var mealReplacing = Meal()
     
-    // Firebase Storage
-    let storage = Storage.storage()
-    var imageReference: StorageReference {
-        return Storage.storage().reference().child("images")
-    }
+//    // Firebase Storage
+//    let storage = Storage.storage()
+//    var imageReference: StorageReference {
+//        return Storage.storage().reference().child("images")
+//    }
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -320,9 +320,9 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         print("Sorted meals.")
     }
     
-//    @IBAction func unwindToWeekMeals(segue: UIStoryboardSegue) {
-//        // nothing here but I think I need this.
-//    }
+    @IBAction func unwindToWeekMeals(segue: UIStoryboardSegue) {
+        // nothing here but I think I need this.
+    }
     
     //MARK: Pass in data on segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

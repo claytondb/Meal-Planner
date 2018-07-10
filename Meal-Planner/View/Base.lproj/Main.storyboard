@@ -77,6 +77,7 @@
                         <outlet property="tableView" destination="f44-PI-m2v" id="fyT-qe-cvC"/>
                         <segue destination="emp-Xl-kwo" kind="show" identifier="segueToWeekMeals" id="Duy-Yj-R3o"/>
                         <segue destination="LOE-44-Ded" kind="unwind" identifier="unwindToWeekMeals" unwindAction="unwindToWeekMealsWithSegue:" id="rk7-Kk-Mm7"/>
+                        <segue destination="emp-Xl-kwo" kind="show" identifier="segueCancelToWeekMeals" id="LhK-K8-zOM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0DU-zq-qMN" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -661,7 +662,7 @@
         <image name="twotone_settings_black_24pt" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gjj-cg-CU0"/>
-        <segue reference="Duy-Yj-R3o"/>
+        <segue reference="HXa-UF-XBn"/>
+        <segue reference="LhK-K8-zOM"/>
     </inferredMetricsTieBreakers>
 </document>

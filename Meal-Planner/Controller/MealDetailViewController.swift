@@ -215,12 +215,14 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
                 let fileURL = documentDirectory.appendingPathComponent("\(pickedImage.imageAsset!)")
                 
                 let image = pickedImage
-//                if let imageData = UIImageJPEGRepresentation(image, 0.5) {
-//                    try imageData.write(to: fileURL)
-//                    storedImageURL = fileURL
-//                    mealPassedIn.mealImagePath = storedImageURL!.absoluteString
-//                    mealPassedIn.mealImagePath = mealPassedIn.mealImagePath?.decodeUrl()
-//                }
+                if let imageData = UIImageJPEGRepresentation(image, 0.5) {
+                    try imageData.write(to: fileURL)
+                    storedImageURL = fileURL
+                    mealPassedIn.mealImagePath = storedImageURL!.absoluteString
+                    mealPassedIn.mealImagePath = mealPassedIn.mealImagePath?.decodeUrl()
+                }
+                
+                // For firebase 
                 guard let imageData = UIImageJPEGRepresentation(image, 0.5) else {return}
                 
                 // Firebase image upload
