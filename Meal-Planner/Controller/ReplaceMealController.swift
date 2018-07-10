@@ -9,6 +9,8 @@
 import UIKit
 import Foundation
 import CoreData
+import Firebase
+import FirebaseStorage
 
 //@objc(ReplaceMealController)  // match the ObjC symbol name inside Storyboard
 class ReplaceMealController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
@@ -22,6 +24,12 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     var mealToPassBack = Meal()
     var mealToPassBackNewSortOrder : Int32 = 0
     var mealPassedInNewSortOrder : Int32 = 0
+    
+    // Firebase Storage
+    let storage = Storage.storage()
+    var imageReference: StorageReference {
+        return Storage.storage().reference().child("images")
+    }
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var mealSearchField: UISearchBar!

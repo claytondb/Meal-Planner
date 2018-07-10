@@ -16,7 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        //Config firebase
+        FirebaseApp.configure()
         
 //        print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as String)
         
@@ -32,11 +34,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Remove before app release.
         gai.logger.logLevel = .verbose;
         // end Google Analytics stuff
-        
-        //Config firebase
-        FirebaseApp.configure()
-        let myDatabase = Database.database().reference()
-        myDatabase.setValue("We've got data.")
         
         return true
     }

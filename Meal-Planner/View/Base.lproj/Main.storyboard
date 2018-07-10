@@ -76,7 +76,6 @@
                         <outlet property="mealSearchField" destination="wp6-2L-xQd" id="VoQ-Q8-ATA"/>
                         <outlet property="tableView" destination="f44-PI-m2v" id="fyT-qe-cvC"/>
                         <segue destination="emp-Xl-kwo" kind="show" identifier="segueToWeekMeals" id="Duy-Yj-R3o"/>
-                        <segue destination="emp-Xl-kwo" kind="show" identifier="segueCancelToWeekMeals" id="S1w-A0-Hg9"/>
                         <segue destination="LOE-44-Ded" kind="unwind" identifier="unwindToWeekMeals" unwindAction="unwindToWeekMealsWithSegue:" id="rk7-Kk-Mm7"/>
                     </connections>
                 </viewController>
@@ -642,6 +641,7 @@
                             <constraint firstItem="PY9-up-RJd" firstAttribute="top" secondItem="UBB-hw-sno" secondAttribute="top" constant="125" id="goS-vD-4wi"/>
                             <constraint firstItem="PY9-up-RJd" firstAttribute="centerX" secondItem="UBB-hw-sno" secondAttribute="centerX" id="xKw-dI-V7e"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="NTK-uh-Wec"/>
                     </view>
                     <connections>
                         <outlet property="loggedInLabel" destination="PY9-up-RJd" id="LMD-cL-zlt"/>
@@ -661,7 +661,7 @@
         <image name="twotone_settings_black_24pt" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="HXa-UF-XBn"/>
-        <segue reference="oHm-tp-4ax"/>
+        <segue reference="gjj-cg-CU0"/>
+        <segue reference="Duy-Yj-R3o"/>
     </inferredMetricsTieBreakers>
 </document>

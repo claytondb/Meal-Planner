@@ -10,36 +10,36 @@ import UIKit
 import Foundation
 import CoreData
 import GameplayKit
+import Firebase
+import FirebaseStorage
 
 //@objc(WeekViewController)  // match the ObjC symbol name inside Storyboard
 class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    var mealArray = [Meal]()
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+//    var meal = Meal.init(entity: NSEntityDescription.entityForName("Meal", inManagedObjectContext:mox)!, insertIntoManagedObjectContext: mox)
     var meal = Meal()
+    var mealArray = [Meal]()
     var mealsToShuffleArray = [Meal]()
     var mealSortedOrderArray = [Meal]()
-//    var mealToSwapIn = Meal()
     var mealToReplace = Meal()
     var mealReplacing = Meal()
-    @IBOutlet weak var tableView: UITableView!
     
-    //    var mealToReplaceNewSortOrder : Int32 = 0
-//    var mealReplacingNewSortOrder : Int32 = 0
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    // Firebase Storage
+    let storage = Storage.storage()
+    var imageReference: StorageReference {
+        return Storage.storage().reference().child("images")
+    }
+    
+    @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
         self.tableView.backgroundColor = UIColor.white
         
         //TODO: Register your mealXib.xib file here:
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
-        
-//        loadMeals()
-//        swapMeals()
-//        sortMeals()
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -320,9 +320,9 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         print("Sorted meals.")
     }
     
-    @IBAction func unwindToWeekMeals(segue: UIStoryboardSegue) {
-        // nothing here but I think I need this.
-    }
+//    @IBAction func unwindToWeekMeals(segue: UIStoryboardSegue) {
+//        // nothing here but I think I need this.
+//    }
     
     //MARK: Pass in data on segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

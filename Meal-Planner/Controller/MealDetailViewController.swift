@@ -9,6 +9,8 @@
 import UIKit
 import Foundation
 import CoreData
+import Firebase
+import FirebaseStorage
 
 //@objc(MealDetailViewController)  // match the ObjC symbol name inside Storyboard
 class MealDetailViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
@@ -21,6 +23,12 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     var storedMealImage : UIImage?
     var cameFromAllMeals : Bool?
     var cameFromWeekMeals : Bool?
+    
+    // Firebase Storage
+    let storage = Storage.storage()
+    var imageReference: StorageReference {
+        return Storage.storage().reference().child("images")
+    }
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -207,12 +215,28 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
                 let fileURL = documentDirectory.appendingPathComponent("\(pickedImage.imageAsset!)")
                 
                 let image = pickedImage
-                if let imageData = UIImageJPEGRepresentation(image, 1.0) {
-                    try imageData.write(to: fileURL)
-                    storedImageURL = fileURL
-                    mealPassedIn.mealImagePath = storedImageURL!.absoluteString
-                    mealPassedIn.mealImagePath = mealPassedIn.mealImagePath?.decodeUrl()
+//                if let imageData = UIImageJPEGRepresentation(image, 0.5) {
+//                    try imageData.write(to: fileURL)
+//                    storedImageURL = fileURL
+//                    mealPassedIn.mealImagePath = storedImageURL!.absoluteString
+//                    mealPassedIn.mealImagePath = mealPassedIn.mealImagePath?.decodeUrl()
+//                }
+                guard let imageData = UIImageJPEGRepresentation(image, 0.5) else {return}
+                
+                // Firebase image upload
+                let uploadImageRef = imageReference.child("fileUrl")
+                let uploadTask = uploadImageRef.putData(imageData, metadata: nil) { (metadata, error) in
+                    print("Upload task finished.")
+                    print(metadata ?? "No metadata for this image.")
+                    print(error ?? "No errors.")
                 }
+                
+                uploadTask.observe(.progress) { (snapshot) in
+                    print(snapshot.progress ?? "No more progress.")
+                }
+                
+                uploadTask.resume()
+                
             } catch {
                 print(error)
             }
