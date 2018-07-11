@@ -9,8 +9,10 @@
 import UIKit
 import Foundation
 import CoreData
-//import Firebase
-//import FirebaseStorage
+import FirebaseCore
+import FirebaseAuth
+import FirebaseDatabase
+import FirebaseStorage
 
 class ReplaceMealController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
@@ -23,6 +25,7 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     var mealToPassBack = Meal()
     var mealToPassBackNewSortOrder : Int32 = 0
     var mealPassedInNewSortOrder : Int32 = 0
+    var handle : Any?
     
     //    // Firebase Storage
     //    let storage = Storage.storage()
@@ -61,6 +64,17 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
         guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
         tracker.send(builder.build() as [NSObject : AnyObject])
         //End google analytics stuff.
+        
+        //Firebase auth
+        handle = Auth.auth().addStateDidChangeListener { (auth, user) in
+            print("Added auth state change listener.")
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        //Firebase auth. Added "as! AuthStateDidChangeListenerHandle" because var handle is of type 'Any?'.
+        Auth.auth().removeStateDidChangeListener(handle! as! AuthStateDidChangeListenerHandle)
+        print("Removed auth state change listener.")
     }
     
     //MARK: Tableview datasource methods

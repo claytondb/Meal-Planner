@@ -9,9 +9,12 @@
 import UIKit
 import Foundation
 import CoreData
-import Firebase
 import CPLoadingView
 // Pod for loading animation is documented here https://github.com/cp3hnu/CPLoading
+import FirebaseCore
+import FirebaseAuth
+import FirebaseDatabase
+import FirebaseStorage
 
 class SettingsViewController: UIViewController, UITextFieldDelegate {
     
@@ -24,12 +27,12 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var loggedInContainerView: UIView!
+    var handle : Any?
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
         emailField.delegate = self
         passwordField.delegate = self
@@ -52,8 +55,19 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         tracker.send(builder.build() as [NSObject : AnyObject])
         //End google analytics stuff.
         
+        //Firebase auth
+        handle = Auth.auth().addStateDidChangeListener { (auth, user) in
+            print("Added auth state change listener.")
+        }
+        
         instructionText.lineBreakMode = NSLineBreakMode.byWordWrapping
         instructionText.numberOfLines = 0
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        //Firebase auth. Added "as! AuthStateDidChangeListenerHandle" because var handle is of type 'Any?'.
+        Auth.auth().removeStateDidChangeListener(handle! as! AuthStateDidChangeListenerHandle)
+        print("Removed auth state change listener.")
     }
     
     func registerKeyboardNotifications() {

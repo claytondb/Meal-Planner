@@ -9,8 +9,11 @@
 import UIKit
 import Foundation
 import CoreData
-//import Firebase
-//import FirebaseStorage
+import Firebase
+import FirebaseCore
+import FirebaseAuth
+import FirebaseDatabase
+import FirebaseStorage
 
 class AllMealsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
@@ -19,6 +22,8 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     var filteredMealsArray = [Meal]()
     let meal = Meal()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var handle : Any?
+    var ref : DatabaseReference!
     
     //    // Firebase Storage
     //    let storage = Storage.storage()
@@ -32,8 +37,8 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadMeals()
-        //        retrieveMealsFromFirebase()
+        //        loadMeals()
+        retrieveMealsFromFirebase()
         
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         
@@ -55,12 +60,17 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
         tracker.send(builder.build() as [NSObject : AnyObject])
         //End google analytics stuff.
+        
+        //Firebase auth
+        handle = Auth.auth().addStateDidChangeListener { (auth, user) in
+            print("Added auth state change listener.")
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
-        loadMeals()
-        //        retrieveMealsFromFirebase()
+        //        loadMeals()
+        retrieveMealsFromFirebase()
         
         filteredMealsArray = mealArray
         
@@ -69,6 +79,12 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         tableView.reloadData()
         
         sortMeals()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        //Firebase auth. Added "as! AuthStateDidChangeListenerHandle" because var handle is of type 'Any?'.
+        Auth.auth().removeStateDidChangeListener(handle! as! AuthStateDidChangeListenerHandle)
+        print("Removed auth state change listener.")
     }
     
     
@@ -129,8 +145,21 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             let mealToDelete = self.filteredMealsArray[indexPath.row]
             
             // Use index of row to delete it from table and CoreData
+            //            self.context.delete(mealToDelete)
+            
             //TODO: Remove meal entry from firebase database
-            self.context.delete(mealToDelete)
+            let ref = Database.database().reference()
+            func remove(child: String) {
+                
+                // Test to delete Apollo 13 meal
+                let ref = ref.child("Meals").child("-LH3FD-q_R9p6OZobfAc")
+                
+                ref.removeValue { error, _ in
+                    
+                    print(error ?? "Error removing meal.")
+                }
+            }
+            
             self.filteredMealsArray.remove(at: indexPath.row)
             print("Successfully deleted meal.")
             
@@ -271,25 +300,25 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             self.mealArray.append(newMeal)
             self.filteredMealsArray = self.mealArray
             
-            //            //Saving new meal to Firebase database
-            //            let mealsDB = Database.database().reference().child("Meals")
-            //            print("Created mealsDB")
-            //            let mealDictionary = ["MealOwner": Auth.auth().currentUser?.email ?? "",
-            //                                  "MealName": newMeal.mealName!,
-            //                                  "MealLocked": newMeal.mealLocked,
-            //                                  "MealSortedOrder": newMeal.mealSortedOrder,
-            //                                  "MealImagePath": newMeal.mealImagePath ?? "",
-            //                                  "MealIsReplacing": newMeal.mealIsReplacing,
-            //                                  "MealRecipeLink": newMeal.mealRecipeLink ?? "http://www.allrecipes.com",
-            //                                  "MealReplaceMe": newMeal.mealReplaceMe] as [String : Any]
-            //            mealsDB.childByAutoId().setValue(mealDictionary) {
-            //                (error, reference) in
-            //                if error != nil {
-            //                    print(error!)
-            //                } else {
-            //                    print("Meal saved successfully to Firebase")
-            //                }
-            //            }
+            //Saving new meal to Firebase database
+            let mealsDB = Database.database().reference().child("Meals")
+            print("Created mealsDB")
+            let mealDictionary = ["MealOwner": Auth.auth().currentUser?.email ?? "",
+                                  "MealName": newMeal.mealName!,
+                                  "MealLocked": newMeal.mealLocked,
+                                  "MealSortedOrder": newMeal.mealSortedOrder,
+                                  "MealImagePath": newMeal.mealImagePath ?? "",
+                                  "MealIsReplacing": newMeal.mealIsReplacing,
+                                  "MealRecipeLink": newMeal.mealRecipeLink ?? "http://www.allrecipes.com",
+                                  "MealReplaceMe": newMeal.mealReplaceMe] as [String : Any]
+            mealsDB.childByAutoId().setValue(mealDictionary) {
+                (error, reference) in
+                if error != nil {
+                    print(error!)
+                } else {
+                    print("Meal saved successfully to Firebase")
+                }
+            }
             
             self.saveMeals()
         }
@@ -309,30 +338,35 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         present(alert, animated: true, completion: nil)
     }
     
-    //    func retrieveMealsFromFirebase() {
-    //        let mealsDB = Database.database().reference().child("Meals")
-    //        mealsDB.observe(.childAdded) { (snapshot) in
-    //            let snapshotValue = snapshot.value as! Dictionary<String, Any>
-    //            let FBmealName = snapshotValue["MealName"]
-    //            let FBmealLocked = snapshotValue["MealLocked"]
-    //            let FBmealSortOrder = snapshotValue["MealSortOrder"]
-    //            let FBmealOwner = snapshotValue["MealOwner"]
-    //            let FBmealImagePath = snapshotValue["MealImagePath"]
-    //            let FBmealIsReplacing = snapshotValue["MealIsReplacing"]
-    //            let FBmealReplaceMe = snapshotValue["MealReplaceMe"]
-    //            let FBmealRecipeLink = snapshotValue["MealRecipeLink"]
-    //            let meal = Meal()
-    //            meal.mealName = FBmealName as? String
-    //            meal.mealLocked = (FBmealLocked != nil)
-    //            meal.mealSortedOrder = FBmealSortOrder as! Int32
-    //            meal.mealOwner = FBmealOwner as? String
-    //            meal.mealImagePath = FBmealImagePath as? String
-    //            meal.mealIsReplacing = FBmealIsReplacing as! Bool
-    //            meal.mealReplaceMe = FBmealReplaceMe as! Bool
-    //            meal.mealRecipeLink = FBmealRecipeLink as? String
-    //            self.mealArray.append(meal)
-    //        }
-    //    }
+    // Load meals from Firebase database
+    // This was causing the app to crash, but I added a var 'ref : DatabaseReference!' to the beginning of the controller.
+    func retrieveMealsFromFirebase() {
+        ref = Database.database().reference()
+        let mealsDB = ref.child("Meals")
+        mealsDB.observe(.childAdded) { (snapshot) in
+            let snapshotValue = snapshot.value as! Dictionary<String, Any>
+            let FBmealName = snapshotValue["MealName"]
+            let FBmealLocked = snapshotValue["MealLocked"]
+            let FBmealSortOrder = snapshotValue["MealSortOrder"]
+            let FBmealOwner = snapshotValue["MealOwner"]
+            let FBmealImagePath = snapshotValue["MealImagePath"]
+            let FBmealIsReplacing = snapshotValue["MealIsReplacing"]
+            let FBmealReplaceMe = snapshotValue["MealReplaceMe"]
+            let FBmealRecipeLink = snapshotValue["MealRecipeLink"]
+
+            let meal = Meal()
+            meal.mealName = FBmealName as? String
+            meal.mealLocked = FBmealLocked as! Bool
+            meal.mealSortedOrder = FBmealSortOrder as! Int32
+            meal.mealOwner = FBmealOwner as? String
+            meal.mealImagePath = FBmealImagePath as? String
+            meal.mealIsReplacing = FBmealIsReplacing as! Bool
+            meal.mealReplaceMe = FBmealReplaceMe as! Bool
+            meal.mealRecipeLink = FBmealRecipeLink as? String
+            self.mealArray.append(meal)
+            print("Loaded meals from Firebase database.")
+        }
+    }
     
     // Both deleteMeal and lockButton cause the app to crash on my phone. What's the issue?
     @IBAction func deleteMeal(_ sender: UIButton) {

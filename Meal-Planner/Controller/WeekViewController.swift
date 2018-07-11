@@ -10,8 +10,10 @@ import UIKit
 import Foundation
 import CoreData
 import GameplayKit
-//import Firebase
-//import FirebaseStorage
+import FirebaseCore
+import FirebaseAuth
+import FirebaseDatabase
+import FirebaseStorage
 
 class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -22,8 +24,10 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var mealSortedOrderArray = [Meal]()
     var mealToReplace = Meal()
     var mealReplacing = Meal()
+    var handle : Any?
     
     //    // Firebase Storage
+    // This causes the app to crash with unknown exception.
     //    let storage = Storage.storage()
     //    var imageReference: StorageReference {
     //        return Storage.storage().reference().child("images")
@@ -46,13 +50,26 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
         tracker.send(builder.build() as [NSObject : AnyObject])
         //End google analytics stuff.
+        
+        //Firebase auth
+        handle = Auth.auth().addStateDidChangeListener { (auth, user) in
+            print("Added auth state change listener.")
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         self.tableView.backgroundColor = UIColor.white
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
+        //TODO: Load meals from Firebase database
         loadMeals()
+        //TODO: Save meals to Firebase database
         sortMeals()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        //Firebase auth. Added "as! AuthStateDidChangeListenerHandle" because var handle is of type 'Any?'.
+        Auth.auth().removeStateDidChangeListener(handle! as! AuthStateDidChangeListenerHandle)
+        print("Removed auth state change listener.")
     }
     
     //MARK: Tableview datasource methods
@@ -145,6 +162,8 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
             // Save data and reload
             self.saveMeals()
             
+            //TODO: Save meals to Firebase database
+            
         }
     }
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
@@ -158,6 +177,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         mealArray.insert(itemToMove, at: toIndexPath.row)
         
         saveMeals()
+        //TODO: Save meals to Firebase database
     }
     
     //MARK: Reordering controls and tableView methods
@@ -185,6 +205,8 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             print("Changed meal name")
             self.saveMeals()
+            
+            //TODO: Save meals to Firebase database
         }
         
         alert.addTextField { (alertTextField) in
@@ -217,6 +239,8 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
             cellToColor.backgroundColor = UIColor.lightGray
         }
         saveMeals()
+        
+        //TODO: Save meals to Firebase database
     }
     
     //MARK: Randomize meals function
@@ -332,7 +356,6 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     //MARK: Tableview delegate methods - select row, segue to meal detail
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //        saveMeals()
         performSegue(withIdentifier: "segueToMealDetail", sender: self)
         print("Performed segue to meal detail")
     }
@@ -342,6 +365,8 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBAction func shuffleButtonPressed(_ sender: UIBarButtonItem) {
         randomize()
         saveMeals()
+        
+        //TODO: Save meals to Firebase database
     }
     
     
@@ -385,8 +410,6 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         mealToReplace = mealArray[indexPath!.row]
         print("Set mealToReplace to \(mealToReplace.mealName!)")
-        //        mealToReplace.mealReplaceMe = true
-        //        print("Set \(mealToReplace.mealName!) swap to true.")
         
     }
     

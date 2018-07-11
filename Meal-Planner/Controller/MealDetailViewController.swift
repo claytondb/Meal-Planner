@@ -9,7 +9,9 @@
 import UIKit
 import Foundation
 import CoreData
-import Firebase
+import FirebaseCore
+import FirebaseAuth
+import FirebaseDatabase
 import FirebaseStorage
 
 class MealDetailViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
@@ -22,6 +24,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     var storedMealImage : UIImage?
     var cameFromAllMeals : Bool?
     var cameFromWeekMeals : Bool?
+    var handle : Any?
     
     // Firebase Storage
     let storage = Storage.storage()
@@ -93,7 +96,20 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
         tracker.send(builder.build() as [NSObject : AnyObject])
         //End google analytics stuff.
+        
+        //Firebase auth
+        handle = Auth.auth().addStateDidChangeListener { (auth, user) in
+            print("Added auth state change listener.")
+        }
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        //Firebase auth. Added "as! AuthStateDidChangeListenerHandle" because var handle is of type 'Any?'.
+        Auth.auth().removeStateDidChangeListener(handle! as! AuthStateDidChangeListenerHandle)
+        print("Removed auth state change listener.")
+    }
+    
+    
     func registerKeyboardNotifications() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow(notification:)),
