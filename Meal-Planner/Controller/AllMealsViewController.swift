@@ -9,7 +9,6 @@
 import UIKit
 import Foundation
 import CoreData
-import Firebase
 import FirebaseCore
 import FirebaseAuth
 import FirebaseDatabase
@@ -24,7 +23,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var handle : Any?
     var ref : DatabaseReference!
-    let userID = Auth.auth().currentUser?.uid
+//    let userID = Auth.auth().currentUser?.uid
     
     //    // Firebase Storage
     //    let storage = Storage.storage()
@@ -149,11 +148,11 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             //            self.context.delete(mealToDelete)
             
             //TODO: Remove meal entry from firebase database
-            let ref = Database.database().reference()
+            ref = Database.database().reference()
             func remove(child: String) {
                 
                 // Test to delete Apollo 13 meal
-                let ref = ref.child("Meals").child("-LH3FD-q_R9p6OZobfAc")
+                let ref = self.ref.child("Meals").child("-LH3FD-q_R9p6OZobfAc")
                 
                 ref.removeValue { error, _ in
                     

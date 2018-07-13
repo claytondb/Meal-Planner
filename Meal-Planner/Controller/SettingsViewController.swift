@@ -28,8 +28,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var loggedInContainerView: UIView!
     var handle : Any?
-    var ref : DatabaseReference!
-    let userID = Auth.auth().currentUser?.uid
+//    var ref : DatabaseReference!
+//    let userID = Auth.auth().currentUser?.uid
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     

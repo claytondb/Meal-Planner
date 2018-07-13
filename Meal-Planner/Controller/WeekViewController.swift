@@ -25,8 +25,8 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var mealToReplace = Meal()
     var mealReplacing = Meal()
     var handle : Any?
-    var ref : DatabaseReference!
-    let userID = Auth.auth().currentUser?.uid
+//    var ref : DatabaseReference!
+//    let userID = Auth.auth().currentUser?.uid
     
     //    // Firebase Storage
     // This causes the app to crash with unknown exception.
