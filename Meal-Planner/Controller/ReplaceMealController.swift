@@ -26,6 +26,8 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     var mealToPassBackNewSortOrder : Int32 = 0
     var mealPassedInNewSortOrder : Int32 = 0
     var handle : Any?
+    var ref : DatabaseReference!
+    let userID = Auth.auth().currentUser?.uid
     
     //    // Firebase Storage
     //    let storage = Storage.storage()

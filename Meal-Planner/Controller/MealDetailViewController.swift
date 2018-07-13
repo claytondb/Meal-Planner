@@ -25,6 +25,8 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     var cameFromAllMeals : Bool?
     var cameFromWeekMeals : Bool?
     var handle : Any?
+    var ref : DatabaseReference!
+    let userID = Auth.auth().currentUser?.uid
     
     // Firebase Storage
     let storage = Storage.storage()

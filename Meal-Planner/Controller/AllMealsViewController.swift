@@ -24,6 +24,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var handle : Any?
     var ref : DatabaseReference!
+    let userID = Auth.auth().currentUser?.uid
     
     //    // Firebase Storage
     //    let storage = Storage.storage()
@@ -301,7 +302,8 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             self.filteredMealsArray = self.mealArray
             
             //Saving new meal to Firebase database
-            let mealsDB = Database.database().reference().child("Meals")
+            let ref = Database.database().reference()
+            let mealsDB = ref.child("Meals")
             print("Created mealsDB")
             let mealDictionary = ["MealOwner": Auth.auth().currentUser?.email ?? "",
                                   "MealName": newMeal.mealName!,
