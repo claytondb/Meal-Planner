@@ -28,6 +28,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var loggedInContainerView: UIView!
     var handle : Any?
+    var username : AuthDataResult?
 //    var ref : DatabaseReference!
 //    let userID = Auth.auth().currentUser?.uid
     
@@ -66,10 +67,27 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         instructionText.numberOfLines = 0
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        checkCurrentUser()
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         //Firebase auth. Added "as! AuthStateDidChangeListenerHandle" because var handle is of type 'Any?'.
         Auth.auth().removeStateDidChangeListener(handle! as! AuthStateDidChangeListenerHandle)
         print("Removed auth state change listener.")
+    }
+    
+    func checkCurrentUser() {
+        if Auth.auth().currentUser != nil {
+            let user = Auth.auth().currentUser
+            if let user = user {
+                let uid = user.uid
+                let email = user.email
+                print("\(uid) is signed in and their email is \(email ?? "someone@email.com").")
+            }
+        } else {
+            print("Nobody is signed in.")
+        }
     }
     
     func registerKeyboardNotifications() {
@@ -128,6 +146,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
                 self.loadingView.progress = 1.0
                 self.loadingView.completeLoading(success: true)
                 self.loadingView.hidesWhenCompleted = true
+                print(user)
+                self.username = user
             }
         }
     }

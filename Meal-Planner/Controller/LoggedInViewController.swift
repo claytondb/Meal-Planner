@@ -21,6 +21,8 @@ class LoggedInViewController: UIViewController {
     override func viewDidLoad() {
         // something here
         loggedInLabel.text = "You are logged in."
+        
+        checkCurrentUser()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -38,6 +40,14 @@ class LoggedInViewController: UIViewController {
         //Firebase auth. Added "as! AuthStateDidChangeListenerHandle" because var handle is of type 'Any?'.
         Auth.auth().removeStateDidChangeListener(handle! as! AuthStateDidChangeListenerHandle)
         print("Removed auth state change listener.")
+    }
+    
+    func checkCurrentUser() {
+        if Auth.auth().currentUser != nil {
+            print("Someone is signed in.")
+        } else {
+            print("Nobody is signed in.")
+        }
     }
     
     @IBAction func logOutPressed(_ sender: Any) {

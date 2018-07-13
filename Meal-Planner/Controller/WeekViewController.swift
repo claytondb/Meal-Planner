@@ -66,12 +66,27 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         loadMeals()
         //TODO: Save meals to Firebase database
         sortMeals()
+        
+        checkCurrentUser()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         //Firebase auth. Added "as! AuthStateDidChangeListenerHandle" because var handle is of type 'Any?'.
         Auth.auth().removeStateDidChangeListener(handle! as! AuthStateDidChangeListenerHandle)
         print("Removed auth state change listener.")
+    }
+    
+    func checkCurrentUser() {
+        if Auth.auth().currentUser != nil {
+            let user = Auth.auth().currentUser
+            if let user = user {
+                let uid = user.uid
+                let email = user.email
+                print("\(uid) is signed in and their email is \(email ?? "someone@email.com").")
+            }
+        } else {
+            print("Nobody is signed in.")
+        }
     }
     
     //MARK: Tableview datasource methods
