@@ -84,9 +84,11 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
                 let uid = user.uid
                 let email = user.email
                 print("\(uid) is signed in and their email is \(email ?? "someone@email.com").")
+                self.loggedInContainerView.isHidden = false
             }
         } else {
             print("Nobody is signed in.")
+            self.loggedInContainerView.isHidden = true
         }
     }
     
@@ -146,7 +148,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
                 self.loadingView.progress = 1.0
                 self.loadingView.completeLoading(success: true)
                 self.loadingView.hidesWhenCompleted = true
-                print(user)
+//                print(user)
                 self.username = user
             }
         }

@@ -21,12 +21,11 @@ class LoggedInViewController: UIViewController {
     override func viewDidLoad() {
         // something here
         loggedInLabel.text = "You are logged in."
-        
-        checkCurrentUser()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         // something here
+        checkCurrentUser()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,7 +43,13 @@ class LoggedInViewController: UIViewController {
     
     func checkCurrentUser() {
         if Auth.auth().currentUser != nil {
-            print("Someone is signed in.")
+            let user = Auth.auth().currentUser
+            if let user = user {
+//                let uid = user.uid
+                let email = user.email
+//                print("\(uid) is signed in and their email is \(email ?? "someone@email.com").")
+                self.loggedInLabel.text = "Welcome, \(email ?? "human")."
+            }
         } else {
             print("Nobody is signed in.")
         }
@@ -52,8 +57,27 @@ class LoggedInViewController: UIViewController {
     
     @IBAction func logOutPressed(_ sender: Any) {
         //        unwind(for: UIStoryboardSegue, towardsViewController: SettingsViewController)
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+        } catch let signOutError as NSError {
+            print ("Error signing out: %@", signOutError)
+        }
     }
     
+    @IBAction func deleteAccountPressed(_ sender: UIButton) {
+        let user = Auth.auth().currentUser
+        user?.delete { error in
+            if error != nil {
+                // An error happened.
+                print(error ?? "An error occurred.")
+            } else {
+                // Account deleted.
+                print("Account deleted.")
+                self.checkCurrentUser()
+            }
+        }
+    }
     
     
 }

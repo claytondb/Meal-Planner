@@ -634,13 +634,24 @@
                                     <segue destination="QB7-TD-Hhx" kind="unwind" unwindAction="unwindToSettingsViewControllerWithSegue:" id="DSE-UM-QDw"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tHH-i7-j5n">
+                                <rect key="frame" x="96" y="341" width="128" height="30"/>
+                                <state key="normal" title="Delete my account">
+                                    <color key="titleColor" red="1" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="deleteAccountPressed:" destination="UYh-1v-eMk" eventType="touchUpInside" id="3j2-y7-ghL"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="PY9-up-RJd" firstAttribute="centerX" secondItem="np7-xB-UBm" secondAttribute="centerX" id="Bdw-m4-KME"/>
                             <constraint firstAttribute="bottom" secondItem="np7-xB-UBm" secondAttribute="bottom" constant="159" id="cN8-c0-6e7"/>
                             <constraint firstItem="PY9-up-RJd" firstAttribute="top" secondItem="UBB-hw-sno" secondAttribute="top" constant="125" id="goS-vD-4wi"/>
+                            <constraint firstItem="tHH-i7-j5n" firstAttribute="centerX" secondItem="np7-xB-UBm" secondAttribute="centerX" id="tkx-M8-uEK"/>
                             <constraint firstItem="PY9-up-RJd" firstAttribute="centerX" secondItem="UBB-hw-sno" secondAttribute="centerX" id="xKw-dI-V7e"/>
+                            <constraint firstItem="tHH-i7-j5n" firstAttribute="top" secondItem="np7-xB-UBm" secondAttribute="bottom" constant="45" id="yoz-Mb-DIB"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="NTK-uh-Wec"/>
                     </view>
