@@ -16,7 +16,7 @@ import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
 
-class SettingsViewController: UIViewController, UITextFieldDelegate {
+class SettingsViewController: UIViewController, UITextFieldDelegate, LoggedInViewControllerDelegate {
     
     var settingsArray = [Setting]()
     
@@ -27,6 +27,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var loggedInContainerView: UIView!
+    @IBOutlet weak var logOutButton: UIButton!
+    
     var handle : Any?
     var username : AuthDataResult?
 //    var ref : DatabaseReference!
@@ -84,11 +86,17 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
                 let uid = user.uid
                 let email = user.email
                 print("\(uid) is signed in and their email is \(email ?? "someone@email.com").")
-                self.loggedInContainerView.isHidden = false
+//                self.loggedInContainerView.isHidden = false
+                self.emailField.isHidden = true
+                self.passwordField.isHidden = true
+                self.logOutButton.isHidden = false
             }
         } else {
             print("Nobody is signed in.")
-            self.loggedInContainerView.isHidden = true
+//            self.loggedInContainerView.isHidden = true
+            self.emailField.isHidden = false
+            self.passwordField.isHidden = false
+            self.logOutButton.isHidden = true
         }
     }
     
@@ -176,8 +184,25 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
                 self.loadingView.progress = 1.0
                 self.loadingView.completeLoading(success: true)
                 self.loadingView.hidesWhenCompleted = true
-                self.loggedInContainerView.isHidden = false
+//                self.loggedInContainerView.isHidden = false
+                self.emailField.isHidden = true
+                self.passwordField.isHidden = true
+                self.logOutButton.isHidden = false
             }
+        }
+    }
+    
+    // Function to log out
+    func logOutPressedProtocolFunc() {
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+//            self.loggedInContainerView.isHidden = true
+            self.emailField.isHidden = false
+            self.passwordField.isHidden = false
+            self.logOutButton.isHidden = true
+        } catch let signOutError as NSError {
+            print ("Error signing out: %@", signOutError)
         }
     }
     

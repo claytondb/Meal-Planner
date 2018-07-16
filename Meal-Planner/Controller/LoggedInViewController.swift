@@ -13,6 +13,10 @@ import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
 
+protocol LoggedInViewControllerDelegate {
+    func logOutPressedProtocolFunc()
+}
+
 class LoggedInViewController: UIViewController {
     
     var handle: Any?
@@ -57,12 +61,8 @@ class LoggedInViewController: UIViewController {
     
     @IBAction func logOutPressed(_ sender: Any) {
         //        unwind(for: UIStoryboardSegue, towardsViewController: SettingsViewController)
-        let firebaseAuth = Auth.auth()
-        do {
-            try firebaseAuth.signOut()
-        } catch let signOutError as NSError {
-            print ("Error signing out: %@", signOutError)
-        }
+//            logOutPressed(SettingsViewController.self)
+//        SettingsViewController.logOutPressedProtocolFunc()
     }
     
     @IBAction func deleteAccountPressed(_ sender: UIButton) {

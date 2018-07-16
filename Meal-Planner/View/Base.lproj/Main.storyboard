@@ -516,6 +516,10 @@
                                                                     <action selector="registerPressed:" destination="agR-si-bTc" eventType="touchUpInside" id="HLl-Xu-fIR"/>
                                                                 </connections>
                                                             </button>
+                                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Zw-jn-Xy1">
+                                                                <rect key="frame" x="162" y="0.0" width="0.0" height="151.5"/>
+                                                                <state key="normal" title="Log out"/>
+                                                            </button>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D9M-1R-ZT9">
                                                                 <rect key="frame" x="162" y="0.0" width="162" height="151.5"/>
                                                                 <state key="normal" title="Log in"/>
@@ -603,6 +607,7 @@
                         <outlet property="errorLabel" destination="MMg-hP-E2h" id="95N-7l-Y8H"/>
                         <outlet property="instructionText" destination="QXK-z7-pWR" id="Q5t-gO-GVS"/>
                         <outlet property="loadingView" destination="s8n-8F-1Ux" id="2EX-Wi-s6R"/>
+                        <outlet property="logOutButton" destination="9Zw-jn-Xy1" id="T1y-Z6-bEX"/>
                         <outlet property="loggedInContainerView" destination="X9k-2M-irN" id="XFt-ok-V5N"/>
                         <outlet property="passwordField" destination="lA4-Wn-Gnw" id="wqj-Sg-bdj"/>
                         <outlet property="scrollView" destination="MuH-6N-Zyf" id="tME-zH-Ebb"/>
