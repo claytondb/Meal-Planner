@@ -20,7 +20,6 @@
 		82883CC120412B3300F37F04 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82883CC020412B3300F37F04 /* Assets.xcassets */; };
 		82883CC420412B3300F37F04 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 82883CC220412B3300F37F04 /* LaunchScreen.storyboard */; };
 		82926AFC204F8EC300CB52AE /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 82926AFA204F8EC300CB52AE /* DataModel.xcdatamodeld */; };
-		82E7098C20DB46C4000AC994 /* LoggedInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7098B20DB46C4000AC994 /* LoggedInViewController.swift */; };
 		82F2182F2058CF97008D1A20 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82F2182E2058CF97008D1A20 /* Default-568h@2x.png */; };
 		8FD4B8C629368531BE4A14DC /* Pods_Meal_Planner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 990051FBABEB518F3AE7429D /* Pods_Meal_Planner.framework */; };
 /* End PBXBuildFile section */
@@ -43,7 +42,6 @@
 		82883CC320412B3300F37F04 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		82883CC520412B3300F37F04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		82926AFB204F8EC300CB52AE /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
-		82E7098B20DB46C4000AC994 /* LoggedInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInViewController.swift; sourceTree = "<group>"; };
 		82F2182E2058CF97008D1A20 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		8D6E378B4E4B15A759F1E004 /* Pods-Meal Planner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Meal Planner.release.xcconfig"; path = "Pods/Target Support Files/Pods-Meal Planner/Pods-Meal Planner.release.xcconfig"; sourceTree = "<group>"; };
 		990051FBABEB518F3AE7429D /* Pods_Meal_Planner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Meal_Planner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,7 +135,6 @@
 				82205516206C120900BE3A87 /* MealDetailViewController.swift */,
 				82883CB920412B3300F37F04 /* AppDelegate.swift */,
 				8237EF9E20BDB24400EE940B /* BridgingHeader.h */,
-				82E7098B20DB46C4000AC994 /* LoggedInViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -307,7 +304,6 @@
 				82205517206C120900BE3A87 /* MealDetailViewController.swift in Sources */,
 				82059D8120609CEB0082288D /* CustomMealCell.swift in Sources */,
 				821B1A7C209809DC00E767A1 /* ReplaceMealController.swift in Sources */,
-				82E7098C20DB46C4000AC994 /* LoggedInViewController.swift in Sources */,
 				82883CBA20412B3300F37F04 /* AppDelegate.swift in Sources */,
 				82521B7E2069EF7000B2E36B /* AllMealsViewController.swift in Sources */,
 			);

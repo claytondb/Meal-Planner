@@ -16,7 +16,7 @@ import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
 
-class SettingsViewController: UIViewController, UITextFieldDelegate, LoggedInViewControllerDelegate {
+class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     var settingsArray = [Setting]()
     
@@ -28,6 +28,10 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, LoggedInVie
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var loggedInContainerView: UIView!
     @IBOutlet weak var logOutButton: UIButton!
+    @IBOutlet weak var registerButton: UIButton!
+    @IBOutlet weak var logInButton: UIButton!
+    @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet weak var passwordLabel: UILabel!
     
     var handle : Any?
     var username : AuthDataResult?
@@ -86,17 +90,25 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, LoggedInVie
                 let uid = user.uid
                 let email = user.email
                 print("\(uid) is signed in and their email is \(email ?? "someone@email.com").")
-//                self.loggedInContainerView.isHidden = false
+                self.instructionText.text = "Welcome, \(email ?? "friend")."
+                self.emailLabel.isHidden = true
                 self.emailField.isHidden = true
+                self.passwordLabel.isHidden = true
                 self.passwordField.isHidden = true
+                self.registerButton.isHidden = true
                 self.logOutButton.isHidden = false
+                self.logInButton.isHidden = true
             }
         } else {
             print("Nobody is signed in.")
-//            self.loggedInContainerView.isHidden = true
+            self.instructionText.text = "Never lose your meals! Register or Log In to enable automatic cloud backup."
+            self.emailLabel.isHidden = false
             self.emailField.isHidden = false
+            self.passwordLabel.isHidden = false
             self.passwordField.isHidden = false
+            self.registerButton.isHidden = false
             self.logOutButton.isHidden = true
+            self.logInButton.isHidden = false
         }
     }
     
@@ -156,8 +168,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, LoggedInVie
                 self.loadingView.progress = 1.0
                 self.loadingView.completeLoading(success: true)
                 self.loadingView.hidesWhenCompleted = true
-//                print(user)
                 self.username = user
+                self.checkCurrentUser()
             }
         }
     }
@@ -184,25 +196,38 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, LoggedInVie
                 self.loadingView.progress = 1.0
                 self.loadingView.completeLoading(success: true)
                 self.loadingView.hidesWhenCompleted = true
-//                self.loggedInContainerView.isHidden = false
-                self.emailField.isHidden = true
-                self.passwordField.isHidden = true
-                self.logOutButton.isHidden = false
+                self.checkCurrentUser()
             }
         }
     }
     
+    @IBAction func logOutButtonPressed(_ sender: UIButton) {
+        logOut()
+        checkCurrentUser()
+    }
+    
     // Function to log out
-    func logOutPressedProtocolFunc() {
+    func logOut() {
         let firebaseAuth = Auth.auth()
         do {
             try firebaseAuth.signOut()
-//            self.loggedInContainerView.isHidden = true
-            self.emailField.isHidden = false
-            self.passwordField.isHidden = false
-            self.logOutButton.isHidden = true
         } catch let signOutError as NSError {
             print ("Error signing out: %@", signOutError)
+        }
+    }
+    
+    // Function to delete account
+    func deleteAccount() {
+        let user = Auth.auth().currentUser
+        user?.delete { error in
+            if error != nil {
+                // An error happened.
+                print(error ?? "An error occurred.")
+            } else {
+                // Account deleted.
+                print("Account deleted.")
+                self.checkCurrentUser()
+            }
         }
     }
     
