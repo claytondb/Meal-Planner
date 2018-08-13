@@ -23,7 +23,9 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var handle : Any?
     var ref : DatabaseReference!
-//    let userID = Auth.auth().currentUser?.uid
+    var user : User?
+    var uid : String?
+    var email : String?
     
     //    // Firebase Storage
     //    let storage = Storage.storage()
@@ -89,11 +91,12 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func checkCurrentUser() {
         if Auth.auth().currentUser != nil {
-            let user = Auth.auth().currentUser
-            if let user = user {
-                let uid = user.uid
-                let email = user.email
-                print("\(uid) is signed in and their email is \(email ?? "someone@email.com").")
+            self.user = Auth.auth().currentUser
+            if let thisUser = user {
+                uid = thisUser.uid
+                email = thisUser.email
+                print("\(uid!) is signed in and their email is \(email!).")
+                retrieveMealsFromFirebase()
             }
         } else {
             print("Nobody is signed in.")
@@ -313,10 +316,8 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             self.mealArray.append(newMeal)
             self.filteredMealsArray = self.mealArray
             
-            //Saving new meal to Firebase database
-            let ref = Database.database().reference()
-            let mealsDB = ref.child("Meals")
-            print("Created mealsDB")
+            // Create dictionary to later be added to firebase
+            
             let mealDictionary = ["MealOwner": Auth.auth().currentUser?.email ?? "",
                                   "MealName": newMeal.mealName!,
                                   "MealLocked": newMeal.mealLocked,
@@ -325,15 +326,21 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                                   "MealIsReplacing": newMeal.mealIsReplacing,
                                   "MealRecipeLink": newMeal.mealRecipeLink ?? "http://www.allrecipes.com",
                                   "MealReplaceMe": newMeal.mealReplaceMe] as [String : Any]
+            
+            //Saving new meal to Firebase database
+            self.ref = Database.database().reference()
+            let mealsDB = self.ref.child("Meals").child(self.user!.uid)
             mealsDB.childByAutoId().setValue(mealDictionary) {
                 (error, reference) in
                 if error != nil {
                     print(error!)
+                    //I got an error - permission denied
                 } else {
                     print("Meal saved successfully to Firebase")
                 }
             }
             
+            self.tableView.reloadData()
             self.saveMeals()
         }
         
@@ -367,7 +374,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             let FBmealIsReplacing = snapshotValue["MealIsReplacing"]
             let FBmealReplaceMe = snapshotValue["MealReplaceMe"]
             let FBmealRecipeLink = snapshotValue["MealRecipeLink"]
-
+            
             let meal = Meal()
             meal.mealName = FBmealName as? String
             meal.mealLocked = FBmealLocked as! Bool
@@ -380,6 +387,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             self.mealArray.append(meal)
             print("Loaded meals from Firebase database.")
         }
+        self.tableView.reloadData()
     }
     
     // Both deleteMeal and lockButton cause the app to crash on my phone. What's the issue?
