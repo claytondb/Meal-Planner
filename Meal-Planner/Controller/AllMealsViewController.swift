@@ -118,6 +118,10 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.mealLabel?.text = meal.mealName!
         }
         
+        if meal.mealImagePath == "" {
+            meal.mealImagePath = nil
+        }
+        
         // Set meal image
         if meal.mealImagePath != nil {
             let mealImageURL = URL(string: (meal.mealImagePath?.encodeUrl())!)
@@ -377,16 +381,14 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
 //                let FBmealReplaceMe = snapshotValue["MealReplaceMe"]
 //                let FBmealSortedOrder = snapshotValue["MealSortedOrder"]
                 
-                print("Printing snapshot...")
+//                print("Printing snapshot...")
                 print(snapshot)
-                print("Retrieving meals... assigning entry to meal variables...")
+//                print("Retrieving meals... assigning entry to meal variables...")
                 let mealFromFB = Meal(context: self.context)
 //                This works! For whatever reason, I had to add context:self.context to Meal.
-                print("mealFromFB is now of class Meal")
+//                print("mealFromFB is now of class Meal")
                 mealFromFB.mealImagePath = snapshotValue["MealImagePath"] as? String
-//                print(snapshotValue["MealImagePath"] as? String)
-//                It retrieves the data fine. It's the assigning to mealFromFB that is getting an NSException error.
-                print("Retrieving meals... got image path")
+//                print("Retrieving meals... got image path")
                 mealFromFB.mealIsReplacing = snapshotValue["MealIsReplacing"] as! Bool
                 mealFromFB.mealLocked = snapshotValue["MealLocked"] as! Bool
                 mealFromFB.mealName = snapshotValue["MealName"] as? String
@@ -394,10 +396,11 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                 mealFromFB.mealRecipeLink = snapshotValue["MealRecipeLink"] as? String
                 mealFromFB.mealReplaceMe = snapshotValue["MealReplaceMe"] as! Bool
                 mealFromFB.mealSortedOrder = snapshotValue["MealSortedOrder"] as! Int32
-                self.mealArray.append(mealFromFB)
+                self.filteredMealsArray.append(mealFromFB)
                 print("Loaded meals from Firebase database.")
+                self.tableView.reloadData()
+                print("Reloaded table data.")
             }
-        self.tableView.reloadData()
         }
     }
     
