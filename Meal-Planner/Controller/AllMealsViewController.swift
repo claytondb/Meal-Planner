@@ -328,9 +328,9 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                                   "MealReplaceMe": newMeal.mealReplaceMe] as [String : Any]
             
             //Saving new meal to Firebase database
-            self.ref = Database.database().reference()
-            let mealsDB = self.ref.child("Meals").child(self.user!.uid)
-            mealsDB.childByAutoId().setValue(mealDictionary) {
+            self.ref = Database.database().reference().child("Meals").child(self.user!.uid)
+//            let mealsDB = self.ref.child("Meals").child(self.user!.uid)
+            self.ref.childByAutoId().setValue(mealDictionary) {
                 (error, reference) in
                 if error != nil {
                     print(error!)
@@ -362,32 +362,43 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     // Load meals from Firebase database
     // This was causing the app to crash, but I added a var 'ref : DatabaseReference!' to the beginning of the controller.
     func retrieveMealsFromFirebase() {
-        ref = Database.database().reference()
-        let mealsDB = ref.child("Meals")
-        mealsDB.observe(.childAdded) { (snapshot) in
-            let snapshotValue = snapshot.value as! Dictionary<String, Any>
-            let FBmealName = snapshotValue["MealName"]
-            let FBmealLocked = snapshotValue["MealLocked"]
-            let FBmealSortOrder = snapshotValue["MealSortOrder"]
-            let FBmealOwner = snapshotValue["MealOwner"]
-            let FBmealImagePath = snapshotValue["MealImagePath"]
-            let FBmealIsReplacing = snapshotValue["MealIsReplacing"]
-            let FBmealReplaceMe = snapshotValue["MealReplaceMe"]
-            let FBmealRecipeLink = snapshotValue["MealRecipeLink"]
-            
-            let meal = Meal()
-            meal.mealName = FBmealName as? String
-            meal.mealLocked = FBmealLocked as! Bool
-            meal.mealSortedOrder = FBmealSortOrder as! Int32
-            meal.mealOwner = FBmealOwner as? String
-            meal.mealImagePath = FBmealImagePath as? String
-            meal.mealIsReplacing = FBmealIsReplacing as! Bool
-            meal.mealReplaceMe = FBmealReplaceMe as! Bool
-            meal.mealRecipeLink = FBmealRecipeLink as? String
-            self.mealArray.append(meal)
-            print("Loaded meals from Firebase database.")
-        }
+        if uid != nil {
+            print("Retrieving meals... someone is logged in")
+            ref = Database.database().reference().child("Meals").child(user!.uid)
+            ref.observe(.childAdded) { (snapshot : DataSnapshot) in
+                print("Retrieving meals... observing snapshot")
+                let snapshotValue = snapshot.value as! Dictionary<String, Any>
+//                let FBmealImagePath = snapshotValue["MealImagePath"] as! String
+//                let FBmealIsReplacing = snapshotValue["MealIsReplacing"]
+//                let FBmealLocked = snapshotValue["MealLocked"]
+//                let FBmealName = snapshotValue["MealName"]
+//                let FBmealOwner = snapshotValue["MealOwner"]
+//                let FBmealRecipeLink = snapshotValue["MealRecipeLink"]
+//                let FBmealReplaceMe = snapshotValue["MealReplaceMe"]
+//                let FBmealSortedOrder = snapshotValue["MealSortedOrder"]
+                
+                print("Printing snapshot...")
+                print(snapshot)
+                print("Retrieving meals... assigning entry to meal variables...")
+                let mealFromFB = Meal(context: self.context)
+//                This works! For whatever reason, I had to add context:self.context to Meal.
+                print("mealFromFB is now of class Meal")
+                mealFromFB.mealImagePath = snapshotValue["MealImagePath"] as? String
+//                print(snapshotValue["MealImagePath"] as? String)
+//                It retrieves the data fine. It's the assigning to mealFromFB that is getting an NSException error.
+                print("Retrieving meals... got image path")
+                mealFromFB.mealIsReplacing = snapshotValue["MealIsReplacing"] as! Bool
+                mealFromFB.mealLocked = snapshotValue["MealLocked"] as! Bool
+                mealFromFB.mealName = snapshotValue["MealName"] as? String
+                mealFromFB.mealOwner = snapshotValue["MealOwner"] as? String
+                mealFromFB.mealRecipeLink = snapshotValue["MealRecipeLink"] as? String
+                mealFromFB.mealReplaceMe = snapshotValue["MealReplaceMe"] as! Bool
+                mealFromFB.mealSortedOrder = snapshotValue["MealSortedOrder"] as! Int32
+                self.mealArray.append(mealFromFB)
+                print("Loaded meals from Firebase database.")
+            }
         self.tableView.reloadData()
+        }
     }
     
     // Both deleteMeal and lockButton cause the app to crash on my phone. What's the issue?
