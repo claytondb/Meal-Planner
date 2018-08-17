@@ -77,7 +77,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         
         mealSearchField.text = ""
         searchBar(mealSearchField, textDidChange: "")
-        tableView.reloadData()
+//        tableView.reloadData()
         
         sortMeals()
     }
