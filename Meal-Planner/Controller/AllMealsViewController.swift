@@ -40,12 +40,11 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         super.viewDidLoad()
         
         //        loadMeals()
+        checkCurrentUser()
         retrieveMealsFromFirebase()
         
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
-        
         tableView.backgroundColor = UIColor.white
-        
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.mealSearchField.delegate = self
@@ -71,16 +70,16 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidAppear(_ animated: Bool) {
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         //        loadMeals()
+        checkCurrentUser()
         retrieveMealsFromFirebase()
         
         filteredMealsArray = mealArray
         
         mealSearchField.text = ""
         searchBar(mealSearchField, textDidChange: "")
-        tableView.reloadData()
+//        tableView.reloadData()
         
         sortMeals()
-        checkCurrentUser()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -96,7 +95,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                 uid = thisUser.uid
                 email = thisUser.email
                 print("\(uid!) is signed in and their email is \(email!).")
-                retrieveMealsFromFirebase()
+//                retrieveMealsFromFirebase()
             }
         } else {
             print("Nobody is signed in.")
@@ -320,7 +319,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             self.mealArray.append(newMeal)
             self.filteredMealsArray = self.mealArray
             
-            // Create dictionary to later be added to firebase
+            // Create dictionary for firebase
             
             let mealDictionary = ["MealOwner": Auth.auth().currentUser?.email ?? "",
                                   "MealName": newMeal.mealName!,
@@ -344,8 +343,8 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                 }
             }
             
-            self.tableView.reloadData()
-            self.saveMeals()
+//            self.tableView.reloadData()
+//            self.saveMeals()
         }
         
         alert.addTextField { (alertTextField) in
@@ -372,16 +371,6 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             ref.observe(.childAdded) { (snapshot : DataSnapshot) in
                 print("Retrieving meals... observing snapshot")
                 let snapshotValue = snapshot.value as! Dictionary<String, Any>
-//                let FBmealImagePath = snapshotValue["MealImagePath"] as! String
-//                let FBmealIsReplacing = snapshotValue["MealIsReplacing"]
-//                let FBmealLocked = snapshotValue["MealLocked"]
-//                let FBmealName = snapshotValue["MealName"]
-//                let FBmealOwner = snapshotValue["MealOwner"]
-//                let FBmealRecipeLink = snapshotValue["MealRecipeLink"]
-//                let FBmealReplaceMe = snapshotValue["MealReplaceMe"]
-//                let FBmealSortedOrder = snapshotValue["MealSortedOrder"]
-                
-//                print("Printing snapshot...")
                 print(snapshot)
 //                print("Retrieving meals... assigning entry to meal variables...")
                 let mealFromFB = Meal(context: self.context)
@@ -396,11 +385,15 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                 mealFromFB.mealRecipeLink = snapshotValue["MealRecipeLink"] as? String
                 mealFromFB.mealReplaceMe = snapshotValue["MealReplaceMe"] as! Bool
                 mealFromFB.mealSortedOrder = snapshotValue["MealSortedOrder"] as! Int32
-                self.filteredMealsArray.append(mealFromFB)
+                self.mealArray.append(mealFromFB)
+                self.filteredMealsArray = self.mealArray
                 print("Loaded meals from Firebase database.")
                 self.tableView.reloadData()
                 print("Reloaded table data.")
             }
+        }
+        else {
+            print("User ID was nil.")
         }
     }
     
