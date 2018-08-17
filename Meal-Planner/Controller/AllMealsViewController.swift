@@ -41,7 +41,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         
         //        loadMeals()
         checkCurrentUser()
-        retrieveMealsFromFirebase()
+//        retrieveMealsFromFirebase()
         
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         tableView.backgroundColor = UIColor.white
@@ -71,7 +71,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         //        loadMeals()
         checkCurrentUser()
-//        retrieveMealsFromFirebase()
+        retrieveMealsFromFirebase()
         
         filteredMealsArray = mealArray
         
