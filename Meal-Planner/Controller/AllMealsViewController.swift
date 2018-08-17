@@ -71,13 +71,13 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         //        loadMeals()
         checkCurrentUser()
-        retrieveMealsFromFirebase()
+//        retrieveMealsFromFirebase()
         
         filteredMealsArray = mealArray
         
         mealSearchField.text = ""
         searchBar(mealSearchField, textDidChange: "")
-//        tableView.reloadData()
+        tableView.reloadData()
         
         sortMeals()
     }
