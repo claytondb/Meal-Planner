@@ -50,6 +50,8 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         self.mealSearchField.delegate = self
         filteredMealsArray = mealArray
         sortMeals()
+        
+        print("On load, the number of meals in filteredMealsArray is \(filteredMealsArray.count)")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -80,6 +82,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
 //        tableView.reloadData()
         
         sortMeals()
+        print("After viewDidAppear, the number of meals in filteredMealsArray is \(filteredMealsArray.count)")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -151,7 +154,9 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // Method 2
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("For numberOfRowsInSection function, the number of meals in filteredMealsArray is \(filteredMealsArray.count)")
         let count = filteredMealsArray.count
+//        let count = mealArray.count
         return count
     }
     
@@ -316,8 +321,8 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             newMeal.mealName = textField.text!
             newMeal.mealLocked = false
             newMeal.mealSortedOrder = Int32(self.mealArray.count)
-            self.mealArray.append(newMeal)
-            self.filteredMealsArray = self.mealArray
+//            self.mealArray.append(newMeal)
+//            self.filteredMealsArray = self.mealArray
             
             // Create dictionary for firebase
             
@@ -390,6 +395,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                 print("Loaded meals from Firebase database.")
                 self.tableView.reloadData()
                 print("Reloaded table data.")
+                print("After retrieveMealsFromFirebase, the number of meals in filtereMealsArray is \(self.filteredMealsArray.count)")
             }
         }
         else {
