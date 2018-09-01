@@ -38,16 +38,15 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //        loadMeals()
+
         checkCurrentUser()
-//        retrieveMealsFromFirebase()
         
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         tableView.backgroundColor = UIColor.white
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.mealSearchField.delegate = self
+        
         filteredMealsArray = mealArray
         sortMeals()
         
@@ -70,18 +69,19 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
-        //        loadMeals()
         checkCurrentUser()
-        retrieveMealsFromFirebase()
         
-        filteredMealsArray = mealArray
+        retrieveMealsFromFirebase()
+
+        tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         
         mealSearchField.text = ""
         searchBar(mealSearchField, textDidChange: "")
-//        tableView.reloadData()
         
-        sortMeals()
+        filteredMealsArray = mealArray
+        
+        sortMeals() // Something on this one gets the "index out of range" error.
+        
         print("After viewDidAppear, the number of meals in filteredMealsArray is \(filteredMealsArray.count)")
     }
     
@@ -98,7 +98,6 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                 uid = thisUser.uid
                 email = thisUser.email
                 print("\(uid!) is signed in and their email is \(email!).")
-//                retrieveMealsFromFirebase()
             }
         } else {
             print("Nobody is signed in.")
@@ -284,8 +283,9 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     //MARK: Function to sort tableview according to mealSortedIndex
     func sortMeals() {
         do {
-            var lastMealInt : Int = filteredMealsArray.count - 1
-            lastMealInt = filteredMealsArray.count - 1
+            print("sortMeals: filteredMealsArray.count is \(filteredMealsArray.count)")
+            var lastMealInt : Int = filteredMealsArray.count - 1 // becuase 0 counts as the first meal.
+//            lastMealInt = filteredMealsArray.count - 1
             mealSortedOrderArray = filteredMealsArray
             while(lastMealInt > -1)
             {
@@ -295,7 +295,8 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                     mealSortedOrderArray.insert(mealToCheck, at: Int(mealToCheck.mealSortedOrder))
                 }
                 lastMealInt -= 1
-            }
+            } // ERROR: Index out of range was being caused by meals that were added with errors. They had the meal sorted order messed up. This is no longer an issue after deleting all meals from Firebase and re-adding them. 
+            print("No errors while sorting meals.")
             filteredMealsArray = mealSortedOrderArray
             mealSortedOrderArray = [Meal]()
         }
@@ -371,12 +372,12 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     // This was causing the app to crash, but I added a var 'ref : DatabaseReference!' to the beginning of the controller.
     func retrieveMealsFromFirebase() {
         if uid != nil {
-            print("Retrieving meals... someone is logged in")
+//            print("Retrieving meals... someone is logged in")
             ref = Database.database().reference().child("Meals").child(user!.uid)
             ref.observe(.childAdded) { (snapshot : DataSnapshot) in
-                print("Retrieving meals... observing snapshot")
+//                print("Retrieving meals... observing snapshot")
                 let snapshotValue = snapshot.value as! Dictionary<String, Any>
-                print(snapshot)
+//                print(snapshot)
 //                print("Retrieving meals... assigning entry to meal variables...")
                 let mealFromFB = Meal(context: self.context)
 //                This works! For whatever reason, I had to add context:self.context to Meal.
@@ -392,9 +393,9 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                 mealFromFB.mealSortedOrder = snapshotValue["MealSortedOrder"] as! Int32
                 self.mealArray.append(mealFromFB)
                 self.filteredMealsArray = self.mealArray
-                print("Loaded meals from Firebase database.")
+//                print("Loaded meals from Firebase database.")
                 self.tableView.reloadData()
-                print("Reloaded table data.")
+//                print("Reloaded table data.")
                 print("After retrieveMealsFromFirebase, the number of meals in filtereMealsArray is \(self.filteredMealsArray.count)")
             }
         }
