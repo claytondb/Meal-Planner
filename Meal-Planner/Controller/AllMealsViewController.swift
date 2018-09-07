@@ -328,7 +328,6 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
 //            self.filteredMealsArray = self.mealArray
             
             // Create dictionary for firebase
-            
             let mealDictionary = ["MealOwner": Auth.auth().currentUser?.email ?? "",
                                   "MealName": newMeal.mealName!,
                                   "MealLocked": newMeal.mealLocked,
@@ -339,20 +338,15 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                                   "MealReplaceMe": newMeal.mealReplaceMe] as [String : Any]
             
             //Saving new meal to Firebase database
-            self.ref = Database.database().reference().child("Meals").child(self.user!.uid)
-//            let mealsDB = self.ref.child("Meals").child(self.user!.uid)
+            self.ref = Database.database().reference().child("Meals").child(self.user!.uid) // Does it know there's a user?
             self.ref.childByAutoId().setValue(mealDictionary) {
                 (error, reference) in
                 if error != nil {
                     print(error!)
-                    //I got an error - permission denied
                 } else {
                     print("Meal saved successfully to Firebase")
                 }
             }
-            
-//            self.tableView.reloadData()
-//            self.saveMeals()
         }
         
         alert.addTextField { (alertTextField) in
