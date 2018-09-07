@@ -127,11 +127,14 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         if meal.mealImagePath != nil {
             let mealImageURL = URL(string: (meal.mealImagePath?.encodeUrl())!)
             if let imageData = try? Data(contentsOf: mealImageURL!) {
+                cell.mealImage.contentMode = .scaleAspectFill // not doing anything
                 cell.mealImage.image = UIImage(data: imageData)
             } else {
+                cell.mealImage.contentMode = .scaleAspectFill //  not doing anything
                 cell.mealImage.image = UIImage(named: "mealPlaceholder")
             }
         } else {
+            cell.mealImage.contentMode = .scaleAspectFill //  not doing anything
             cell.mealImage.image = UIImage(named: "mealPlaceholder")
         }
         
@@ -284,8 +287,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     func sortMeals() {
         do {
             print("sortMeals: filteredMealsArray.count is \(filteredMealsArray.count)")
-            var lastMealInt : Int = filteredMealsArray.count - 1 // becuase 0 counts as the first meal.
-//            lastMealInt = filteredMealsArray.count - 1
+            var lastMealInt : Int = filteredMealsArray.count - 1 // because 0 counts as the first meal.
             mealSortedOrderArray = filteredMealsArray
             while(lastMealInt > -1)
             {
@@ -295,7 +297,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                     mealSortedOrderArray.insert(mealToCheck, at: Int(mealToCheck.mealSortedOrder))
                 }
                 lastMealInt -= 1
-            } // ERROR: Index out of range was being caused by meals that were added with errors. They had the meal sorted order messed up. This is no longer an issue after deleting all meals from Firebase and re-adding them. 
+            } // ERROR: Index out of range was being caused by meals that were added with errors. They had the meal sorted order messed up. This is no longer an issue after deleting all meals from Firebase and re-adding them.
             print("No errors while sorting meals.")
             filteredMealsArray = mealSortedOrderArray
             mealSortedOrderArray = [Meal]()

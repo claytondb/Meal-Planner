@@ -54,8 +54,6 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         
         self.mealNameField.keyboardType = UIKeyboardType.default
         
-        loadMeals()
-        
         print("\(mealPassedIn.mealName!) detail view")
         
         // Change label to name of meal
@@ -182,7 +180,10 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     @IBAction func saveButton(_ sender: UIBarButtonItem) {
         // Change meal name to what's in the text field
         mealPassedIn.mealName = mealNameField.text
+        
         saveMealDetail()
+        // Insert Firebase saving stuff here.
+        
         if cameFromAllMeals == true {
             self.performSegue(withIdentifier: "unwindToAllMeals", sender: self)
         } else if cameFromWeekMeals == true {
@@ -234,21 +235,24 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             
-            // Write image to photo album
-            UIImageWriteToSavedPhotosAlbum(pickedImage, self, #selector(imageSaveToLibrary(_:didFinishSavingWithError:contextInfo:)), nil)
+            // Write image to photo album - don't need this because it duplicates imported images in photo album. 
+//            UIImageWriteToSavedPhotosAlbum(pickedImage, self, #selector(imageSaveToLibrary(_:didFinishSavingWithError:contextInfo:)), nil)
             
             mealImageView.contentMode = .scaleAspectFill
             mealImageView.image = pickedImage
             storedMealImage = pickedImage
             
-            // get stored image and path
+            // get stored image and path:
+            
             let fileManager = FileManager.default
+            // Firebase: Insert file path stuff here
+            
             do {
                 let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
                 let fileURL = documentDirectory.appendingPathComponent("\(pickedImage.imageAsset!)")
                 
                 let image = pickedImage
-                if let imageData = UIImageJPEGRepresentation(image, 0.5) {
+                if let imageData = UIImageJPEGRepresentation(image, 0.1) {
                     try imageData.write(to: fileURL)
                     storedImageURL = fileURL
                     mealPassedIn.mealImagePath = storedImageURL!.absoluteString
@@ -256,10 +260,10 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
                 }
                 
                 // For firebase 
-                guard let imageData = UIImageJPEGRepresentation(image, 0.5) else {return}
+                guard let imageData = UIImageJPEGRepresentation(image, 0.1) else {return}
                 
-                // Firebase image upload
-                let uploadImageRef = imageReference.child("fileUrl")
+                // Firebase image upload. This works! Just need to figure out download...
+                let uploadImageRef = imageReference.child("\(mealPassedIn.mealImagePath!)") // What's the right file name?
                 let uploadTask = uploadImageRef.putData(imageData, metadata: nil) { (metadata, error) in
                     print("Upload task finished.")
                     print(metadata ?? "No metadata for this image.")
@@ -363,17 +367,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         }
         print("Detail saved")
     }
-    
-    func loadMeals(with request: NSFetchRequest<Meal> = Meal.fetchRequest()) {
-        do {
-            mealArray = try context.fetch(request)
-        } catch {
-            print("Error loading meals. \(error)")
-        }
-        print("Meals loaded")
-    }
-    
-    
+
 }
 
 extension String

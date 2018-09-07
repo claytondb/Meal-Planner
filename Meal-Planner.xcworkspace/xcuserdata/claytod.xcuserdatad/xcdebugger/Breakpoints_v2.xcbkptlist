@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Meal-Planner/Controller/AllMealsViewController.swift"
-            timestampString = "557466346.8249969"
+            timestampString = "558016416.012663"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "84"
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Meal-Planner/Controller/AllMealsViewController.swift"
-            timestampString = "557466346.825399"
+            timestampString = "558016416.012719"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "300"
-            endingLineNumber = "300"
+            startingLineNumber = "302"
+            endingLineNumber = "302"
             landmarkName = "sortMeals()"
             landmarkType = "7">
          </BreakpointContent>
