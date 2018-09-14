@@ -26,7 +26,6 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     var user : User?
     var uid : String?
     var email : String?
-    var mealFirebaseID : String? // This will be used to store the ID of the meal being passed to MealDetailViewController.
     
     //    // Firebase Storage
     //    let storage = Storage.storage()
@@ -325,10 +324,8 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             newMeal.mealName = textField.text!
             newMeal.mealLocked = false
             newMeal.mealSortedOrder = Int32(self.mealArray.count)
-//            self.mealArray.append(newMeal)
-//            self.filteredMealsArray = self.mealArray
             
-            let newMealID = self.ref.childByAutoId()
+            let mealFirebaseID = self.ref.childByAutoId()
             
             // Create dictionary for firebase
             let mealDictionary = ["MealOwner": Auth.auth().currentUser?.email ?? "",
@@ -339,13 +336,13 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                                   "MealIsReplacing": newMeal.mealIsReplacing,
                                   "MealRecipeLink": newMeal.mealRecipeLink ?? "http://www.allrecipes.com",
                                   "MealReplaceMe": newMeal.mealReplaceMe,
-                                  "MealFirebaseID": newMealID.key
+                                  "MealFirebaseID": mealFirebaseID.key
                                   ] as [String : Any]
             
             
             //Saving new meal to Firebase database
             self.ref = Database.database().reference().child("Meals").child(self.user!.uid) // Does it know there's a user?
-            newMealID.setValue(mealDictionary) {
+            mealFirebaseID.setValue(mealDictionary) {
                 (error, reference) in
                 if error != nil {
                     print(error!)
@@ -389,6 +386,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                 mealFromFB.mealRecipeLink = snapshotValue["MealRecipeLink"] as? String
                 mealFromFB.mealReplaceMe = snapshotValue["MealReplaceMe"] as! Bool
                 mealFromFB.mealSortedOrder = snapshotValue["MealSortedOrder"] as! Int32
+                mealFromFB.mealFirebaseID = snapshotValue["MealFirebaseID"] as? String
                 
                 self.mealArray.append(mealFromFB)
                 self.filteredMealsArray = self.mealArray
