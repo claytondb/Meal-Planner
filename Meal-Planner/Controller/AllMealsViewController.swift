@@ -26,6 +26,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     var user : User?
     var uid : String?
     var email : String?
+    var mealFirebaseID : String? // This will be used to store the ID of the meal being passed to MealDetailViewController.
     
     //    // Firebase Storage
     //    let storage = Storage.storage()
@@ -327,6 +328,8 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
 //            self.mealArray.append(newMeal)
 //            self.filteredMealsArray = self.mealArray
             
+            let newMealID = self.ref.childByAutoId()
+            
             // Create dictionary for firebase
             let mealDictionary = ["MealOwner": Auth.auth().currentUser?.email ?? "",
                                   "MealName": newMeal.mealName!,
@@ -335,15 +338,20 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                                   "MealImagePath": newMeal.mealImagePath ?? "",
                                   "MealIsReplacing": newMeal.mealIsReplacing,
                                   "MealRecipeLink": newMeal.mealRecipeLink ?? "http://www.allrecipes.com",
-                                  "MealReplaceMe": newMeal.mealReplaceMe] as [String : Any]
+                                  "MealReplaceMe": newMeal.mealReplaceMe,
+                                  "MealFirebaseID": newMealID.key
+                                  ] as [String : Any]
+            
             
             //Saving new meal to Firebase database
             self.ref = Database.database().reference().child("Meals").child(self.user!.uid) // Does it know there's a user?
-            self.ref.childByAutoId().setValue(mealDictionary) {
+            newMealID.setValue(mealDictionary) {
                 (error, reference) in
                 if error != nil {
                     print(error!)
                 } else {
+                    print(self.ref.child("Meals").childByAutoId().key)
+//                    self.ref.setValue(self.ref.key, forKey: "MealFirebaseID")
                     print("Meal saved successfully to Firebase")
                 }
             }
@@ -368,18 +376,12 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     // This was causing the app to crash, but I added a var 'ref : DatabaseReference!' to the beginning of the controller.
     func retrieveMealsFromFirebase() {
         if uid != nil {
-//            print("Retrieving meals... someone is logged in")
             ref = Database.database().reference().child("Meals").child(user!.uid)
             ref.observe(.childAdded) { (snapshot : DataSnapshot) in
-//                print("Retrieving meals... observing snapshot")
                 let snapshotValue = snapshot.value as! Dictionary<String, Any>
-//                print(snapshot)
-//                print("Retrieving meals... assigning entry to meal variables...")
                 let mealFromFB = Meal(context: self.context)
-//                This works! For whatever reason, I had to add context:self.context to Meal.
-//                print("mealFromFB is now of class Meal")
+                
                 mealFromFB.mealImagePath = snapshotValue["MealImagePath"] as? String
-//                print("Retrieving meals... got image path")
                 mealFromFB.mealIsReplacing = snapshotValue["MealIsReplacing"] as! Bool
                 mealFromFB.mealLocked = snapshotValue["MealLocked"] as! Bool
                 mealFromFB.mealName = snapshotValue["MealName"] as? String
@@ -387,11 +389,11 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                 mealFromFB.mealRecipeLink = snapshotValue["MealRecipeLink"] as? String
                 mealFromFB.mealReplaceMe = snapshotValue["MealReplaceMe"] as! Bool
                 mealFromFB.mealSortedOrder = snapshotValue["MealSortedOrder"] as! Int32
+                
                 self.mealArray.append(mealFromFB)
                 self.filteredMealsArray = self.mealArray
-//                print("Loaded meals from Firebase database.")
+                
                 self.tableView.reloadData()
-//                print("Reloaded table data.")
                 print("After retrieveMealsFromFirebase, the number of meals in filtereMealsArray is \(self.filteredMealsArray.count)")
             }
         }
@@ -442,6 +444,9 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                 print("Prepared for segue")
                 let indexPath = tableView.indexPathForSelectedRow
                 destinationVC.mealPassedIn = filteredMealsArray[(indexPath?.row)!]
+                print("\(self.ref.description())") // This prints the parent of the meal - the full path of the location.
+                print("\(self.ref.key)") // Prints the last token at this location
+                destinationVC.mealFirebaseID = "" // Set the mealFirebaseID of the meal being passed in.
                 print("Passed in meal")
                 
             }

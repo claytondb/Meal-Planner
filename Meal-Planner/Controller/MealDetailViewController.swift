@@ -27,6 +27,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     var handle : Any?
     var ref : DatabaseReference!
     var user : User?
+    var mealFirebaseID : String? // This will be used to store the ID of the meal passed in.
 //    let userID = Auth.auth().currentUser?.uid
     
     // Firebase Storage
@@ -195,6 +196,8 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         self.ref.child("").setValue(mealDictionary) {
             // I don't want to create a new meal entry. How do I find the meal ID of the one that was passed in?
             // How does this view controller know which meal was passed in? It's in filteredMealsArray, and it knows the index path of the pressed row... destinationVC.mealPassedIn = filteredMealsArray[(indexPath?.row)!].
+            // I need to pass in the Firebase ID of the meal from AllMealsViewController and store it in a string variable in MealDetailViewController. Then I can reference it here.
+            // I could do a database query, find the meal that contains the meal name, and update that meal.
             (error, reference) in
             if error != nil {
                 print(error!)
