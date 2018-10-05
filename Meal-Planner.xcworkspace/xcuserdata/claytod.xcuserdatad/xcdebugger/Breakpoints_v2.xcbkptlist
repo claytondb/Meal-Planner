@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Meal-Planner/Controller/AllMealsViewController.swift"
-            timestampString = "558621461.957866"
+            timestampString = "560439627.170819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "84"
@@ -26,12 +26,76 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Meal-Planner/Controller/AllMealsViewController.swift"
-            timestampString = "558621461.958212"
+            timestampString = "560439627.170889"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "302"
-            endingLineNumber = "302"
+            startingLineNumber = "304"
+            endingLineNumber = "304"
             landmarkName = "sortMeals()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Meal-Planner/Controller/MealDetailViewController.swift"
+            timestampString = "560439627.170945"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "201"
+            endingLineNumber = "201"
+            landmarkName = "saveButton(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Meal_Planner.MealDetailViewController.saveButton(__ObjC.UIBarButtonItem) -&gt; ()"
+                  moduleName = "Meal Planner"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/claytod/Documents/box-problem-files/swift/Meal-Planner/Meal-Planner/Controller/MealDetailViewController.swift"
+                  timestampString = "558636122.33954"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "200"
+                  endingLineNumber = "200"
+                  offsetFromSymbolStart = "5362">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Error&gt;, __ObjC.DatabaseReference) -&gt; () in Meal_Planner.MealDetailViewController.saveButton(__ObjC.UIBarButtonItem) -&gt; ()"
+                  moduleName = "Meal Planner"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/claytod/Documents/box-problem-files/swift/Meal-Planner/Meal-Planner/Controller/MealDetailViewController.swift"
+                  timestampString = "558636122.341314"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "202"
+                  endingLineNumber = "202"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Meal-Planner/Controller/AllMealsViewController.swift"
+            timestampString = "560439627.17099"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "332"
+            endingLineNumber = "332"
+            landmarkName = "addMeal(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

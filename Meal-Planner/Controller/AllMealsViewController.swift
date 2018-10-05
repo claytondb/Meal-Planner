@@ -101,6 +101,8 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         } else {
             print("Nobody is signed in.")
+            // If nobody is signed in, segue to settings screen to create account.
+            performSegue(withIdentifier: "segueToSettings", sender: AllMealsViewController.self)
         }
     }
     
@@ -325,7 +327,13 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             newMeal.mealLocked = false
             newMeal.mealSortedOrder = Int32(self.mealArray.count)
             
-            let mealFirebaseID = self.ref.childByAutoId()
+            self.ref = Database.database().reference().child("Meals").child(self.user!.uid) // Does it know there's a user? This crashes the app, probably because nobody is logged in.
+            
+            let mealFirebaseID = self.ref.childByAutoId() // Causes app to crash. Why? Says error unwrapping optional value.
+            // ref is the variable for DatabaseReference, which has a !
+            // It doesn't know what the DatabaseReference is, maybe because nobody is logged in?
+            
+            newMeal.mealFirebaseID = "\(mealFirebaseID)"
             
             // Create dictionary for firebase
             let mealDictionary = ["MealOwner": Auth.auth().currentUser?.email ?? "",
@@ -341,14 +349,12 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             
             
             //Saving new meal to Firebase database
-            self.ref = Database.database().reference().child("Meals").child(self.user!.uid) // Does it know there's a user?
+            
             mealFirebaseID.setValue(mealDictionary) {
                 (error, reference) in
                 if error != nil {
                     print(error!)
                 } else {
-                    print(self.ref.child("Meals").childByAutoId().key)
-//                    self.ref.setValue(self.ref.key, forKey: "MealFirebaseID")
                     print("Meal saved successfully to Firebase")
                 }
             }
@@ -442,9 +448,6 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                 print("Prepared for segue")
                 let indexPath = tableView.indexPathForSelectedRow
                 destinationVC.mealPassedIn = filteredMealsArray[(indexPath?.row)!]
-                print("\(self.ref.description())") // This prints the parent of the meal - the full path of the location.
-                print("\(self.ref.key)") // Prints the last token at this location
-                destinationVC.mealFirebaseID = "" // Set the mealFirebaseID of the meal being passed in.
                 print("Passed in meal")
                 
             }

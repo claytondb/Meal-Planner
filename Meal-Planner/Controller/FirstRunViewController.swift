@@ -1,8 +1,8 @@
 //
-//  SettingsViewController.swift
+//  FirstRunViewController.swift
 //  Meal Planner
 //
-//  Created by Clayton, David on 3/28/18.
+//  Created by Clayton, David on 10/5/18.
 //  Copyright © 2018 Clayton, David. All rights reserved.
 //
 
@@ -16,9 +16,7 @@ import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
 
-class SettingsViewController: UIViewController, UITextFieldDelegate {
-    
-    var settingsArray = [Setting]()
+class FirstRunViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var loadingView: CPLoadingView!
     @IBOutlet weak var instructionText: UILabel!
@@ -35,8 +33,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     var handle : Any?
     var username : AuthDataResult?
-//    var ref : DatabaseReference!
-//    let userID = Auth.auth().currentUser?.uid
+    //    var ref : DatabaseReference!
+    //    let userID = Auth.auth().currentUser?.uid
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -48,8 +46,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         
         self.emailField.keyboardType = UIKeyboardType.emailAddress
         self.passwordField.keyboardType = UIKeyboardType.default
-        
-        loadSettings()
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -83,6 +80,11 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         print("Removed auth state change listener.")
     }
     
+    func goToApp() {
+        // This is a function to segue to the rest of the app once registered or logged in. Dismisses view controller.
+        performSegue(withIdentifier: "segueToApp", sender: FirstRunViewController.self)
+    }
+    
     func checkCurrentUser() {
         if Auth.auth().currentUser != nil {
             let user = Auth.auth().currentUser
@@ -98,6 +100,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
                 self.registerButton.isHidden = true
                 self.logOutButton.isHidden = false
                 self.logInButton.isHidden = true
+                goToApp()
             }
         } else {
             print("Nobody is signed in.")
@@ -170,6 +173,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
                 self.loadingView.hidesWhenCompleted = true
                 self.username = user
                 self.checkCurrentUser()
+                self.goToApp()
             }
         }
     }
@@ -197,6 +201,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
                 self.loadingView.completeLoading(success: true)
                 self.loadingView.hidesWhenCompleted = true
                 self.checkCurrentUser()
+                self.goToApp()
             }
         }
     }
@@ -204,7 +209,6 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBAction func logOutButtonPressed(_ sender: UIButton) {
         logOut()
         checkCurrentUser()
-        performSegue(withIdentifier: "segueToFirstRun", sender: SettingsViewController.self)
     }
     
     // Function to log out
@@ -245,15 +249,6 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
             print("Error saving settings. \(error)")
         }
         print("Settings saved and data reloaded")
-    }
-    
-    func loadSettings(with request: NSFetchRequest<Setting> = Setting.fetchRequest()) {
-        do {
-            settingsArray = try context.fetch(request)
-        } catch {
-            print("Error loading meals. \(error)")
-        }
-        print("Settings loaded")
     }
     
 }
