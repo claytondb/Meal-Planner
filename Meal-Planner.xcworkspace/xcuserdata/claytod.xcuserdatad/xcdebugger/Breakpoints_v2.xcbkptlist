@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Meal-Planner/Controller/AllMealsViewController.swift"
-            timestampString = "560439627.170819"
+            timestampString = "561301637.099563"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "84"
-            endingLineNumber = "84"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
             landmarkName = "viewDidAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Meal-Planner/Controller/AllMealsViewController.swift"
-            timestampString = "560439627.170889"
+            timestampString = "561301637.099919"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "304"
-            endingLineNumber = "304"
+            startingLineNumber = "253"
+            endingLineNumber = "253"
             landmarkName = "sortMeals()"
             landmarkType = "7">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Meal-Planner/Controller/MealDetailViewController.swift"
-            timestampString = "560439627.170945"
+            timestampString = "561301637.100173"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "201"
-            endingLineNumber = "201"
+            startingLineNumber = "205"
+            endingLineNumber = "205"
             landmarkName = "saveButton(_:)"
             landmarkType = "7">
             <Locations>
@@ -58,12 +58,12 @@
                   moduleName = "Meal Planner"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/claytod/Documents/box-problem-files/swift/Meal-Planner/Meal-Planner/Controller/MealDetailViewController.swift"
-                  timestampString = "558636122.33954"
+                  timestampString = "561299722.12491"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "200"
-                  endingLineNumber = "200"
-                  offsetFromSymbolStart = "5362">
+                  startingLineNumber = "214"
+                  endingLineNumber = "214"
+                  offsetFromSymbolStart = "5659">
                </Location>
                <Location
                   shouldBeEnabled = "No"
@@ -73,11 +73,11 @@
                   moduleName = "Meal Planner"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/claytod/Documents/box-problem-files/swift/Meal-Planner/Meal-Planner/Controller/MealDetailViewController.swift"
-                  timestampString = "558636122.341314"
+                  timestampString = "561299722.127381"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "202"
-                  endingLineNumber = "202"
+                  startingLineNumber = "216"
+                  endingLineNumber = "216"
                   offsetFromSymbolStart = "20">
                </Location>
             </Locations>
@@ -86,15 +86,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Meal-Planner/Controller/AllMealsViewController.swift"
-            timestampString = "560439627.17099"
+            timestampString = "561301637.100232"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "332"
-            endingLineNumber = "332"
+            startingLineNumber = "281"
+            endingLineNumber = "281"
             landmarkName = "addMeal(_:)"
             landmarkType = "7">
          </BreakpointContent>

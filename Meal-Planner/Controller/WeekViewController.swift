@@ -25,8 +25,10 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var mealToReplace = Meal()
     var mealReplacing = Meal()
     var handle : Any?
-//    var ref : DatabaseReference!
-//    let userID = Auth.auth().currentUser?.uid
+    var ref : DatabaseReference!
+    var user : User?
+    var uid : String?
+    var email : String?
     
     //    // Firebase Storage
     // This causes the app to crash with unknown exception.
@@ -39,16 +41,22 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.backgroundColor = UIColor.white
+        
+        checkCurrentUser()
+        
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
+        self.tableView.backgroundColor = UIColor.white
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
+        sortMeals()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         //MARK: Google analytics stuff
         guard let tracker = GAI.sharedInstance().defaultTracker else { return }
         tracker.set(kGAIScreenName, value: "Week view controller")
+        
         guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
         tracker.send(builder.build() as [NSObject : AnyObject])
         //End google analytics stuff.
@@ -60,14 +68,24 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        checkCurrentUser()
+        
+        // Clear out mealArray so we don't have duplicates
+        mealArray = []
+        
+        retrieveMealsFromFirebase()
+        
         self.tableView.backgroundColor = UIColor.white
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
+        
         //TODO: Load meals from Firebase database
-        loadMeals()
+//        loadMeals()
+        
         //TODO: Save meals to Firebase database
+        
         sortMeals()
         
-        checkCurrentUser()
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -78,11 +96,11 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func checkCurrentUser() {
         if Auth.auth().currentUser != nil {
-            let user = Auth.auth().currentUser
-            if let user = user {
-                let uid = user.uid
-                let email = user.email
-                print("\(uid) is signed in and their email is \(email ?? "someone@email.com").")
+            self.user = Auth.auth().currentUser
+            if let thisUser = user {
+                uid = thisUser.uid
+                email = thisUser.email
+                print("\(uid!) is signed in and their email is \(email!).")
             }
         } else {
             print("Nobody is signed in.")
@@ -93,6 +111,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let meal = mealArray[indexPath.row]
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "customMealCell", for: indexPath) as! CustomMealCell
         
         // Set meal name
@@ -177,7 +196,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
             print("Successfully deleted meal.")
             
             // Save data and reload
-            self.saveMeals()
+//            self.saveMeals()
             
             //TODO: Save meals to Firebase database
             
@@ -193,7 +212,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         mealArray.remove(at: fromIndexPath.row)
         mealArray.insert(itemToMove, at: toIndexPath.row)
         
-        saveMeals()
+//        saveMeals()
         //TODO: Save meals to Firebase database
     }
     
@@ -208,41 +227,6 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    //MARK: Edit meal name function
-    func editMealName() {
-        print("Editing meal")
-        
-        let indexPath : IndexPath = tableView.indexPathForSelectedRow!
-        var textField = UITextField()
-        let alert = UIAlertController(title: "Edit meal name", message: "", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Save", style: .default) { (action) in
-            
-            let editingMeal = self.mealArray[indexPath.row]
-            editingMeal.mealName = textField.text
-            
-            print("Changed meal name")
-            self.saveMeals()
-            
-            //TODO: Save meals to Firebase database
-        }
-        
-        alert.addTextField { (alertTextField) in
-            let editingMeal = self.mealArray[indexPath.row]
-            print("let editingMeal = Meal")
-            alertTextField.text = editingMeal.mealName
-            textField = alertTextField
-            textField.autocorrectionType = .yes
-        }
-        
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-            // do nothing
-            print("Cancelled")
-        }
-        alert.addAction(cancel)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
-    }
-    
     //MARK: Lock meal function
     func lockMeal(mealToCheck : Meal, cellToColor : UITableViewCell) {
         
@@ -255,7 +239,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
             print("\(mealToCheck.mealName!) locked")
             cellToColor.backgroundColor = UIColor.lightGray
         }
-        saveMeals()
+//        saveMeals()
         
         //TODO: Save meals to Firebase database
     }
@@ -363,7 +347,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
         } else if segue.identifier == "segueToReplaceMeal" {
             if let destinationVC = segue.destination as? ReplaceMealController {
-                saveMeals()
+//                saveMeals()
                 print("Prepared for segue to replace meal")
                 destinationVC.mealPassedIn = mealToReplace
                 print("Passed in meal to replace")
@@ -381,7 +365,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     //MARK: Button to randomize the list
     @IBAction func shuffleButtonPressed(_ sender: UIBarButtonItem) {
         randomize()
-        saveMeals()
+//        saveMeals()
         
         //TODO: Save meals to Firebase database
     }
@@ -430,27 +414,59 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
     }
     
+    // Load meals from Firebase database
+    // This was causing the app to crash, but I added a var 'ref : DatabaseReference!' to the beginning of the controller.
+    func retrieveMealsFromFirebase() {
+        if uid != nil {
+            ref = Database.database().reference().child("Meals").child(user!.uid)
+            ref.observe(.childAdded) { (snapshot : DataSnapshot) in
+                let snapshotValue = snapshot.value as! Dictionary<String, Any>
+                let mealFromFB = Meal(context: self.context)
+                
+                mealFromFB.mealImagePath = snapshotValue["MealImagePath"] as? String
+                mealFromFB.mealIsReplacing = snapshotValue["MealIsReplacing"] as! Bool
+                mealFromFB.mealLocked = snapshotValue["MealLocked"] as! Bool
+                mealFromFB.mealName = snapshotValue["MealName"] as? String
+                mealFromFB.mealOwner = snapshotValue["MealOwner"] as? String
+                mealFromFB.mealRecipeLink = snapshotValue["MealRecipeLink"] as? String
+                mealFromFB.mealReplaceMe = snapshotValue["MealReplaceMe"] as! Bool
+                mealFromFB.mealSortedOrder = snapshotValue["MealSortedOrder"] as! Int32
+                mealFromFB.mealFirebaseID = snapshotValue["MealFirebaseID"] as? String
+                
+                self.mealArray.append(mealFromFB)
+//                self.filteredMealsArray = self.mealArray
+                
+                self.tableView.reloadData()
+//                print("After retrieveMealsFromFirebase, the number of meals in filtereMealsArray is \(self.filteredMealsArray.count)")
+            }
+        }
+        else {
+            print("User ID was nil.")
+        }
+    }
     //MARK: Model manipulation methods
-    func saveMeals(){
-        do {
-            try context.save()
-        } catch {
-            print("Error saving meals. \(error)")
-        }
-        self.tableView.reloadData()
-        print("Meals saved and data reloaded")
-    }
-    
-    func loadMeals(with request: NSFetchRequest<Meal> = Meal.fetchRequest()) {
-        do {
-            mealArray = try context.fetch(request)
-        } catch {
-            print("Error loading meals. \(error)")
-        }
-        self.tableView.reloadData()
-        print("Meals loaded")
-    }
+//    func saveMeals(){
+//        do {
+//            try context.save()
+//        } catch {
+//            print("Error saving meals. \(error)")
+//        }
+//        self.tableView.reloadData()
+//        print("Meals saved and data reloaded")
+//    }
+//
+//    func loadMeals(with request: NSFetchRequest<Meal> = Meal.fetchRequest()) {
+//        do {
+//            mealArray = try context.fetch(request)
+//        } catch {
+//            print("Error loading meals. \(error)")
+//        }
+//        self.tableView.reloadData()
+//        print("Meals loaded")
+//    }
 }
+
+
 
 extension UIColor {
     convenience init(red: Int, green: Int, blue: Int) {

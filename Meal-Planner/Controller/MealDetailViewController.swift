@@ -116,7 +116,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     
     func checkCurrentUser() {
         if Auth.auth().currentUser != nil {
-            let user = Auth.auth().currentUser
+            self.user = Auth.auth().currentUser // Fixed issue with saving meal where user was nil by adding self.user.
             if let user = user {
                 let uid = user.uid
                 let email = user.email
@@ -199,7 +199,9 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         let mealFirebaseIDDataRef = mealPassedIn.mealFirebaseID
         // Once I know the Firebase ID for the meal, I can update that specific meal on save.
         
+        // This was causing crash because user comes back as nil. Fixed this by adding self.user to checkCurrentUser.
         self.ref = Database.database().reference().child("Meals").child(self.user!.uid)
+        
         self.ref.child(mealFirebaseIDDataRef!).setValue(mealDictionary) {
             (error, reference) in
             if error != nil {

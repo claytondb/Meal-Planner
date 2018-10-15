@@ -50,7 +50,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         filteredMealsArray = mealArray
         sortMeals()
         
-        print("On load, the number of meals in filteredMealsArray is \(filteredMealsArray.count)")
+//        print("On load, the number of meals in filteredMealsArray is \(filteredMealsArray.count)")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,6 +70,10 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewDidAppear(_ animated: Bool) {
         checkCurrentUser()
+        
+        // Clear out filteredMealsArray and mealArray so we don't have duplicates
+        filteredMealsArray = []
+        mealArray = []
         
         retrieveMealsFromFirebase()
 
@@ -101,8 +105,6 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         } else {
             print("Nobody is signed in.")
-            // If nobody is signed in, segue to settings screen to create account.
-            performSegue(withIdentifier: "segueToSettings", sender: AllMealsViewController.self)
         }
     }
     
@@ -195,7 +197,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             
             // Save data and reload
             //TODO: Save to firebase and reload
-            self.saveMeals()
+//            self.saveMeals()
             
         }
         
@@ -213,7 +215,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         mealArray = filteredMealsArray
         
         //TODO: Save to firebase
-        saveMeals()
+//        saveMeals()
     }
     @IBAction func startEditing(_ sender: UIBarButtonItem) {
         if self.isEditing == false {
@@ -230,59 +232,6 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             return item.mealName?.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
         }
         tableView.reloadData()
-    }
-    
-    //MARK: Edit meal name function
-    func editMealName() {
-        print("Editing meal")
-        
-        let indexPath : IndexPath = tableView.indexPathForSelectedRow!
-        var textField = UITextField()
-        let alert = UIAlertController(title: "Edit meal name", message: "", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Save", style: .default) { (action) in
-            
-            let editingMeal = self.filteredMealsArray[indexPath.row]
-            editingMeal.mealName = textField.text
-            
-            print("Changed meal name")
-            
-            //TODO: Save to firebase
-            self.saveMeals()
-        }
-        
-        alert.addTextField { (alertTextField) in
-            let editingMeal = self.filteredMealsArray[indexPath.row]
-            print("let editingMeal = Meal")
-            alertTextField.text = editingMeal.mealName
-            textField = alertTextField
-            textField.autocorrectionType = .yes
-        }
-        
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-            // do nothing
-            print("Cancelled")
-        }
-        alert.addAction(cancel)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
-    }
-    
-    
-    
-    //MARK: Lock meal function
-    func lockMeal(mealToCheck : Meal, cellToColor : UITableViewCell) {
-        if mealToCheck.mealLocked == true {
-            mealToCheck.mealLocked = false
-            print("\(mealToCheck.mealName!) unlocked")
-            cellToColor.backgroundColor = UIColor.clear
-        } else if mealToCheck.mealLocked == false {
-            mealToCheck.mealLocked = true
-            print("\(mealToCheck.mealName!) locked")
-            cellToColor.backgroundColor = UIColor.lightGray
-        }
-        
-        //TODO: Save to firebase
-        saveMeals()
     }
     
     //MARK: Function to sort tableview according to mealSortedIndex
@@ -327,11 +276,11 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             newMeal.mealLocked = false
             newMeal.mealSortedOrder = Int32(self.mealArray.count)
             
-            self.ref = Database.database().reference().child("Meals").child(self.user!.uid) // Does it know there's a user? This crashes the app, probably because nobody is logged in.
+            self.ref = Database.database().reference().child("Meals").child(self.user!.uid) // Does it know there's a user? This crashes the app if nobody is logged in. Currently preventing that by requiring users to be logged in.
             
-            let mealFirebaseID = self.ref.childByAutoId() // Causes app to crash. Why? Says error unwrapping optional value.
+            let mealFirebaseID = self.ref.childByAutoId() // App crashes if nobody logged in.
             // ref is the variable for DatabaseReference, which has a !
-            // It doesn't know what the DatabaseReference is, maybe because nobody is logged in?
+            // It doesn't know what the DatabaseReference is if nobody is logged in.
             
             newMeal.mealFirebaseID = "\(mealFirebaseID)"
             
@@ -427,7 +376,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             
             // Save data and reload
             //TODO: Save to firebase
-            self.saveMeals()
+//            self.saveMeals()
             
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
@@ -460,25 +409,25 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     
     //MARK: Model manipulation methods
-    func saveMeals(){
-        do {
-            try context.save()
-        } catch {
-            print("Error saving meals. \(error)")
-        }
-        self.tableView.reloadData()
-        print("Meals saved and data reloaded")
-    }
+//    func saveMeals(){
+//        do {
+//            try context.save()
+//        } catch {
+//            print("Error saving meals. \(error)")
+//        }
+//        self.tableView.reloadData()
+//        print("Meals saved and data reloaded")
+//    }
     
-    func loadMeals(with request: NSFetchRequest<Meal> = Meal.fetchRequest()) {
-        do {
-            mealArray = try context.fetch(request)
-        } catch {
-            print("Error loading meals. \(error)")
-        }
-        self.tableView.reloadData()
-        print("Meals loaded")
-    }
+//    func loadMeals(with request: NSFetchRequest<Meal> = Meal.fetchRequest()) {
+//        do {
+//            mealArray = try context.fetch(request)
+//        } catch {
+//            print("Error loading meals. \(error)")
+//        }
+//        self.tableView.reloadData()
+//        print("Meals loaded")
+//    }
     
 }
 
