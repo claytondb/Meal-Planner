@@ -237,7 +237,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     //MARK: Function to sort tableview according to mealSortedIndex
     func sortMeals() {
         do {
-            print("sortMeals: filteredMealsArray.count is \(filteredMealsArray.count)")
+//            print("sortMeals: filteredMealsArray.count is \(filteredMealsArray.count)")
             var lastMealInt : Int = filteredMealsArray.count - 1 // because 0 counts as the first meal.
             mealSortedOrderArray = filteredMealsArray
             while(lastMealInt > -1)

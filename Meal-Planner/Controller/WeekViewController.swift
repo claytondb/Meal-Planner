@@ -78,14 +78,8 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.tableView.backgroundColor = UIColor.white
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         
-        //TODO: Load meals from Firebase database
-//        loadMeals()
-        
-        //TODO: Save meals to Firebase database
-        
         sortMeals()
-        
-
+        saveMealsToFirebase()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -195,11 +189,8 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self.mealArray.remove(at: indexPath.row)
             print("Successfully deleted meal.")
             
-            // Save data and reload
-//            self.saveMeals()
-            
             //TODO: Save meals to Firebase database
-            
+            saveMealsToFirebase()
         }
     }
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
@@ -211,9 +202,9 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let itemToMove = mealArray[fromIndexPath.row]
         mealArray.remove(at: fromIndexPath.row)
         mealArray.insert(itemToMove, at: toIndexPath.row)
-        
-//        saveMeals()
+
         //TODO: Save meals to Firebase database
+        saveMealsToFirebase()
     }
     
     //MARK: Reordering controls and tableView methods
@@ -239,9 +230,9 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
             print("\(mealToCheck.mealName!) locked")
             cellToColor.backgroundColor = UIColor.lightGray
         }
-//        saveMeals()
         
         //TODO: Save meals to Firebase database
+        saveMealsToFirebase()
     }
     
     //MARK: Randomize meals function
@@ -281,7 +272,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
             lastMealInt = mealArray.count - 1
             print("Reset lastMealInt. Now it's \(lastMealInt).")
             
-            // step 4 - never gets to this for some reason?
+            // step 4 - Swap everything back in
             while(lastMealInt > -1 && lastShuffledMealInt > -1)
             {
                 let mealToCheck : Meal = mealArray[lastMealInt]
@@ -365,9 +356,9 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     //MARK: Button to randomize the list
     @IBAction func shuffleButtonPressed(_ sender: UIBarButtonItem) {
         randomize()
-//        saveMeals()
         
-        //TODO: Save meals to Firebase database
+        //Save meals to Firebase database
+        saveMealsToFirebase()
     }
     
     
@@ -434,15 +425,64 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 mealFromFB.mealFirebaseID = snapshotValue["MealFirebaseID"] as? String
                 
                 self.mealArray.append(mealFromFB)
+                
 //                self.filteredMealsArray = self.mealArray
+//                self.sortMeals() // This gives me index out of range error.
                 
                 self.tableView.reloadData()
-//                print("After retrieveMealsFromFirebase, the number of meals in filtereMealsArray is \(self.filteredMealsArray.count)")
             }
         }
         else {
             print("User ID was nil.")
         }
+    }
+    
+    //MARK: Save to Firebase function
+    func saveMealsToFirebase() {
+        if uid != nil {
+            self.ref = Database.database().reference().child("Meals").child(self.user!.uid)
+            
+            do {
+                var lastMealInt : Int = mealArray.count - 1
+                lastMealInt = mealArray.count - 1
+//                mealSortedOrderArray = mealArray
+                while(lastMealInt > -1)
+                {
+                    let mealToCheck : Meal = mealArray[lastMealInt]
+                    do {
+                        // do stuff to that meal
+                        // Create dictionary for that meal
+                        let mealDictionary = ["MealOwner": Auth.auth().currentUser?.email ?? "",
+                                              "MealName": mealToCheck.mealName!,
+                                              "MealLocked": mealToCheck.mealLocked,
+                                              "MealSortedOrder": mealToCheck.mealSortedOrder,
+                                              "MealImagePath": mealToCheck.mealImagePath ?? "",
+                                              "MealIsReplacing": mealToCheck.mealIsReplacing,
+                                              "MealRecipeLink": mealToCheck.mealRecipeLink ?? "http://www.allrecipes.com",
+                                              "MealReplaceMe": mealToCheck.mealReplaceMe,
+                                              "MealFirebaseID": mealToCheck.mealFirebaseID!
+                            ] as [String : Any]
+                        
+                        let mealFirebaseIDDataRef = mealToCheck.mealFirebaseID
+                        
+                        self.ref.child(mealFirebaseIDDataRef!).setValue(mealDictionary) {
+                            (error, reference) in
+                            if error != nil {
+                                print(error!)
+                            } else {
+                                print("Meal saved successfully to Firebase")
+                            }
+                        }
+                    }
+                    lastMealInt -= 1
+                }
+//                mealArray = mealSortedOrderArray
+//                mealSortedOrderArray = [Meal]()
+                tableView.reloadData()
+            }
+            
+
+    }
     }
     //MARK: Model manipulation methods
 //    func saveMeals(){
