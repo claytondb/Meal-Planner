@@ -38,8 +38,14 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        checkCurrentUser()
+        // Clear out arrays
+//        filteredMealsArray = []
+//        mealArray = []
+//
+//        checkCurrentUser()
+//
+//        retrieveMealsFromFirebase()
+//        filteredMealsArray = mealArray
         
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         tableView.backgroundColor = UIColor.white
@@ -47,10 +53,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         self.tableView.dataSource = self
         self.mealSearchField.delegate = self
         
-        filteredMealsArray = mealArray
-        sortMeals()
-        
-//        print("On load, the number of meals in filteredMealsArray is \(filteredMealsArray.count)")
+//        sortMeals()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,27 +69,23 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         handle = Auth.auth().addStateDidChangeListener { (auth, user) in
             print("Added auth state change listener.")
         }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        checkCurrentUser()
         
         // Clear out filteredMealsArray and mealArray so we don't have duplicates
         filteredMealsArray = []
         mealArray = []
         
+        checkCurrentUser()
         retrieveMealsFromFirebase()
-
-        tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         
         mealSearchField.text = ""
         searchBar(mealSearchField, textDidChange: "")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         
-        filteredMealsArray = mealArray
-        
-        sortMeals() // Something on this one gets the "index out of range" error.
-        
-        print("After viewDidAppear, the number of meals in filteredMealsArray is \(filteredMealsArray.count)")
+        sortMeals()
+        tableView.reloadData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -160,9 +159,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // Method 2
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("For numberOfRowsInSection function, the number of meals in filteredMealsArray is \(filteredMealsArray.count)")
         let count = filteredMealsArray.count
-//        let count = mealArray.count
         return count
     }
     
@@ -234,10 +231,9 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         tableView.reloadData()
     }
     
-    //MARK: Function to sort tableview according to mealSortedIndex
+    //MARK: Function to sort tableview according to mealSortedOrder
     func sortMeals() {
         do {
-//            print("sortMeals: filteredMealsArray.count is \(filteredMealsArray.count)")
             var lastMealInt : Int = filteredMealsArray.count - 1 // because 0 counts as the first meal.
             mealSortedOrderArray = filteredMealsArray
             while(lastMealInt > -1)
@@ -248,8 +244,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                     mealSortedOrderArray.insert(mealToCheck, at: Int(mealToCheck.mealSortedOrder))
                 }
                 lastMealInt -= 1
-            } // ERROR: Index out of range was being caused by meals that were added with errors. They had the meal sorted order messed up. This is no longer an issue after deleting all meals from Firebase and re-adding them.
-            print("No errors while sorting meals.")
+            }
             filteredMealsArray = mealSortedOrderArray
             mealSortedOrderArray = [Meal]()
         }
@@ -324,8 +319,7 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         present(alert, animated: true, completion: nil)
     }
     
-    // Load meals from Firebase database
-    // This was causing the app to crash, but I added a var 'ref : DatabaseReference!' to the beginning of the controller.
+    //MARK: Load meals from Firebase database
     func retrieveMealsFromFirebase() {
         if uid != nil {
             ref = Database.database().reference().child("Meals").child(user!.uid)
@@ -343,11 +337,9 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
                 mealFromFB.mealSortedOrder = snapshotValue["MealSortedOrder"] as! Int32
                 mealFromFB.mealFirebaseID = snapshotValue["MealFirebaseID"] as? String
                 
-                self.mealArray.append(mealFromFB)
-                self.filteredMealsArray = self.mealArray
+                self.filteredMealsArray.append(mealFromFB)
                 
                 self.tableView.reloadData()
-                print("After retrieveMealsFromFirebase, the number of meals in filtereMealsArray is \(self.filteredMealsArray.count)")
             }
         }
         else {

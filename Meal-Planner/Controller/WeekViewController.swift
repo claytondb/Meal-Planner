@@ -43,13 +43,14 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidLoad()
         
         checkCurrentUser()
+        // Don't retrieve or sort yet, since I do that on viewDidAppear anyway.
+//        retrieveMealsFromFirebase()
+//        sortMeals()
         
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         self.tableView.backgroundColor = UIColor.white
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        
-        sortMeals()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,24 +66,27 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         handle = Auth.auth().addStateDidChangeListener { (auth, user) in
             print("Added auth state change listener.")
         }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        checkCurrentUser()
         
         // Clear out mealArray so we don't have duplicates
         mealArray = []
         
-        retrieveMealsFromFirebase()
-        
+        checkCurrentUser()
+        retrieveMealsFromFirebase() // It's sorting before it's retrieved.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+
         self.tableView.backgroundColor = UIColor.white
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         
         sortMeals()
-        saveMealsToFirebase()
+        tableView.reloadData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        
+        saveMealsToFirebase()
+        
         //Firebase auth. Added "as! AuthStateDidChangeListenerHandle" because var handle is of type 'Any?'.
         Auth.auth().removeStateDidChangeListener(handle! as! AuthStateDidChangeListenerHandle)
         print("Removed auth state change listener.")
@@ -282,7 +286,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     mealArray.insert(mealToSwapIn, at: lastMealInt)
                     mealsToShuffleArray.remove(at: lastShuffledMealInt)
                     
-                    // Assign current position in list to mealSortedOrder)
+                    // Assign current position in list to mealSortedOrder
                     mealToSwapIn.mealSortedOrder = Int32(lastMealInt)
                     
                     lastShuffledMealInt -= 1
@@ -304,7 +308,6 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func sortMeals() {
         do {
             var lastMealInt : Int = mealArray.count - 1
-            lastMealInt = mealArray.count - 1
             mealSortedOrderArray = mealArray
             while(lastMealInt > -1)
             {
@@ -319,6 +322,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
             mealSortedOrderArray = [Meal]()
         }
         print("Sorted meals.")
+//        self.tableView.reloadData()
     }
     
     @IBAction func unwindToWeekMeals(segue: UIStoryboardSegue) {
@@ -355,9 +359,14 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     //MARK: Button to randomize the list
     @IBAction func shuffleButtonPressed(_ sender: UIBarButtonItem) {
+        // Randomize the order
         randomize()
         
-        //Save meals to Firebase database
+        // Sort them according to true order in FB
+        sortMeals()
+        self.tableView.reloadData()
+        
+        // Save meals to Firebase database
         saveMealsToFirebase()
     }
     
@@ -424,10 +433,9 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 mealFromFB.mealSortedOrder = snapshotValue["MealSortedOrder"] as! Int32
                 mealFromFB.mealFirebaseID = snapshotValue["MealFirebaseID"] as? String
                 
+                print("\(mealFromFB.mealName ?? "Meal name") sortedOrder is \(mealFromFB.mealSortedOrder).")
                 self.mealArray.append(mealFromFB)
-                
-//                self.filteredMealsArray = self.mealArray
-//                self.sortMeals() // This gives me index out of range error.
+//                self.mealArray.insert(mealFromFB, at: Int(mealFromFB.mealSortedOrder))
                 
                 self.tableView.reloadData()
             }
@@ -476,12 +484,8 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     }
                     lastMealInt -= 1
                 }
-//                mealArray = mealSortedOrderArray
-//                mealSortedOrderArray = [Meal]()
-                tableView.reloadData()
+//                self.tableView.reloadData()
             }
-            
-
     }
     }
     //MARK: Model manipulation methods
