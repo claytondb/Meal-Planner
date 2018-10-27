@@ -44,8 +44,6 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         checkCurrentUser()
         // Don't retrieve or sort yet, since I do that on viewDidAppear anyway.
-//        retrieveMealsFromFirebase()
-//        sortMeals()
         
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         self.tableView.backgroundColor = UIColor.white
@@ -71,7 +69,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         mealArray = []
         
         checkCurrentUser()
-        retrieveMealsFromFirebase() // It's sorting before it's retrieved.
+        retrieveMealsFromFirebase()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -342,7 +340,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
         } else if segue.identifier == "segueToReplaceMeal" {
             if let destinationVC = segue.destination as? ReplaceMealController {
-//                saveMeals()
+                saveMealsToFirebase()
                 print("Prepared for segue to replace meal")
                 destinationVC.mealPassedIn = mealToReplace
                 print("Passed in meal to replace")

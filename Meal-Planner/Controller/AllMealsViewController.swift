@@ -38,14 +38,6 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Clear out arrays
-//        filteredMealsArray = []
-//        mealArray = []
-//
-//        checkCurrentUser()
-//
-//        retrieveMealsFromFirebase()
-//        filteredMealsArray = mealArray
         
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         tableView.backgroundColor = UIColor.white
@@ -53,7 +45,6 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         self.tableView.dataSource = self
         self.mealSearchField.delegate = self
         
-//        sortMeals()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -398,28 +389,6 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBAction func unwindToAllMeals(segue: UIStoryboardSegue) {
         // nothing here but I think I need this.
     }
-    
-    
-    //MARK: Model manipulation methods
-//    func saveMeals(){
-//        do {
-//            try context.save()
-//        } catch {
-//            print("Error saving meals. \(error)")
-//        }
-//        self.tableView.reloadData()
-//        print("Meals saved and data reloaded")
-//    }
-    
-//    func loadMeals(with request: NSFetchRequest<Meal> = Meal.fetchRequest()) {
-//        do {
-//            mealArray = try context.fetch(request)
-//        } catch {
-//            print("Error loading meals. \(error)")
-//        }
-//        self.tableView.reloadData()
-//        print("Meals loaded")
-//    }
     
 }
 

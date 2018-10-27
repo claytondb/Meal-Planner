@@ -26,14 +26,10 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     var mealToPassBackNewSortOrder : Int32 = 0
     var mealPassedInNewSortOrder : Int32 = 0
     var handle : Any?
-//    var ref : DatabaseReference!
-//    let userID = Auth.auth().currentUser?.uid
-    
-    //    // Firebase Storage
-    //    let storage = Storage.storage()
-    //    var imageReference: StorageReference {
-    //        return Storage.storage().reference().child("images")
-    //    }
+    var ref : DatabaseReference!
+    var user : User?
+    var uid : String?
+    var email : String?
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var mealSearchField: UISearchBar!
@@ -41,20 +37,15 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadMeals()
-        sortMeals()
+        checkCurrentUser()
         
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
-        print("Loaded custom mealXib")
-        
         tableView.backgroundColor = UIColor.white
-        
         navigationItem.rightBarButtonItem?.isEnabled = false
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.mealSearchField.delegate = self
-        filteredMealsArray = mealArray
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,10 +61,23 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
         handle = Auth.auth().addStateDidChangeListener { (auth, user) in
             print("Added auth state change listener.")
         }
+        
+        // Clear out filteredMealsArray and mealArray so we don't have duplicates
+        filteredMealsArray = []
+        mealArray = []
+        
+        checkCurrentUser()
+        retrieveMealsFromFirebase()
+        
+        mealSearchField.text = ""
+        searchBar(mealSearchField, textDidChange: "")
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        checkCurrentUser()
+        tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
+        
+        sortMeals()
+        tableView.reloadData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -84,11 +88,11 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     
     func checkCurrentUser() {
         if Auth.auth().currentUser != nil {
-            let user = Auth.auth().currentUser
-            if let user = user {
-                let uid = user.uid
-                let email = user.email
-                print("\(uid) is signed in and their email is \(email ?? "someone@email.com").")
+            self.user = Auth.auth().currentUser
+            if let thisUser = user {
+                uid = thisUser.uid
+                email = thisUser.email
+                print("\(uid!) is signed in and their email is \(email!).")
             }
         } else {
             print("Nobody is signed in.")
@@ -109,19 +113,28 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
             cell.mealLabel?.text = meal.mealName!
         }
         
+        if meal.mealImagePath == "" {
+            meal.mealImagePath = nil
+        }
+        
         // Set meal image
         if meal.mealImagePath != nil {
             let mealImageURL = URL(string: (meal.mealImagePath?.encodeUrl())!)
             if let imageData = try? Data(contentsOf: mealImageURL!) {
+                cell.mealImage.contentMode = .scaleAspectFill // not doing anything
                 cell.mealImage.image = UIImage(data: imageData)
             } else {
+                cell.mealImage.contentMode = .scaleAspectFill //  not doing anything
                 cell.mealImage.image = UIImage(named: "mealPlaceholder")
             }
         } else {
+            cell.mealImage.contentMode = .scaleAspectFill //  not doing anything
             cell.mealImage.image = UIImage(named: "mealPlaceholder")
         }
         
-        cell.mealDay.text = ""
+        if cell.mealDay != nil {
+            cell.mealDay.removeFromSuperview()
+        }
         
         if cell.mealLockIconBtn != nil {
             cell.mealLockIconBtn.removeFromSuperview()
@@ -147,7 +160,7 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
         
         swapSortingOrders()
         
-        saveMeals()
+        saveMealsToFirebase()
         performSegue(withIdentifier: "unwindToWeekMeals", sender: self)
     }
     
@@ -165,7 +178,6 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     func sortMeals() {
         do {
             var lastMealInt : Int = filteredMealsArray.count - 1
-            lastMealInt = filteredMealsArray.count - 1
             mealSortedOrderArray = filteredMealsArray
             while(lastMealInt > -1)
             {
@@ -177,9 +189,38 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
                 lastMealInt -= 1
             }
             filteredMealsArray = mealSortedOrderArray
+            mealArray = filteredMealsArray
             mealSortedOrderArray = [Meal]()
         }
         print("Sorted meals.")
+    }
+    
+    //MARK: Load meals from Firebase database
+    func retrieveMealsFromFirebase() {
+        if uid != nil {
+            ref = Database.database().reference().child("Meals").child(user!.uid)
+            ref.observe(.childAdded) { (snapshot : DataSnapshot) in
+                let snapshotValue = snapshot.value as! Dictionary<String, Any>
+                let mealFromFB = Meal(context: self.context)
+                
+                mealFromFB.mealImagePath = snapshotValue["MealImagePath"] as? String
+                mealFromFB.mealIsReplacing = snapshotValue["MealIsReplacing"] as! Bool
+                mealFromFB.mealLocked = snapshotValue["MealLocked"] as! Bool
+                mealFromFB.mealName = snapshotValue["MealName"] as? String
+                mealFromFB.mealOwner = snapshotValue["MealOwner"] as? String
+                mealFromFB.mealRecipeLink = snapshotValue["MealRecipeLink"] as? String
+                mealFromFB.mealReplaceMe = snapshotValue["MealReplaceMe"] as! Bool
+                mealFromFB.mealSortedOrder = snapshotValue["MealSortedOrder"] as! Int32
+                mealFromFB.mealFirebaseID = snapshotValue["MealFirebaseID"] as? String
+                
+                self.filteredMealsArray.append(mealFromFB)
+                
+                self.tableView.reloadData()
+            }
+        }
+        else {
+            print("User ID was nil.")
+        }
     }
     
     
@@ -210,27 +251,48 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
     
-    
-    
-    //MARK: Model manipulation methods
-    func saveMeals(){
-        do {
-            try context.save()
-        } catch {
-            print("Error saving meals. \(error)")
+    //MARK: Save to Firebase function
+    func saveMealsToFirebase() {
+        if uid != nil {
+            self.ref = Database.database().reference().child("Meals").child(self.user!.uid)
+            
+            do {
+                var lastMealInt : Int = mealArray.count - 1
+                lastMealInt = mealArray.count - 1
+                //                mealSortedOrderArray = mealArray
+                while(lastMealInt > -1)
+                {
+                    let mealToCheck : Meal = mealArray[lastMealInt]
+                    do {
+                        // do stuff to that meal
+                        // Create dictionary for that meal
+                        let mealDictionary = ["MealOwner": Auth.auth().currentUser?.email ?? "",
+                                              "MealName": mealToCheck.mealName!,
+                                              "MealLocked": mealToCheck.mealLocked,
+                                              "MealSortedOrder": mealToCheck.mealSortedOrder,
+                                              "MealImagePath": mealToCheck.mealImagePath ?? "",
+                                              "MealIsReplacing": mealToCheck.mealIsReplacing,
+                                              "MealRecipeLink": mealToCheck.mealRecipeLink ?? "http://www.allrecipes.com",
+                                              "MealReplaceMe": mealToCheck.mealReplaceMe,
+                                              "MealFirebaseID": mealToCheck.mealFirebaseID!
+                            ] as [String : Any]
+                        
+                        let mealFirebaseIDDataRef = mealToCheck.mealFirebaseID
+                        
+                        self.ref.child(mealFirebaseIDDataRef!).setValue(mealDictionary) {
+                            (error, reference) in
+                            if error != nil {
+                                print(error!)
+                            } else {
+                                print("Meal saved successfully to Firebase")
+                            }
+                        }
+                    }
+                    lastMealInt -= 1
+                }
+                //                self.tableView.reloadData()
+            }
         }
-        self.tableView.reloadData()
-        print("Meals saved and data reloaded")
-    }
-    
-    func loadMeals(with request: NSFetchRequest<Meal> = Meal.fetchRequest()) {
-        do {
-            mealArray = try context.fetch(request)
-        } catch {
-            print("Error loading meals. \(error)")
-        }
-        self.tableView.reloadData()
-        print("Meals loaded")
     }
     
     
