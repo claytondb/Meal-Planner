@@ -168,14 +168,12 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     //MARK: Function to read back image data. Maybe need this in AllMealsViewController?
     func readImageData() {
         
-        let mealImageURL = URL(string: (mealPassedIn.mealImagePath?.encodeUrl())!)
-        print("Meal image URL is \(mealImageURL!)")
+        // FirebaseUI method
+        let imgReference = storage.reference().child("images/\(mealPassedIn.mealImagePath!).jpg")
+        print("Image reference is \(imgReference)")
+        let thisImageView = mealImageView
+        thisImageView?.sd_setImage(with: imgReference, placeholderImage: #imageLiteral(resourceName: "mealPlaceholder"))
         
-        if let imageData = try? Data(contentsOf: mealImageURL!) {
-            mealImageView.image = UIImage(data: imageData)
-        } else {
-            // do nothing
-        }
     }
     
     // MARK: Save meal to Firebase
@@ -292,7 +290,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
                 mealPassedIn.mealImagePath = "\(pickedImage.imageAsset!)"
                 
                 // Firebase image upload. This works!
-                let uploadImageRef = imageFolderReference.child("\(pickedImage.imageAsset!).jpg") // What's the right file name?
+                let uploadImageRef = imageFolderReference.child("\(pickedImage.imageAsset!).jpg")
                 let uploadTask = uploadImageRef.putData(imageData, metadata: nil) { (metadata, error) in
                     print("Upload task finished.")
                     print(metadata ?? "No metadata for this image.")
