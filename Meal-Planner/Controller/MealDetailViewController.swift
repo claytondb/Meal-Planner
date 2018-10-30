@@ -27,11 +27,11 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     var handle : Any?
     var ref : DatabaseReference!
     var user : User?
-//    let userID = Auth.auth().currentUser?.uid
+    var uid : String?
     
     // Firebase Storage
     let storage = Storage.storage()
-    var imageReference: StorageReference {
+    var imageFolderReference: StorageReference {
         return Storage.storage().reference().child("images")
     }
     
@@ -165,7 +165,7 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
         return true
     }
     
-    //MARK: Function to read back image data
+    //MARK: Function to read back image data. Maybe need this in AllMealsViewController?
     func readImageData() {
         
         let mealImageURL = URL(string: (mealPassedIn.mealImagePath?.encodeUrl())!)
@@ -195,13 +195,13 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
                               "MealReplaceMe": mealPassedIn.mealReplaceMe,
                               "MealFirebaseID": mealPassedIn.mealFirebaseID!
                               ] as [String : Any]
-        
+
         let mealFirebaseIDDataRef = mealPassedIn.mealFirebaseID
         // Once I know the Firebase ID for the meal, I can update that specific meal on save.
-        
+
         // This was causing crash because user comes back as nil. Fixed this by adding self.user to checkCurrentUser.
         self.ref = Database.database().reference().child("Meals").child(self.user!.uid)
-        
+
         self.ref.child(mealFirebaseIDDataRef!).setValue(mealDictionary) {
             (error, reference) in
             if error != nil {
@@ -291,8 +291,8 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
                 guard let imageData = UIImageJPEGRepresentation(image, 0.1) else {return}
                 mealPassedIn.mealImagePath = "\(pickedImage.imageAsset!)"
                 
-                // Firebase image upload. This works! Just need to figure out download...
-                let uploadImageRef = imageReference.child("\(pickedImage.imageAsset!)") // What's the right file name?
+                // Firebase image upload. This works!
+                let uploadImageRef = imageFolderReference.child("\(pickedImage.imageAsset!).jpg") // What's the right file name?
                 let uploadTask = uploadImageRef.putData(imageData, metadata: nil) { (metadata, error) in
                     print("Upload task finished.")
                     print(metadata ?? "No metadata for this image.")
@@ -388,14 +388,14 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
     }
     
     //MARK: Model manipulation methods
-    func saveMealDetail(){
-        do {
-            try context.save()
-        } catch {
-            print("Error saving meals. \(error)")
-        }
-        print("Detail saved")
-    }
+//    func saveMealDetail(){
+//        do {
+//            try context.save()
+//        } catch {
+//            print("Error saving meals. \(error)")
+//        }
+//        print("Detail saved")
+//    }
 
 }
 

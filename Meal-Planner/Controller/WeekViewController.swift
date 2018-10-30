@@ -14,6 +14,7 @@ import FirebaseCore
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
+import FirebaseUI
 
 class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -30,12 +31,11 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var uid : String?
     var email : String?
     
-    //    // Firebase Storage
-    // This causes the app to crash with unknown exception.
-    //    let storage = Storage.storage()
-    //    var imageReference: StorageReference {
-    //        return Storage.storage().reference().child("images")
-    //    }
+    // Firebase Storage
+    let storage = Storage.storage()
+    var imagesFolderReference: StorageReference {
+            return Storage.storage().reference().child("images")
+        }
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -119,15 +119,40 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         
         // Set meal image
-        if meal.mealImagePath != nil && meal.mealImagePath != ""{
-            let mealImageURL = URL(string: (meal.mealImagePath?.encodeUrl())!)
-            if let imageData = try? Data(contentsOf: mealImageURL!) {
-                cell.mealImage.image = UIImage(data: imageData)
-            } else {
-                cell.mealImage.image = UIImage(named: "mealPlaceholder")
-            }
-        } else {
+        if meal.mealImagePath == nil {
             cell.mealImage.image = UIImage(named: "mealPlaceholder")
+        } else if meal.mealImagePath == "" {
+            cell.mealImage.image = UIImage(named: "mealPlaceholder")
+        } else {
+            // FirebaseUI method
+            let imgReference = storage.reference().child("images/\(meal.mealImagePath!).jpg")
+            print("Image reference is \(imgReference)")
+            let thisImageView = cell.mealImage
+            thisImageView?.sd_setImage(with: imgReference, placeholderImage: #imageLiteral(resourceName: "mealPlaceholder"))
+            
+            // One method
+//            let imgReference = storage.reference(withPath: "\(self.imageReference)/\(meal.mealImagePath!).jpg")
+//            imgReference.getData(maxSize: 1 * 1024 * 1024, completion: {data, error in
+//                if let error = error {
+//                    // Uh-oh, an error occurred
+//                    print("Image didn't work.")
+//                } else {
+//                    // Data for image is returned
+//                    let image = UIImage(data: data!)
+//                    cell.mealImage.image = image
+//                }
+//            })
+            
+            // Another method
+//            let mealImageURL = URL(string: "\(self.imageReference)/\(meal.mealImagePath!.encodeUrl()).jpg")
+//            print("mealImageURL is \(mealImageURL!).")
+//            if let imageData = try? Data(contentsOf: mealImageURL!) {
+//                cell.mealImage.image = UIImage(data: imageData)
+//                print("Image link worked.")
+//            } else {
+//                cell.mealImage.image = UIImage(named: "mealPlaceholder")
+//                print("Image link didn't work")
+//            }
         }
         
         // Set mealDay label to day of the week depending on what row of the table it's in.

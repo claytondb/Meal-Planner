@@ -184,8 +184,8 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             mealArray = filteredMealsArray
             
             // Save data and reload
-            //TODO: Save to firebase and reload
-//            self.saveMeals()
+            self.saveMealsToFirebase()
+            self.tableView.reloadData()
             
         }
         
@@ -202,8 +202,8 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         filteredMealsArray.insert(itemToMove, at: toIndexPath.row)
         mealArray = filteredMealsArray
         
-        //TODO: Save to firebase
-//        saveMeals()
+        //Save to firebase
+        self.saveMealsToFirebase()
     }
     @IBAction func startEditing(_ sender: UIBarButtonItem) {
         if self.isEditing == false {
@@ -284,7 +284,6 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             
             
             //Saving new meal to Firebase database
-            
             mealFirebaseID.setValue(mealDictionary) {
                 (error, reference) in
                 if error != nil {
@@ -338,6 +337,50 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
+    //MARK: Save to Firebase function
+    func saveMealsToFirebase() {
+        if uid != nil {
+            self.ref = Database.database().reference().child("Meals").child(self.user!.uid)
+            
+            do {
+                var lastMealInt : Int = mealArray.count - 1
+                lastMealInt = mealArray.count - 1
+                //                mealSortedOrderArray = mealArray
+                while(lastMealInt > -1)
+                {
+                    let mealToCheck : Meal = mealArray[lastMealInt]
+                    do {
+                        // do stuff to that meal
+                        // Create dictionary for that meal
+                        let mealDictionary = ["MealOwner": Auth.auth().currentUser?.email ?? "",
+                                              "MealName": mealToCheck.mealName!,
+                                              "MealLocked": mealToCheck.mealLocked,
+                                              "MealSortedOrder": mealToCheck.mealSortedOrder,
+                                              "MealImagePath": mealToCheck.mealImagePath ?? "",
+                                              "MealIsReplacing": mealToCheck.mealIsReplacing,
+                                              "MealRecipeLink": mealToCheck.mealRecipeLink ?? "http://www.allrecipes.com",
+                                              "MealReplaceMe": mealToCheck.mealReplaceMe,
+                                              "MealFirebaseID": mealToCheck.mealFirebaseID!
+                            ] as [String : Any]
+                        
+                        let mealFirebaseIDDataRef = mealToCheck.mealFirebaseID
+                        
+                        self.ref.child(mealFirebaseIDDataRef!).setValue(mealDictionary) {
+                            (error, reference) in
+                            if error != nil {
+                                print(error!)
+                            } else {
+                                print("Meal saved successfully to Firebase")
+                            }
+                        }
+                    }
+                    lastMealInt -= 1
+                }
+                //                self.tableView.reloadData()
+            }
+        }
+    }
+    
     // Both deleteMeal and lockButton cause the app to crash on my phone. What's the issue?
     @IBAction func deleteMeal(_ sender: UIButton) {
         print("Deleting meal")
@@ -358,8 +401,8 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             print("Successfully deleted meal.")
             
             // Save data and reload
-            //TODO: Save to firebase
-//            self.saveMeals()
+            self.saveMealsToFirebase()
+            self.tableView.reloadData()
             
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
