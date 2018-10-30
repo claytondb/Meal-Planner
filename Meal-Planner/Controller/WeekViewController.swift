@@ -130,29 +130,6 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let thisImageView = cell.mealImage
             thisImageView?.sd_setImage(with: imgReference, placeholderImage: #imageLiteral(resourceName: "mealPlaceholder"))
             
-            // One method
-//            let imgReference = storage.reference(withPath: "\(self.imageReference)/\(meal.mealImagePath!).jpg")
-//            imgReference.getData(maxSize: 1 * 1024 * 1024, completion: {data, error in
-//                if let error = error {
-//                    // Uh-oh, an error occurred
-//                    print("Image didn't work.")
-//                } else {
-//                    // Data for image is returned
-//                    let image = UIImage(data: data!)
-//                    cell.mealImage.image = image
-//                }
-//            })
-            
-            // Another method
-//            let mealImageURL = URL(string: "\(self.imageReference)/\(meal.mealImagePath!.encodeUrl()).jpg")
-//            print("mealImageURL is \(mealImageURL!).")
-//            if let imageData = try? Data(contentsOf: mealImageURL!) {
-//                cell.mealImage.image = UIImage(data: imageData)
-//                print("Image link worked.")
-//            } else {
-//                cell.mealImage.image = UIImage(named: "mealPlaceholder")
-//                print("Image link didn't work")
-//            }
         }
         
         // Set mealDay label to day of the week depending on what row of the table it's in.

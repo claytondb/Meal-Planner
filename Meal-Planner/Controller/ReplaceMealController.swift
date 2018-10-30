@@ -31,6 +31,12 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
     var uid : String?
     var email : String?
     
+    // Firebase Storage
+    let storage = Storage.storage()
+    var imagesFolderReference: StorageReference {
+        return Storage.storage().reference().child("images")
+    }
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var mealSearchField: UISearchBar!
     
@@ -118,18 +124,17 @@ class ReplaceMealController: UIViewController, UITableViewDataSource, UITableVie
         }
         
         // Set meal image
-        if meal.mealImagePath != nil {
-            let mealImageURL = URL(string: (meal.mealImagePath?.encodeUrl())!)
-            if let imageData = try? Data(contentsOf: mealImageURL!) {
-                cell.mealImage.contentMode = .scaleAspectFill // not doing anything
-                cell.mealImage.image = UIImage(data: imageData)
-            } else {
-                cell.mealImage.contentMode = .scaleAspectFill //  not doing anything
-                cell.mealImage.image = UIImage(named: "mealPlaceholder")
-            }
-        } else {
-            cell.mealImage.contentMode = .scaleAspectFill //  not doing anything
+        if meal.mealImagePath == nil {
             cell.mealImage.image = UIImage(named: "mealPlaceholder")
+        } else if meal.mealImagePath == "" {
+            cell.mealImage.image = UIImage(named: "mealPlaceholder")
+        } else {
+            // FirebaseUI method
+            let imgReference = storage.reference().child("images/\(meal.mealImagePath!).jpg")
+            print("Image reference is \(imgReference)")
+            let thisImageView = cell.mealImage
+            thisImageView?.sd_setImage(with: imgReference, placeholderImage: #imageLiteral(resourceName: "mealPlaceholder"))
+            
         }
         
         if cell.mealDay != nil {

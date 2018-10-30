@@ -263,26 +263,6 @@ class MealDetailViewController: UIViewController, UIImagePickerControllerDelegat
             mealImageView.contentMode = .scaleAspectFill
             mealImageView.image = pickedImage
             storedMealImage = pickedImage
-            
-            // get stored image and path (image path on device when importing)
-//            let fileManager = FileManager.default
-//            do {
-//                let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
-//                let fileURL = documentDirectory.appendingPathComponent("\(pickedImage.imageAsset!)") // Only needed if I'm going to reference the image in FileManager on the device. Since it will be coming from Firebase, I can probably delete this.
-                
-                // I think I only need the below if I'm saving the image to the device.
-                // 1. Defines "image" as the image that was picked in the picker
-                // 2. Creates "imageData" and gives it quality
-                // 3. Tries to write imageData to the file path on the device.
-                // 4. Sets variable storedImageURL to the file path of the new image on the device.
-                // 5. Sets meal.mealImagePath to the new URL of the image on the device.
-//                let image = pickedImage
-//                if let imageData = UIImageJPEGRepresentation(image, 0.1) {
-//                    try imageData.write(to: fileURL)
-//                    storedImageURL = fileURL
-//                    mealPassedIn.mealImagePath = storedImageURL!.absoluteString
-//                    mealPassedIn.mealImagePath = mealPassedIn.mealImagePath?.decodeUrl()
-//                }
                 
                 // For firebase
                 let image = pickedImage
