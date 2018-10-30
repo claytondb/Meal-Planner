@@ -20,16 +20,30 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="r2l-h2-5UI">
-                        <rect key="frame" x="0.0" y="-0.5" width="375" height="64"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mealPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="LRg-yJ-XR4" userLabel="Meal Image">
+                            <view clipsSubviews="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="HI4-pK-CzM">
                                 <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mealPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="LRg-yJ-XR4" userLabel="Meal Image">
+                                        <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="LRg-yJ-XR4" secondAttribute="height" multiplier="1:1" id="Pnx-If-sIr"/>
+                                            <constraint firstAttribute="height" constant="64" id="Xh5-St-s51"/>
+                                            <constraint firstAttribute="width" constant="64" id="zAM-Cf-IAa"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="LRg-yJ-XR4" secondAttribute="height" multiplier="1:1" id="Pnx-If-sIr"/>
-                                    <constraint firstAttribute="height" constant="64" id="Xh5-St-s51"/>
-                                    <constraint firstAttribute="width" constant="64" id="zAM-Cf-IAa"/>
+                                    <constraint firstItem="LRg-yJ-XR4" firstAttribute="leading" secondItem="HI4-pK-CzM" secondAttribute="leading" id="B8x-f3-qfn"/>
+                                    <constraint firstAttribute="width" constant="64" id="FCm-eT-VH0"/>
+                                    <constraint firstItem="LRg-yJ-XR4" firstAttribute="top" secondItem="HI4-pK-CzM" secondAttribute="top" id="UpT-rd-JwY"/>
+                                    <constraint firstAttribute="width" secondItem="HI4-pK-CzM" secondAttribute="height" multiplier="1:1" id="W0t-uV-YbZ"/>
+                                    <constraint firstAttribute="height" constant="64" id="nhi-eh-b8c"/>
+                                    <constraint firstAttribute="trailing" secondItem="LRg-yJ-XR4" secondAttribute="trailing" id="qhK-vT-OHe"/>
                                 </constraints>
-                            </imageView>
+                            </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="3bd-hA-PJt" userLabel="Meal text">
                                 <rect key="frame" x="72" y="0.0" width="199" height="64"/>
                                 <subviews>

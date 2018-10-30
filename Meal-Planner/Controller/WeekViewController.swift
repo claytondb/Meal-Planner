@@ -119,6 +119,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         
         // Set meal image
+        cell.mealImage.contentMode = .scaleAspectFill
         if meal.mealImagePath == nil {
             cell.mealImage.image = UIImage(named: "mealPlaceholder")
         } else if meal.mealImagePath == "" {
@@ -129,7 +130,6 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
             print("Image reference is \(imgReference)")
             let thisImageView = cell.mealImage
             thisImageView?.sd_setImage(with: imgReference, placeholderImage: #imageLiteral(resourceName: "mealPlaceholder"))
-            
         }
         
         // Set mealDay label to day of the week depending on what row of the table it's in.
