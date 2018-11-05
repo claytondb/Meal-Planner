@@ -49,6 +49,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.tableView.backgroundColor = UIColor.white
         self.tableView.delegate = self
         self.tableView.dataSource = self
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,20 +71,22 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         checkCurrentUser()
         retrieveMealsFromFirebase()
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
-
         self.tableView.backgroundColor = UIColor.white
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         
         sortMeals()
         tableView.reloadData()
+//        saveMealsToFirebase()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         
-        saveMealsToFirebase()
+//        saveMealsToFirebase()
         
         //Firebase auth. Added "as! AuthStateDidChangeListenerHandle" because var handle is of type 'Any?'.
         Auth.auth().removeStateDidChangeListener(handle! as! AuthStateDidChangeListenerHandle)
@@ -364,6 +367,7 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         // Sort them according to true order in FB
         sortMeals()
+        
         self.tableView.reloadData()
         
         // Save meals to Firebase database
@@ -450,6 +454,12 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if uid != nil {
             self.ref = Database.database().reference().child("Meals").child(self.user!.uid)
             
+            self.title = "Saving..." // Only changes title in bottom tab bar.
+//            self.navigationItem.title = "Saving" // doesn't work
+//            self.tabBarController?.navigationItem.title = "My Title" // doesn't work
+//            self.navigationController?.title = "test" // doesn't work
+            // Week view controller > view > navigation bar > navigation item > title
+            
             do {
                 var lastMealInt : Int = mealArray.count - 1
                 lastMealInt = mealArray.count - 1
@@ -484,30 +494,11 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     }
                     lastMealInt -= 1
                 }
-//                self.tableView.reloadData()
             }
+            self.title = "Week"
     }
     }
-    //MARK: Model manipulation methods
-//    func saveMeals(){
-//        do {
-//            try context.save()
-//        } catch {
-//            print("Error saving meals. \(error)")
-//        }
-//        self.tableView.reloadData()
-//        print("Meals saved and data reloaded")
-//    }
-//
-//    func loadMeals(with request: NSFetchRequest<Meal> = Meal.fetchRequest()) {
-//        do {
-//            mealArray = try context.fetch(request)
-//        } catch {
-//            print("Error loading meals. \(error)")
-//        }
-//        self.tableView.reloadData()
-//        print("Meals loaded")
-//    }
+
 }
 
 
