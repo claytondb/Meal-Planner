@@ -61,21 +61,22 @@ class AllMealsViewController: UIViewController, UITableViewDataSource, UITableVi
             print("Added auth state change listener.")
         }
         
+        checkCurrentUser()
+        
         // Clear out filteredMealsArray and mealArray so we don't have duplicates
         filteredMealsArray = []
         mealArray = []
-        
-        checkCurrentUser()
+
         retrieveMealsFromFirebase()
         
         mealSearchField.text = ""
         searchBar(mealSearchField, textDidChange: "")
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         
-        sortMeals()
         tableView.reloadData()
     }
     

@@ -43,7 +43,9 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidLoad()
         
         checkCurrentUser()
-        // Don't retrieve or sort yet, since I do that on viewDidAppear anyway.
+        
+        mealArray = []
+        retrieveMealsFromFirebase()
         
         tableView.register(UINib(nibName: "mealXib", bundle: nil), forCellReuseIdentifier: "customMealCell")
         self.tableView.backgroundColor = UIColor.white
@@ -66,12 +68,6 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
             print("Added auth state change listener.")
         }
         
-        // Clear out mealArray so we don't have duplicates
-        mealArray = []
-        
-        checkCurrentUser()
-        retrieveMealsFromFirebase()
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -80,13 +76,12 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         sortMeals()
         tableView.reloadData()
-//        saveMealsToFirebase()
         
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         
-//        saveMealsToFirebase()
+        saveMealsToFirebase()
         
         //Firebase auth. Added "as! AuthStateDidChangeListenerHandle" because var handle is of type 'Any?'.
         Auth.auth().removeStateDidChangeListener(handle! as! AuthStateDidChangeListenerHandle)
