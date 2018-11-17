@@ -186,32 +186,46 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             let mealToDelete = self.mealArray[indexPath.row]
             
-            // delete meal from array
-            self.mealArray.remove(at: indexPath.row)
-            
-            // delete meal from firebase
-            ref.child(mealToDelete.mealFirebaseID!).removeValue()
+            // alert
+            let alert = UIAlertController(title: "Delete \(mealToDelete.mealName!)?", message: "", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Delete", style: .default) { (action) in
                 
-            // delete image associated with meal
-            if mealToDelete.mealImagePath != nil {
-                print("Image is \(mealToDelete.mealImagePath!)")
-                imagesFolderReference.child(mealToDelete.mealImagePath! + ".jpg").delete { (error) in
-                    if error != nil {
-                        print(error!)
-                    } else {
-                        print("Deleted image.")
+                // stuff that happens when user taps delete
+                // delete meal from array
+                self.mealArray.remove(at: indexPath.row)
+                
+                // delete meal from firebase
+                self.ref.child(mealToDelete.mealFirebaseID!).removeValue()
+                
+                // delete image associated with meal
+                if mealToDelete.mealImagePath != nil {
+                    print("Image is \(mealToDelete.mealImagePath!)")
+                    self.imagesFolderReference.child(mealToDelete.mealImagePath! + ".jpg").delete { (error) in
+                        if error != nil {
+                            print(error!)
+                        } else {
+                            print("Deleted image.")
+                        }
                     }
                 }
+                
+                print("Deleted \(mealToDelete.mealName!).")
+                //TODO: Save meals to Firebase database
+                self.saveMealsToFirebase()
+                
+                self.tableView.reloadData()
             }
             
-            print("Deleted \(mealToDelete.mealName!).")
-            
-            //TODO: Save meals to Firebase database
-            self.saveMealsToFirebase()
-            
-            self.tableView.reloadData()
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+                // do nothing
+                print("Cancelled")
+            }
+            alert.addAction(cancel)
+            alert.addAction(action)
+            present(alert, animated: true, completion: nil)
     }
     }
+    
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         print("can move rows")
         
