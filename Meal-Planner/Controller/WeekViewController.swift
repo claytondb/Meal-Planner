@@ -186,18 +186,23 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             let mealToDelete = self.mealArray[indexPath.row]
             
-            // Use index of row to delete it from table and CoreData
-//            self.context.delete(mealToDelete)
+            // delete meal from array
             self.mealArray.remove(at: indexPath.row)
             
-//            print("uid is \(self.uid!).") // This is the one we want
-//            print("user is \(self.user!).")
-//            print("ref is \(self.ref).")
-            
-            // Function to delete meal from firebase
+            // delete meal from firebase
             ref.child(mealToDelete.mealFirebaseID!).removeValue()
                 
-            // Remember to delete image associated with meal
+            // delete image associated with meal
+            if mealToDelete.mealImagePath != nil {
+                print("Image is \(mealToDelete.mealImagePath!)")
+                imagesFolderReference.child(mealToDelete.mealImagePath! + ".jpg").delete { (error) in
+                    if error != nil {
+                        print(error!)
+                    } else {
+                        print("Deleted image.")
+                    }
+                }
+            }
             
             print("Deleted \(mealToDelete.mealName!).")
             
