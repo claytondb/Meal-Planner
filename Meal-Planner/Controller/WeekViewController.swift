@@ -180,20 +180,32 @@ class WeekViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    // Override to support editing the table view. Swipe to delete.
+    //MARK: Override to support editing the table view. Swipe to delete.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             
             let mealToDelete = self.mealArray[indexPath.row]
             
             // Use index of row to delete it from table and CoreData
-            self.context.delete(mealToDelete)
+//            self.context.delete(mealToDelete)
             self.mealArray.remove(at: indexPath.row)
-            print("Successfully deleted meal.")
+            
+//            print("uid is \(self.uid!).") // This is the one we want
+//            print("user is \(self.user!).")
+//            print("ref is \(self.ref).")
+            
+            // Function to delete meal from firebase
+            ref.child(mealToDelete.mealFirebaseID!).removeValue()
+                
+            // Remember to delete image associated with meal
+            
+            print("Deleted \(mealToDelete.mealName!).")
             
             //TODO: Save meals to Firebase database
-            saveMealsToFirebase()
-        }
+            self.saveMealsToFirebase()
+            
+            self.tableView.reloadData()
+    }
     }
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         print("can move rows")
